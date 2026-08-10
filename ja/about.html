@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>当サイトについて - DevTools Express</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-lg font-bold">DevTools Express</a>
+            <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400">
+                <option value="/about.html">🌐 English</option>
+                <option value="/zh/about.html">中文 (Chinese)</option>
+                <option value="/ja/about.html" selected>日本語 (Japanese)</option>
+            </select>
+        </div>
+    </header>
+    <main class="max-w-3xl mx-auto px-4 py-10 flex-grow w-full space-y-4">
+        <h1 class="text-2xl font-bold border-b pb-2">DevTools Express について</h1>
+        <p class="text-sm text-gray-600 leading-relaxed">DevTools Express は、エンジニアやオフィスワーカー向けに高速で安全なWebツールを提供します。すべてのデータ処理はブラウザ内でローカルに実行され、外部に送信されることはありません。</p>
+    </main>
+</body>
+</html>
