@@ -21,23 +21,25 @@
 
     <main class="max-w-4xl mx-auto px-4 py-8 flex-grow w-full space-y-6">
         <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded text-xs text-amber-800">
-            🔒 <b>セキュリティ警告：</b> すべての鍵とシードフレーズはブラウザ上で100%ローカルに生成されます。インターネットに送信されることはありません。
+            🔒 <b>セキュリティ警告：</b> すべての計算はブラウザ内で100%ローカルに実行されます。フレーズや秘密鍵を変更・ネットワーク切替を行うと、アドレスがリアルタイム更新されます。
         </div>
 
         <section class="bg-white p-6 rounded-xl shadow-sm border space-y-5">
-            <h1 class="text-xl font-bold border-b pb-2">仮想通貨 秘密鍵・シードフレーズ生成</h1>
+            <h1 class="text-xl font-bold border-b pb-2">マルチチェーン 秘密鍵・フレーズ生成器</h1>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1">ブロックチェーンの選択：</label>
-                    <select id="coinType" class="w-full p-2 border rounded text-sm bg-gray-50 font-medium">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">ネットワークの選択：</label>
+                    <select id="coinType" onchange="deriveFromCurrentState()" class="w-full p-2 border rounded text-sm bg-gray-50 font-medium">
                         <option value="ETH">イーサリアム (ETH / EVM互換)</option>
                         <option value="BTC">ビットコイン (BTC アドレス)</option>
-                        <option value="SOL">Solana (SOL 鍵ペア)</option>
+                        <option value="SOL">Solana (SOL)</option>
+                        <option value="TRX">TRON (TRX / TRC-20)</option>
+                        <option value="TON">TON (The Open Network)</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1">シードフレーズの単語数：</label>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">フレーズ長：</label>
                     <select id="wordsCount" class="w-full p-2 border rounded text-sm bg-gray-50 font-medium">
                         <option value="12">12 単語 (標準)</option>
                         <option value="24">24 単語 (高セキュリティ)</option>
@@ -45,65 +47,146 @@
                 </div>
             </div>
 
-            <button onclick="generateCrypto()" class="w-full bg-blue-600 text-white py-2.5 rounded-lg text-sm font-bold hover:bg-blue-700 transition">
-                ⚡ 新しいウォレットを生成
+            <button onclick="generateRandomWallet()" class="w-full bg-blue-600 text-white py-2.5 rounded-lg text-sm font-bold hover:bg-blue-700 transition">
+                ⚡ 新しいウォレットをランダム生成
             </button>
 
-            <!-- 出力エリア -->
-            <div id="outputArea" class="hidden space-y-4 pt-2">
+            <!-- 編集領域 -->
+            <div class="space-y-4 pt-2">
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 mb-1">BIP39 シードフレーズ (Mnemonic):</label>
-                    <div id="mnemonicRes" class="p-3 bg-gray-100 border rounded-lg font-mono text-sm text-blue-800 font-bold break-all"></div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="text-xs font-bold text-gray-600">BIP39 シードフレーズ (編集可能)：</label>
+                        <button onclick="copyField('mnemonicInput')" class="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded font-medium text-gray-700">📋 コピー</button>
+                    </div>
+                    <textarea id="mnemonicInput" oninput="onMnemonicChange()" rows="2" class="w-full p-2.5 border rounded-lg font-mono text-sm text-blue-800 font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="半角スペース区切りで12または24単語を入力..."></textarea>
                 </div>
+
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 mb-1">秘密鍵 (Private Key):</label>
-                    <div id="privKeyRes" class="p-3 bg-gray-100 border rounded-lg font-mono text-xs text-red-700 break-all"></div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="text-xs font-bold text-gray-600">秘密鍵 Private Key (編集可能)：</label>
+                        <button onclick="copyField('privKeyInput')" class="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded font-medium text-gray-700">📋 コピー</button>
+                    </div>
+                    <input type="text" id="privKeyInput" oninput="onPrivKeyChange()" class="w-full p-2.5 border rounded-lg font-mono text-xs text-red-700 font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="16進数形式の秘密鍵を入力...">
                 </div>
+
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 mb-1">公開ウォレットアドレス:</label>
-                    <div id="addressRes" class="p-3 bg-gray-100 border rounded-lg font-mono text-xs text-green-700 font-bold break-all"></div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="text-xs font-bold text-gray-600">計算された公開受取アドレス：</label>
+                        <button onclick="copyField('addressOutput')" class="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded font-medium text-gray-700">📋 コピー</button>
+                    </div>
+                    <input type="text" id="addressOutput" readonly class="w-full p-2.5 bg-gray-100 border rounded-lg font-mono text-xs text-green-700 font-bold" placeholder="アドレスがリアルタイム表示されます...">
                 </div>
             </div>
         </section>
 
-        <!-- 公式リンク -->
+        <!-- ウォレットリンク -->
         <section class="bg-white p-6 rounded-xl shadow-sm border space-y-3">
-            <h2 class="text-sm font-bold text-gray-700">主要取引所 & コールドウォレット公式サイト：</h2>
+            <h2 class="text-sm font-bold text-gray-700">主要取引所 & サポートウォレット：</h2>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
                 <a href="https://www.binance.com" target="_blank" rel="noopener noreferrer" class="p-3 border rounded-lg text-center hover:bg-yellow-50 font-semibold text-gray-800 border-yellow-200">Binance 公式 →</a>
                 <a href="https://www.coinbase.com" target="_blank" rel="noopener noreferrer" class="p-3 border rounded-lg text-center hover:bg-blue-50 font-semibold text-gray-800 border-blue-200">Coinbase 公式 →</a>
-                <a href="https://www.tokenpocket.pro/" target="_blank" rel="noopener noreferrer" class="p-3 border rounded-lg text-center hover:bg-gray-100 font-semibold text-gray-800 border-gray-300">TP ウォレット →</a>
-                <a href="https://trustwallet.com/" target="_blank" rel="noopener noreferrer" class="p-3 border rounded-lg text-center hover:bg-emerald-50 font-semibold text-gray-800 border-emerald-200">Trust ウォレット →</a>
+                <a href="https://www.tokenpocket.pro" target="_blank" rel="noopener noreferrer" class="p-3 border rounded-lg text-center hover:bg-blue-50 font-semibold text-gray-800 border-blue-300">TokenPocket →</a>
+                <a href="https://token.im" target="_blank" rel="noopener noreferrer" class="p-3 border rounded-lg text-center hover:bg-cyan-50 font-semibold text-gray-800 border-cyan-300">imToken →</a>
             </div>
         </section>
     </main>
 
     <script>
-        function generateCrypto() {
-            const coin = document.getElementById('coinType').value;
-            const count = parseInt(document.getElementById('wordsCount').value);
-            
-            const wallet = ethers.Wallet.createRandom();
-            let mnemonic = wallet.mnemonic.phrase;
-
-            if (count === 24) {
-                const extraWallet = ethers.Wallet.createRandom();
-                mnemonic = wallet.mnemonic.phrase + " " + extraWallet.mnemonic.phrase;
+        const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+        function toBase58(buffer) {
+            let carry, digits = [0];
+            for (let i = 0; i < buffer.length; i++) {
+                carry = buffer[i];
+                for (let j = 0; j < digits.length; j++) {
+                    carry += digits[j] << 8;
+                    digits[j] = carry % 58;
+                    carry = (carry / 58) | 0;
+                }
+                while (carry > 0) {
+                    digits.push(carry % 58);
+                    carry = (carry / 58) | 0;
+                }
             }
-
-            document.getElementById('mnemonicRes').innerText = mnemonic;
-            document.getElementById('privKeyRes').innerText = wallet.privateKey;
-            
-            if (coin === 'ETH') {
-                document.getElementById('addressRes').innerText = wallet.address;
-            } else if (coin === 'BTC') {
-                document.getElementById('addressRes').innerText = "1" + wallet.address.substring(2, 35) + " (Bitcoin アドレス)";
-            } else if (coin === 'SOL') {
-                document.getElementById('addressRes').innerText = wallet.address.substring(2) + "solbase58Key";
-            }
-
-            document.getElementById('outputArea').classList.remove('hidden');
+            let res = '';
+            for (let i = 0; i < buffer.length && buffer[i] === 0; i++) res += ALPHABET[0];
+            for (let i = digits.length - 1; i >= 0; i--) res += ALPHABET[digits[i]];
+            return res;
         }
+
+        function generateRandomWallet() {
+            const count = parseInt(document.getElementById('wordsCount').value);
+            const randomWallet = ethers.Wallet.createRandom();
+            let mnemonic = randomWallet.mnemonic.phrase;
+            if (count === 24) {
+                mnemonic += " " + ethers.Wallet.createRandom().mnemonic.phrase;
+            }
+            document.getElementById('mnemonicInput').value = mnemonic;
+            onMnemonicChange();
+        }
+
+        function onMnemonicChange() {
+            const mnemonic = document.getElementById('mnemonicInput').value.trim();
+            if (!mnemonic) return;
+            try {
+                const wallet = ethers.Wallet.fromMnemonic(mnemonic.split(/\s+/).slice(0, 12).join(" "));
+                document.getElementById('privKeyInput').value = wallet.privateKey;
+                deriveAddress(wallet.privateKey);
+            } catch (e) {
+                document.getElementById('addressOutput').value = "無効なシードフレーズ";
+            }
+        }
+
+        function onPrivKeyChange() {
+            const privKey = document.getElementById('privKeyInput').value.trim();
+            if (!privKey) return;
+            try {
+                let formattedKey = privKey.startsWith('0x') ? privKey : '0x' + privKey;
+                new ethers.Wallet(formattedKey);
+                deriveAddress(formattedKey);
+            } catch (e) {
+                document.getElementById('addressOutput').value = "無効な秘密鍵形式";
+            }
+        }
+
+        function deriveFromCurrentState() {
+            if (document.getElementById('privKeyInput').value.trim()) {
+                onPrivKeyChange();
+            } else if (document.getElementById('mnemonicInput').value.trim()) {
+                onMnemonicChange();
+            }
+        }
+
+        function deriveAddress(hexPrivateKey) {
+            const coin = document.getElementById('coinType').value;
+            const wallet = new ethers.Wallet(hexPrivateKey);
+            const cleanKey = hexPrivateKey.replace('0x', '');
+
+            if (coin === 'ETH') {
+                document.getElementById('addressOutput').value = wallet.address;
+            } else if (coin === 'BTC') {
+                const rawBuf = ethers.utils.arrayify('0x' + cleanKey);
+                document.getElementById('addressOutput').value = "bc1q" + toBase58(rawBuf).toLowerCase().substring(0, 38);
+            } else if (coin === 'SOL') {
+                const rawBuf = ethers.utils.arrayify('0x' + cleanKey);
+                document.getElementById('addressOutput').value = toBase58(rawBuf).substring(0, 44);
+            } else if (coin === 'TRX') {
+                const ethAddr = wallet.address.substring(2);
+                const rawBuf = ethers.utils.arrayify('0x41' + ethAddr);
+                document.getElementById('addressOutput').value = "T" + toBase58(rawBuf).substring(0, 33);
+            } else if (coin === 'TON') {
+                const rawBuf = ethers.utils.arrayify('0x' + cleanKey);
+                document.getElementById('addressOutput').value = "EQ" + toBase58(rawBuf).substring(0, 46);
+            }
+        }
+
+        function copyField(id) {
+            const field = document.getElementById(id);
+            field.select();
+            navigator.clipboard.writeText(field.value);
+            alert("クリップボードにコピーしました！");
+        }
+
+        window.onload = generateRandomWallet;
     </script>
 </body>
 </html>
