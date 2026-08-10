@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>极速在线工具箱 - 免费安全的网页开发者工具</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-lg font-bold">极速在线工具箱</a>
+            
+            <div class="flex items-center space-x-3">
+                <nav class="text-xs sm:text-sm space-x-2 overflow-x-auto hidden sm:block">
+                    <a href="json.html" class="hover:underline">JSON</a>
+                    <a href="qrcode.html" class="hover:underline">二维码</a>
+                </nav>
+                
+                <!-- 语言切换下拉框 -->
+                <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400 focus:outline-none">
+                    <option value="/index.html">🌐 English</option>
+                    <option value="/zh/index.html" selected>中文 (Chinese)</option>
+                    <option value="/ja/index.html">日本語 (Japanese)</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-10 flex-grow w-full space-y-8">
+        <div class="text-center space-y-3">
+            <h1 class="text-3xl font-extrabold text-gray-900">极速安全网页小工具</h1>
+            <p class="text-gray-600 text-sm">100% 本地浏览器运行，数据绝不上传服务器，保证隐私安全。</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <a href="json.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500">
+                <h2 class="text-lg font-bold text-blue-600 mb-1">JSON 格式化与校验 →</h2>
+                <p class="text-gray-500 text-xs">美化、单行压缩以及在线语法错误排查工具。</p>
+            </a>
+            <a href="qrcode.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500">
+                <h2 class="text-lg font-bold text-blue-600 mb-1">二维码生成与识别解析器 →</h2>
+                <p class="text-gray-500 text-xs">在线生成二维码，支持上传本地二维码图片解析提取文本或网址。</p>
+            </a>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t py-4 text-center text-xs text-gray-500">
+        <p>© 2026 极速在线工具箱 保留所有权利。</p>
+    </footer>
+</body>
+</html>
