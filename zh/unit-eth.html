@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>以太坊单位转换器 (Wei/Gwei/Ether) - 极速在线工具箱</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-lg font-bold">极速在线工具箱</a>
+            <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400">
+                <option value="/unit-eth.html">🌐 English</option>
+                <option value="/zh/unit-eth.html" selected>中文 (Chinese)</option>
+                <option value="/ja/unit-eth.html">日本語 (Japanese)</option>
+            </select>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-8 flex-grow w-full space-y-6">
+        <section class="bg-white p-6 rounded-xl shadow-sm border space-y-5">
+            <h1 class="text-xl font-bold border-b pb-2">以太坊单位实时转换器 (Wei / Gwei / Ether)</h1>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 mb-1">Wei (1 ETH = 10¹⁸ Wei)</label>
+                    <input type="text" id="weiInput" oninput="convertFrom('wei')" class="w-full p-2.5 border rounded-lg font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="输入 Wei 数量...">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 mb-1">Gwei (Gas 常用单位，1 Gwei = 10⁹ Wei)</label>
+                    <input type="text" id="gweiInput" oninput="convertFrom('gwei')" class="w-full p-2.5 border rounded-lg font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="输入 Gwei 数量...">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 mb-1">Ether (ETH 主代币数量)</label>
+                    <input type="text" id="ethInput" oninput="convertFrom('eth')" class="w-full p-2.5 border rounded-lg font-mono text-sm font-bold text-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="输入 Ether 数量...">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function convertFrom(type) {
+            try {
+                if (type === 'wei') {
+                    const val = document.getElementById('weiInput').value.trim();
+                    if (!val) return clearAll();
+                    document.getElementById('gweiInput').value = ethers.utils.formatUnits(val, 'gwei');
+                    document.getElementById('ethInput').value = ethers.utils.formatEther(val);
+                } else if (type === 'gwei') {
+                    const val = document.getElementById('gweiInput').value.trim();
+                    if (!val) return clearAll();
+                    const weiVal = ethers.utils.parseUnits(val, 'gwei');
+                    document.getElementById('weiInput').value = weiVal.toString();
+                    document.getElementById('ethInput').value = ethers.utils.formatEther(weiVal);
+                } else if (type === 'eth') {
+                    const val = document.getElementById('ethInput').value.trim();
+                    if (!val) return clearAll();
+                    const weiVal = ethers.utils.parseEther(val);
+                    document.getElementById('weiInput').value = weiVal.toString();
+                    document.getElementById('gweiInput').value = ethers.utils.formatUnits(weiVal, 'gwei');
+                }
+            } catch(e) {}
+        }
+        function clearAll() {
+            document.getElementById('weiInput').value = '';
+            document.getElementById('gweiInput').value = '';
+            document.getElementById('ethInput').value = '';
+        }
+    </script>
+</body>
+</html>
