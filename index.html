@@ -1,64 +1,52 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>极速开发者与办公在线工具箱 - 免费安全的 Web 小助手</title>
-    <meta name="description" content="包含 JSON格式化、Base64编解码、时间戳转换、文本统计去重、随机密码生成、二维码生成解析、哈希计算与URL编解码等免费实用在线工具。">
+    <title>Fast Online Developer Tools - Free & Secure Web Utilities</title>
+    <meta name="description" content="Free online developer tools including JSON Formatter, Base64 Encoder/Decoder, Timestamp Converter, Password Generator, and QR Code tools. Pure client-side execution.">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
     <header class="bg-blue-600 text-white shadow-md">
         <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-xl font-bold tracking-wide">极速在线工具箱</a>
-            <div class="text-xs sm:text-sm space-x-3">
-                <a href="about.html" class="hover:underline">关于本站</a>
-                <a href="privacy.html" class="hover:underline">隐私政策</a>
+            <a href="index.html" class="text-xl font-bold tracking-wide">DevTools Express</a>
+            
+            <!-- Language Switcher Selector -->
+            <div class="flex items-center space-x-4">
+                <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs sm:text-sm py-1.5 px-2 rounded border border-blue-400 focus:outline-none">
+                    <option value="index.html" selected>🌐 English</option>
+                    <option value="zh/index.html">中文 (Chinese)</option>
+                    <option value="ja/index.html">日本語 (Japanese)</option>
+                </select>
             </div>
         </div>
     </header>
 
     <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full">
         <div class="text-center mb-10">
-            <h1 class="text-3xl font-extrabold text-gray-900 mb-3">免费高效的开发者与日常办公小工具箱</h1>
-            <p class="text-gray-600 text-sm sm:text-base">纯前端浏览器端计算，数据绝不上传服务器，保障您的信息与敏感数据安全</p>
+            <h1 class="text-3xl font-extrabold text-gray-900 mb-3">Free & Fast Developer & Office Utilities</h1>
+            <p class="text-gray-600 text-sm sm:text-base">100% Client-side processing. Your data never touches any server.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             <a href="json.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-2">JSON 格式化与校验器 →</h2>
-                <p class="text-gray-600 text-xs leading-relaxed">JSON 缩进美化、单行压缩及高亮语法错误提示。</p>
+                <h2 class="text-lg font-bold text-blue-600 mb-2">JSON Formatter & Validator →</h2>
+                <p class="text-gray-600 text-xs leading-relaxed">Format, beautify, compress, and validate JSON strings instantly.</p>
             </a>
             <a href="base64.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-2">Base64 文本编解码器 →</h2>
-                <p class="text-gray-600 text-xs leading-relaxed">支持标准 UTF-8 字符串与 Base64 格式双向精准转换。</p>
+                <h2 class="text-lg font-bold text-blue-600 mb-2">Base64 Encode & Decode →</h2>
+                <p class="text-gray-600 text-xs leading-relaxed">Fast two-way conversion for UTF-8 strings and Base64 encoding.</p>
             </a>
             <a href="timestamp.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-2">Unix 时间戳转换器 →</h2>
-                <p class="text-gray-600 text-xs leading-relaxed">10位/13位 Unix 时间戳与北京时间的双向精准转换。</p>
-            </a>
-            <a href="text.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-2">文本统计与清洗去重 →</h2>
-                <p class="text-gray-600 text-xs leading-relaxed">实时字符统计、大小写转换以及空白行与重复行清理。</p>
-            </a>
-            <a href="password.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-2">随机密码与字符串生成 →</h2>
-                <p class="text-gray-600 text-xs leading-relaxed">自定义字符集与长度，批量生成高强度安全随机密码。</p>
-            </a>
-            <a href="qrcode.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-2">二维码生成与解析器 →</h2>
-                <p class="text-gray-600 text-xs leading-relaxed">支持文本/网址一键生成二维码，在线读取解析二维码图片。</p>
-            </a>
-            <a href="hash-url.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block md:col-span-2 lg:col-span-1">
-                <h2 class="text-lg font-bold text-blue-600 mb-2">哈希计算 & URL 编解码 →</h2>
-                <p class="text-gray-600 text-xs leading-relaxed">实时计算 MD5/SHA256 散列值及 URL 参数特殊字符转换。</p>
+                <h2 class="text-lg font-bold text-blue-600 mb-2">Unix Timestamp Converter →</h2>
+                <p class="text-gray-600 text-xs leading-relaxed">Convert 10-digit/13-digit Unix timestamps to local date & time.</p>
             </a>
         </div>
     </main>
 
     <footer class="bg-white border-t py-4 text-center text-xs text-gray-500">
-        <a href="privacy.html" class="hover:underline">隐私政策</a> | <a href="about.html" class="hover:underline">关于本站</a>
-        <p class="mt-1">© 2026 极速在线工具箱 - All Rights Reserved.</p>
+        <p>© 2026 DevTools Express - All Rights Reserved.</p>
     </footer>
 </body>
 </html>
