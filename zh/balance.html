@@ -21,7 +21,7 @@
 
     <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full space-y-6">
         <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded text-xs text-amber-800">
-            🔍 <b>查询说明：</b> 支持查询 TRON (TRX/USDT) 与 ETH (ETH/USDT) 地址余额。粘贴地址后即可自动通过区块链公共 RPC 查询，支持多地址批量查询。
+            🔍 <b>查询说明：</b> 支持稳定查询 TRON (TRX/USDT) 与 ETH (ETH/USDT) 余额。内部已加入防请求过载延迟，保障批量查询精准度。
         </div>
 
         <section class="bg-white p-6 rounded-xl shadow-sm border space-y-5">
@@ -45,7 +45,7 @@
                 🚀 开始查询余额
             </button>
 
-            <!-- 查询结果输出 -->
+            <!-- 查询结果表格 -->
             <div id="outputContainer" class="hidden space-y-3 pt-2">
                 <div class="flex justify-between items-center">
                     <span id="progressStatus" class="text-xs font-bold text-gray-600">正在查询中...</span>
@@ -85,8 +85,13 @@
 
     <script>
         let checkResults = [];
-        const ETH_RPC = "https://rpc.ankr.com/eth"; // 公共 ETH RPC 节点
+        
+        // 可替换为您在 Ankr / Alchemy 申请的带域名白名单保护的 API Key 节点
+        const ETH_RPC = "https://rpc.ankr.com/eth"; 
         const ETH_USDT_CONTRACT = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
+
+        // 延时等待函数，防止并发请求触发频率限制
+        const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
         async function startCheckBalance() {
             const coin = document.getElementById('coinType').value;
@@ -119,35 +124,38 @@
 
                 try {
                     if (coin === 'TRX') {
-                        // 波场 TronGrid 公共 API 查询
-                        const res = await fetch(`https://api.trongrid.io/v1/accounts/${addr}`);
+                        // 波场 TronGrid 官方 API 节点查询
+                        const res = await fetch(`https://api.trongrid.io/v1/accounts/${addr}`, {
+                            headers: { 'Accept': 'application/json' }
+                        });
                         const data = await res.json();
+                        
                         if (data.data && data.data.length > 0) {
                             const acc = data.data[0];
-                            nativeBal = ((acc.balance || 0) / 1000000).toFixed(4); // TRX (6位小数)
+                            nativeBal = ((acc.balance || 0) / 1000000).toFixed(4);
                             
-                            // 查询 TRC20 USDT 余额
                             if (acc.trc20) {
                                 for (let t of acc.trc20) {
-                                    if (t['TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t']) { // TRC20 USDT 合约
+                                    if (t['TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t']) {
                                         usdtBal = (parseInt(t['TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t']) / 1000000).toFixed(2);
                                         break;
                                     }
                                 }
                             }
+                        } else if (data.success === false) {
+                            status = "节点频繁，稍后重试";
                         }
                     } else {
-                        // ETH 链 RPC 查询
+                        // ETH RPC 节点查询
                         const ethWei = await provider.getBalance(addr);
                         nativeBal = parseFloat(ethers.utils.formatEther(ethWei)).toFixed(4);
 
-                        // 查询 ERC20 USDT 余额
                         const usdtContract = new ethers.Contract(ETH_USDT_CONTRACT, usdtAbi, provider);
                         const usdtRaw = await usdtContract.balanceOf(addr);
-                        usdtBal = (parseFloat(usdtRaw.toString()) / 1000000).toFixed(2); // USDT (6位小数)
+                        usdtBal = (parseFloat(usdtRaw.toString()) / 1000000).toFixed(2);
                     }
                 } catch (e) {
-                    status = "失败/格式不正确";
+                    status = "请求频繁/失败";
                 }
 
                 const resObj = {
@@ -169,6 +177,9 @@
                     <td class="p-2.5 ${status === '成功' ? 'text-gray-500' : 'text-red-500'}">${resObj.status}</td>
                 `;
                 tableBody.appendChild(tr);
+
+                // 每次查询间隔 300 毫秒，防止并发太快触发 API 防刷锁
+                await sleep(300);
             }
 
             statusText.innerText = `全部查询完成！共 ${addresses.length} 个地址。`;
