@@ -12,17 +12,6 @@
             <a href="index.html" class="text-lg font-bold">极速在线工具箱</a>
             
             <div class="flex items-center space-x-3">
-                <nav class="text-xs sm:text-sm space-x-2 overflow-x-auto hidden md:block">
-                    <a href="json.html" class="hover:underline">JSON</a>
-                    <a href="base64.html" class="hover:underline">Base64</a>
-                    <a href="timestamp.html" class="hover:underline">时间戳</a>
-                    <a href="text.html" class="hover:underline">文本处理</a>
-                    <a href="password.html" class="hover:underline">密码生成</a>
-                    <a href="qrcode.html" class="hover:underline">二维码</a>
-                    <a href="hash-url.html" class="hover:underline">URL编码</a>
-                    <a href="crypto-gen.html" class="hover:underline text-yellow-300 font-bold">加密密钥</a>
-                </nav>
-                
                 <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400 focus:outline-none">
                     <option value="/index.html">🌐 English</option>
                     <option value="/zh/index.html" selected>中文 (Chinese)</option>
@@ -32,46 +21,88 @@
         </div>
     </header>
 
-    <main class="max-w-5xl mx-auto px-4 py-10 flex-grow w-full space-y-8">
+    <main class="max-w-6xl mx-auto px-4 py-10 flex-grow w-full space-y-10">
         <div class="text-center space-y-3">
             <h1 class="text-3xl font-extrabold text-gray-900">极速安全网页小工具</h1>
             <p class="text-gray-600 text-sm">100% 本地浏览器运行，数据绝不上传服务器，保证隐私安全。</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <a href="json.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-1">JSON 格式化与校验 →</h2>
-                <p class="text-gray-500 text-xs">美化、单行压缩以及在线语法错误排查工具。</p>
-            </a>
-            <a href="base64.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-1">Base64 编码解码 →</h2>
-                <p class="text-gray-500 text-xs">快速进行文本与 Base64 编码的双向在线转换。</p>
-            </a>
-            <a href="timestamp.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-1">Unix 时间戳转换 →</h2>
-                <p class="text-gray-500 text-xs">支持 10 位与 13 位时间戳与标准北京时间的互转。</p>
-            </a>
-            <a href="text.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-1">文本统计与去重 →</h2>
-                <p class="text-gray-500 text-xs">字数与行数实时统计，支持一键文本按行去重。</p>
-            </a>
-            <a href="password.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-1">高强度随机密码生成 →</h2>
-                <p class="text-gray-500 text-xs">自定义长度，快速生成随机高安全度字符串密码。</p>
-            </a>
-            <a href="qrcode.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-1">二维码生成与解析 →</h2>
-                <p class="text-gray-500 text-xs">生成二维码，且支持上传本地图片解析二维码内容。</p>
-            </a>
-            <a href="hash-url.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-1">URL 编码与解码 →</h2>
-                <p class="text-gray-500 text-xs">快速转义特殊字符，提供标准 URL Encode 与 Decode。</p>
-            </a>
-            <a href="crypto-gen.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border border-amber-300 hover:border-amber-500 block bg-gradient-to-br from-amber-50 to-white">
-                <h2 class="text-lg font-bold text-amber-700 mb-1">加密货币助记词与私钥生成 →</h2>
-                <p class="text-gray-500 text-xs">离线生成 ETH/TRX 私钥与 12/24 助记词，安全可靠。</p>
-            </a>
-        </div>
+        <!-- 1. Web3 & 加密货币工具 -->
+        <section class="space-y-4">
+            <h2 class="text-xl font-bold text-gray-800 border-l-4 border-amber-500 pl-3">🪙 Web3 & 加密货币工具</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <a href="crypto-gen.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border border-amber-200 hover:border-amber-500 block bg-gradient-to-br from-amber-50 to-white">
+                    <h3 class="text-lg font-bold text-amber-700 mb-1">私钥与助记词生成器 →</h3>
+                    <p class="text-gray-500 text-xs">离线生成 ETH/TRX 私钥与 12/24 助记词，安全可靠。</p>
+                </a>
+                <a href="unit-eth.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-lg font-bold text-blue-600 mb-1">以太坊单位转换器 (Wei / Gwei) →</h3>
+                    <p class="text-gray-500 text-xs">实时进行 Wei, Gwei, Ether 各单位精确转换。</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- 2. 开发者 & 运维工具 -->
+        <section class="space-y-4">
+            <h2 class="text-xl font-bold text-gray-800 border-l-4 border-blue-500 pl-3">💻 开发者 & 运维工具</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <a href="json.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-lg font-bold text-blue-600 mb-1">JSON 格式化与校验 →</h3>
+                    <p class="text-gray-500 text-xs">美化、单行压缩以及在线语法错误排查工具。</p>
+                </a>
+                <a href="base64.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-lg font-bold text-blue-600 mb-1">Base64 编码解码 →</h3>
+                    <p class="text-gray-500 text-xs">快速进行文本与 Base64 编码的双向在线转换。</p>
+                </a>
+                <a href="jwt.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-lg font-bold text-blue-600 mb-1">JWT 解析与解码器 →</h3>
+                    <p class="text-gray-500 text-xs">本地快速解析 JSON Web Token 算法标头与 Payload。</p>
+                </a>
+                <a href="cron.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-lg font-bold text-blue-600 mb-1">Cron 表达式生成与生成器 →</h3>
+                    <p class="text-gray-500 text-xs">可视化配置和生成定时任务 Cron 语句。</p>
+                </a>
+                <a href="regex.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-lg font-bold text-blue-600 mb-1">正则表达式测试器 →</h3>
+                    <p class="text-gray-500 text-xs">提供常用正则规则在线测试与一键匹配。</p>
+                </a>
+                <a href="hash-url.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-lg font-bold text-blue-600 mb-1">URL 编码与解码 →</h3>
+                    <p class="text-gray-500 text-xs">快速转义特殊字符，提供标准 URL Encode 与 Decode。</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- 3. 文本 & 效率工具 -->
+        <section class="space-y-4">
+            <h2 class="text-xl font-bold text-gray-800 border-l-4 border-green-500 pl-3">🛠️ 文本 & 效率工具</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <a href="timestamp.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-lg font-bold text-blue-600 mb-1">Unix 时间戳转换 →</h3>
+                    <p class="text-gray-500 text-xs">支持 10 位与 13 位时间戳与标准时间的互转。</p>
+                </a>
+                <a href="text.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-lg font-bold text-blue-600 mb-1">文本统计与去重 →</h3>
+                    <p class="text-gray-500 text-xs">字数与行数实时统计，支持一键文本按行去重。</p>
+                </a>
+                <a href="password.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-lg font-bold text-blue-600 mb-1">高强度随机密码生成 →</h3>
+                    <p class="text-gray-500 text-xs">自定义长度，快速生成随机高安全度字符串密码。</p>
+                </a>
+                <a href="qrcode.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-lg font-bold text-blue-600 mb-1">二维码生成与解析 →</h3>
+                    <p class="text-gray-500 text-xs">生成二维码，且支持上传本地图片解析二维码内容。</p>
+                </a>
+                <a href="markdown.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-lg font-bold text-blue-600 mb-1">Markdown 实时预览器 →</h3>
+                    <p class="text-gray-500 text-xs">在线 Markdown 文本编写与实时 HTML 渲染预览。</p>
+                </a>
+                <a href="img-base64.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-lg font-bold text-blue-600 mb-1">图片转 Base64 编码 →</h3>
+                    <p class="text-gray-500 text-xs">上传或拖拽图片本地转为 Data URL Base64 字符串。</p>
+                </a>
+            </div>
+        </section>
     </main>
 
     <footer class="bg-white border-t py-4 text-center text-xs text-gray-500 space-y-2">
@@ -80,7 +111,7 @@
             <span>|</span>
             <a href="privacy.html" class="hover:underline">隐私政策</a>
             <span>|</span>
-            <a href="mailto:voice366@hotmail.com" class="hover:underline font-semibold text-blue-600">联系邮箱：voice366@hotmail.com</a>
+            <a href="mailto:your-email@example.com" class="hover:underline font-semibold text-blue-600">联系邮箱：your-email@example.com</a>
         </div>
         <p>© 2026 极速在线工具箱 保留所有权利。</p>
     </footer>
