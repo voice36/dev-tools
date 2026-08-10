@@ -3,50 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fast Online Developer Tools - Free & Secure Web Utilities</title>
-    <meta name="description" content="Free online developer tools including JSON Formatter, Base64 Encoder/Decoder, Timestamp Converter, Password Generator, and QR Code tools. Pure client-side execution.">
+    <title>Fast Online Utilities - Free & Secure Web Tools</title>
+    <meta name="description" content="Free online tools including JSON Formatter, Base64 Converter, Timestamp, Password Generator, and QR Code Parser. Pure client-side execution for ultimate privacy.">
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Automatic Language Detection Script -->
+    <script>
+        (function() {
+            if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+                const lang = (navigator.language || navigator.userLanguage).toLowerCase();
+                const hasRedirected = sessionStorage.getItem('lang_redirected');
+
+                if (!hasRedirected) {
+                    sessionStorage.setItem('lang_redirected', 'true');
+                    if (lang.startsWith('zh')) {
+                        window.location.href = '/zh/index.html';
+                    } else if (lang.startsWith('ja')) {
+                        window.location.href = '/ja/index.html';
+                    }
+                }
+            }
+        })();
+    </script>
 </head>
 <body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
     <header class="bg-blue-600 text-white shadow-md">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-xl font-bold tracking-wide">DevTools Express</a>
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-lg font-bold">DevTools Express</a>
             
-            <!-- Language Switcher Selector -->
-            <div class="flex items-center space-x-4">
-                <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs sm:text-sm py-1.5 px-2 rounded border border-blue-400 focus:outline-none">
-                    <option value="index.html" selected>🌐 English</option>
-                    <option value="zh/index.html">中文 (Chinese)</option>
-                    <option value="ja/index.html">日本語 (Japanese)</option>
+            <div class="flex items-center space-x-3">
+                <nav class="text-xs sm:text-sm space-x-2 overflow-x-auto hidden sm:block">
+                    <a href="json.html" class="hover:underline">JSON</a>
+                    <a href="qrcode.html" class="hover:underline">QR Code</a>
+                </nav>
+                
+                <!-- Language Selector -->
+                <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400 focus:outline-none">
+                    <option value="/index.html" selected>🌐 English</option>
+                    <option value="/zh/index.html">中文 (Chinese)</option>
+                    <option value="/ja/index.html">日本語 (Japanese)</option>
                 </select>
             </div>
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full">
-        <div class="text-center mb-10">
-            <h1 class="text-3xl font-extrabold text-gray-900 mb-3">Free & Fast Developer & Office Utilities</h1>
-            <p class="text-gray-600 text-sm sm:text-base">100% Client-side processing. Your data never touches any server.</p>
+    <main class="max-w-5xl mx-auto px-4 py-10 flex-grow w-full space-y-8">
+        <div class="text-center space-y-3">
+            <h1 class="text-3xl font-extrabold text-gray-900">Online Web Utility Toolbox</h1>
+            <p class="text-gray-600 text-sm">100% Client-side processing. Your data is safe and never leaves your browser.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            <a href="json.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-2">JSON Formatter & Validator →</h2>
-                <p class="text-gray-600 text-xs leading-relaxed">Format, beautify, compress, and validate JSON strings instantly.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <a href="json.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500">
+                <h2 class="text-lg font-bold text-blue-600 mb-1">JSON Formatter & Validator →</h2>
+                <p class="text-gray-500 text-xs">Beautify, compress, and check JSON string formatting instantly.</p>
             </a>
-            <a href="base64.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-2">Base64 Encode & Decode →</h2>
-                <p class="text-gray-600 text-xs leading-relaxed">Fast two-way conversion for UTF-8 strings and Base64 encoding.</p>
-            </a>
-            <a href="timestamp.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-2">Unix Timestamp Converter →</h2>
-                <p class="text-gray-600 text-xs leading-relaxed">Convert 10-digit/13-digit Unix timestamps to local date & time.</p>
+            <a href="qrcode.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500">
+                <h2 class="text-lg font-bold text-blue-600 mb-1">QR Code Generator & Decoder →</h2>
+                <p class="text-gray-500 text-xs">Create QR codes online and parse QR code images to extract text/URLs.</p>
             </a>
         </div>
     </main>
 
     <footer class="bg-white border-t py-4 text-center text-xs text-gray-500">
-        <p>© 2026 DevTools Express - All Rights Reserved.</p>
+        <p>© 2026 DevTools Express. All rights reserved.</p>
     </footer>
 </body>
 </html>
