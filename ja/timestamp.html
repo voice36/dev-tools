@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unix タイムスタンプ変換 - 無料Webツール</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-lg font-bold">DevTools Express</a>
+            <div class="flex items-center space-x-3">
+                <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400 focus:outline-none">
+                    <option value="/timestamp.html">🌐 English</option>
+                    <option value="/zh/timestamp.html">中文 (Chinese)</option>
+                    <option value="/ja/timestamp.html" selected>日本語 (Japanese)</option>
+                </select>
+            </div>
+        </div>
+    </header>
+    <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full space-y-6">
+        <section class="bg-white p-6 rounded-xl shadow-sm border space-y-4">
+            <h1 class="text-xl font-bold border-b pb-2">Unix タイムスタンプ相互変換</h1>
+            <div class="p-3 bg-blue-50 text-blue-800 rounded-lg text-sm font-mono">
+                現在の Unix タイムスタンプ：<span id="currentTs" class="font-bold"></span>
+            </div>
+            <div class="space-y-3">
+                <label class="block text-sm font-medium">タイムスタンプを日時（JST）に変換：</label>
+                <div class="flex gap-2">
+                    <input type="number" id="tsInput" class="p-2 border rounded text-sm w-full font-mono" placeholder="10桁または13桁のタイムスタンプを入力">
+                    <button onclick="tsToDate()" class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700">変換</button>
+                </div>
+                <p id="dateResult" class="text-sm font-mono text-blue-700 font-bold min-h-[20px]"></p>
+            </div>
+        </section>
+    </main>
+    <script>
+        setInterval(() => { document.getElementById('currentTs').innerText = Math.floor(Date.now() / 1000); }, 1000);
+        function tsToDate() {
+            let val = parseInt(document.getElementById('tsInput').value);
+            if (!val) return;
+            if (val < 10000000000) val *= 1000;
+            document.getElementById('dateResult').innerText = new Date(val).toLocaleString();
+        }
+    </script>
+</body>
+</html>
