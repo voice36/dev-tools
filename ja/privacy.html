@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>プライバシーポリシー - DevTools Express</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-lg font-bold">DevTools Express</a>
+            <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400">
+                <option value="/privacy.html">🌐 English</option>
+                <option value="/zh/privacy.html">中文 (Chinese)</option>
+                <option value="/ja/privacy.html" selected>日本語 (Japanese)</option>
+            </select>
+        </div>
+    </header>
+    <main class="max-w-3xl mx-auto px-4 py-10 flex-grow w-full space-y-4 text-sm text-gray-600">
+        <h1 class="text-2xl font-bold text-gray-900 border-b pb-2">プライバシーポリシー</h1>
+        <p>当サイトはユーザーのプライバシーを尊重します。すべてのツールはブラウザ側で実行され、入力されたデータや画像がサーバーに保存・送信されることはありません。</p>
+        <p>Google などの第三者配信事業者は、Cookie を使用して当サイトや他のサイトへの過去のアクセス情報に基づいて広告を配信します。</p>
+    </main>
+</body>
+</html>
