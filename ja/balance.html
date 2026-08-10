@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>暗号資産 残高一括照会 - DevTools Express</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
 </head>
 <body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
     <header class="bg-blue-600 text-white shadow-md">
@@ -21,7 +20,7 @@
 
     <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full space-y-6">
         <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded text-xs text-amber-800">
-            🔍 <b>概要：</b> TRON (TRX/USDT) および ETH (ETH/USDT) アドレスの残高をリアルタイムで一括照会できます。
+            🔍 <b>概要：</b> TronGrid および Etherscan API を使用。TRON (TRX/USDT) および ETH (ETH/USDT) アドレスの残高をリアルタイムで一括照会できます。
         </div>
 
         <section class="bg-white p-6 rounded-xl shadow-sm border space-y-5">
@@ -36,7 +35,7 @@
                     </select>
                 </div>
                 <div class="md:col-span-2">
-                    <label class="block text-xs font-semibold text-gray-600 mb-1">アドレス貼り付け (1行に1つのアドレス):</label>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">アドレス粘贴 (1行に1つのアドレス):</label>
                     <textarea id="addressInput" rows="3" class="w-full p-2.5 border rounded-lg font-mono text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="TRONアドレス:&#10;T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb&#10;ETHアドレス:&#10;0xd8da6bf26964af9d7eed9e03e53415d37aa96045"></textarea>
                 </div>
             </div>
@@ -84,8 +83,13 @@
 
     <script>
         let checkResults = [];
-        const ETH_RPC = "https://rpc.ankr.com/eth";
+        
+        // API Key をご自身のものに置き換えてください
+        const TRONGRID_API_KEY = "e7872f3f-cf8f-4aff-bdce-7e8cfb944ad6";
+        const ETHERSCAN_API_KEY = "YOUR_ETHERSCAN_API_KEY";
         const ETH_USDT_CONTRACT = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
+
+        const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
         async function startCheckBalance() {
             const coin = document.getElementById('coinType').value;
@@ -105,9 +109,6 @@
             checkResults = [];
             document.getElementById('outputContainer').classList.remove('hidden');
 
-            const provider = coin === 'ETH' ? new ethers.providers.JsonRpcProvider(ETH_RPC) : null;
-            const usdtAbi = ["function balanceOf(address owner) view returns (uint256)"];
-
             for (let i = 0; i < addresses.length; i++) {
                 const addr = addresses[i];
                 statusText.innerText = `照会中 (${i + 1}/${addresses.length}): ${addr.substring(0, 8)}...`;
@@ -118,8 +119,14 @@
 
                 try {
                     if (coin === 'TRX') {
-                        const res = await fetch(`https://api.trongrid.io/v1/accounts/${addr}`);
+                        const res = await fetch(`https://api.trongrid.io/v1/accounts/${addr}`, {
+                            headers: { 
+                                'Accept': 'application/json',
+                                'TRON-PRO-API-KEY': TRONGRID_API_KEY 
+                            }
+                        });
                         const data = await res.json();
+                        
                         if (data.data && data.data.length > 0) {
                             const acc = data.data[0];
                             nativeBal = ((acc.balance || 0) / 1000000).toFixed(4);
@@ -134,12 +141,17 @@
                             }
                         }
                     } else {
-                        const ethWei = await provider.getBalance(addr);
-                        nativeBal = parseFloat(ethers.utils.formatEther(ethWei)).toFixed(4);
+                        const ethRes = await fetch(`https://api.etherscan.io/api?module=account&action=balance&address=${addr}&tag=latest&apikey=${ETHERSCAN_API_KEY}`);
+                        const ethData = await ethRes.json();
+                        if (ethData.status === "1") {
+                            nativeBal = (parseInt(ethData.result) / 1e18).toFixed(4);
+                        }
 
-                        const usdtContract = new ethers.Contract(ETH_USDT_CONTRACT, usdtAbi, provider);
-                        const usdtRaw = await usdtContract.balanceOf(addr);
-                        usdtBal = (parseFloat(usdtRaw.toString()) / 1000000).toFixed(2);
+                        const usdtRes = await fetch(`https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=${ETH_USDT_CONTRACT}&address=${addr}&tag=latest&apikey=${ETHERSCAN_API_KEY}`);
+                        const usdtData = await usdtRes.json();
+                        if (usdtData.status === "1") {
+                            usdtBal = (parseInt(usdtData.result) / 1e6).toFixed(2);
+                        }
                     }
                 } catch (e) {
                     status = "失敗";
@@ -164,6 +176,8 @@
                     <td class="p-2.5 ${status === '成功' ? 'text-gray-500' : 'text-red-500'}">${resObj.status}</td>
                 `;
                 tableBody.appendChild(tr);
+
+                await sleep(200);
             }
 
             statusText.innerText = `完了！ ${addresses.length} 件のアドレスを照会しました。`;
