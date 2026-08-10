@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unix 时间戳转换工具 - 极速在线工具箱</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-lg font-bold">极速在线工具箱</a>
+            <div class="flex items-center space-x-3">
+                <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400 focus:outline-none">
+                    <option value="/timestamp.html">🌐 English</option>
+                    <option value="/zh/timestamp.html" selected>中文 (Chinese)</option>
+                    <option value="/ja/timestamp.html">日本語 (Japanese)</option>
+                </select>
+            </div>
+        </div>
+    </header>
+    <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full space-y-6">
+        <section class="bg-white p-6 rounded-xl shadow-sm border space-y-4">
+            <h1 class="text-xl font-bold border-b pb-2">Unix 时间戳在线转换</h1>
+            <div class="p-3 bg-blue-50 text-blue-800 rounded-lg text-sm font-mono">
+                当前 Unix 时间戳：<span id="currentTs" class="font-bold"></span>
+            </div>
+            <div class="space-y-3">
+                <label class="block text-sm font-medium">时间戳转北京时间：</label>
+                <div class="flex gap-2">
+                    <input type="number" id="tsInput" class="p-2 border rounded text-sm w-full font-mono" placeholder="输入 10 位或 13 位时间戳">
+                    <button onclick="tsToDate()" class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700">转换</button>
+                </div>
+                <p id="dateResult" class="text-sm font-mono text-blue-700 font-bold min-h-[20px]"></p>
+            </div>
+        </section>
+    </main>
+    <script>
+        setInterval(() => { document.getElementById('currentTs').innerText = Math.floor(Date.now() / 1000); }, 1000);
+        function tsToDate() {
+            let val = parseInt(document.getElementById('tsInput').value);
+            if (!val) return;
+            if (val < 10000000000) val *= 1000;
+            document.getElementById('dateResult').innerText = new Date(val).toLocaleString();
+        }
+    </script>
+</body>
+</html>
