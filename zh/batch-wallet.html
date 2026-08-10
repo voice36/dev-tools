@@ -21,7 +21,7 @@
 
     <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full space-y-6">
         <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded text-xs text-amber-800">
-            🔒 <b>安全提示：</b> 所有批量钱包均在您的浏览器本地纯 JavaScript 随机派生计算，数据绝不上报。生成完成后请妥善导出保存。
+            🔒 <b>安全提示：</b> 所有批量钱包均在您的浏览器本地纯 JavaScript 随机派生计算，数据绝不上报。最高支持单次批量生成 10,000 个钱包。
         </div>
 
         <section class="bg-white p-6 rounded-xl shadow-sm border space-y-5">
@@ -31,34 +31,34 @@
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 mb-1">主链类型：</label>
                     <select id="coinType" class="w-full p-2 border rounded text-sm bg-gray-50 font-medium focus:outline-none">
-                        <option value="ETH">ETH / EVM (以太坊/BSC/Polygon)</option>
                         <option value="TRX">TRON (波场 TRX / TRC-20)</option>
+                        <option value="ETH">ETH / EVM (以太坊/BSC/Polygon)</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1">生成数量 (1-100 个)：</label>
-                    <input type="number" id="genCount" value="10" min="1" max="100" class="w-full p-2 border rounded text-sm font-medium focus:outline-none">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">生成数量 (1-10000 个)：</label>
+                    <input type="number" id="genCount" value="10" min="1" max="10000" class="w-full p-2 border rounded text-sm font-medium focus:outline-none">
                 </div>
                 <div class="flex items-end">
-                    <button onclick="generateBatch()" class="w-full bg-blue-600 text-white py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition">
+                    <button id="genBtn" onclick="startBatchGeneration()" class="w-full bg-blue-600 text-white py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition">
                         ⚡ 批量生成钱包
                     </button>
                 </div>
             </div>
 
-            <!-- 批量生成表格 -->
+            <!-- 生成进度与列表 -->
             <div id="outputContainer" class="hidden space-y-3 pt-2">
                 <div class="flex justify-between items-center">
-                    <span class="text-xs font-bold text-gray-600">生成结果列表：</span>
+                    <span id="progressText" class="text-xs font-bold text-gray-600">正在计算中...</span>
                     <button onclick="exportCSV()" class="bg-green-600 text-white text-xs px-3 py-1.5 rounded font-bold hover:bg-green-700">
                         📥 导出 CSV Excel 文件
                     </button>
                 </div>
 
-                <div class="overflow-x-auto border rounded-lg">
+                <div class="overflow-x-auto border rounded-lg max-h-[500px]">
                     <table class="w-full text-left border-collapse text-xs">
-                        <thead>
-                            <tr class="bg-gray-100 border-b font-bold text-gray-700">
+                        <thead class="sticky top-0 bg-gray-100 border-b font-bold text-gray-700">
+                            <tr>
                                 <th class="p-2.5 w-12">#</th>
                                 <th class="p-2.5">收款地址 (Address)</th>
                                 <th class="p-2.5">明文私钥 (Private Key)</th>
@@ -116,51 +116,81 @@
             return base58Encode(finalBuffer);
         }
 
-        async function generateBatch() {
+        async function startBatchGeneration() {
             const coin = document.getElementById('coinType').value;
-            let count = parseInt(document.getElementById('genCount').value);
-            if (count < 1) count = 1;
-            if (count > 100) count = 100;
+            let total = parseInt(document.getElementById('genCount').value);
+            if (total < 1) total = 1;
+            if (total > 10000) total = 10000;
 
+            const genBtn = document.getElementById('genBtn');
+            const progressText = document.getElementById('progressText');
             const tableBody = document.getElementById('walletTableBody');
+            
             tableBody.innerHTML = '';
             generatedWallets = [];
+            genBtn.disabled = true;
+            genBtn.classList.add('opacity-50');
+            document.getElementById('outputContainer').classList.remove('hidden');
 
-            for (let i = 0; i < count; i++) {
-                const wallet = ethers.Wallet.createRandom();
-                let address = wallet.address;
-                let privKey = wallet.privateKey;
+            const chunkSize = 20; // 20个一批异步计算，保证浏览器卡顿率最小
+            let current = 0;
 
-                if (coin === 'TRX') {
-                    address = await tronBase58Check(wallet.address);
-                    privKey = privKey.substring(2).toLowerCase(); // 波场私钥去 0x
+            async function processChunk() {
+                const end = Math.min(current + chunkSize, total);
+                for (let i = current; i < end; i++) {
+                    const wallet = ethers.Wallet.createRandom();
+                    let address = wallet.address;
+                    let privKey = wallet.privateKey;
+
+                    if (coin === 'TRX') {
+                        // 使用波场标准的 m/44'/195'/0'/0/0 BIP44 衍生路径
+                        const hdNode = ethers.utils.HDNode.fromMnemonic(wallet.mnemonic.phrase);
+                        const tronNode = hdNode.derivePath("m/44'/195'/0'/0/0");
+                        const tronWallet = new ethers.Wallet(tronNode.privateKey);
+                        
+                        address = await tronBase58Check(tronWallet.address);
+                        privKey = tronNode.privateKey.substring(2).toLowerCase();
+                    }
+
+                    const walletObj = {
+                        id: i + 1,
+                        address: address,
+                        privateKey: privKey,
+                        mnemonic: wallet.mnemonic.phrase
+                    };
+
+                    generatedWallets.push(walletObj);
+
+                    // 如果总数在 500 以内渲染表格 DOM，太大时只保留数据以提升生成性能
+                    if (total <= 500) {
+                        const tr = document.createElement('tr');
+                        tr.className = "hover:bg-gray-50";
+                        tr.innerHTML = `
+                            <td class="p-2.5 text-gray-500 font-sans">${walletObj.id}</td>
+                            <td class="p-2.5 text-green-700 font-bold break-all">${walletObj.address}</td>
+                            <td class="p-2.5 text-red-600 break-all">${walletObj.privateKey}</td>
+                            <td class="p-2.5 text-blue-800 break-all">${walletObj.mnemonic}</td>
+                        `;
+                        tableBody.appendChild(tr);
+                    }
                 }
 
-                const walletObj = {
-                    id: i + 1,
-                    address: address,
-                    privateKey: privKey,
-                    mnemonic: wallet.mnemonic.phrase
-                };
+                current = end;
+                progressText.innerText = `已成功生成: ${current} / ${total} 个钱包 ${total > 500 ? '(数据量较大，建议导出 CSV 查看)' : ''}`;
 
-                generatedWallets.push(walletObj);
-
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-gray-50";
-                tr.innerHTML = `
-                    <td class="p-2.5 text-gray-500 font-sans">${walletObj.id}</td>
-                    <td class="p-2.5 text-green-700 font-bold break-all">${walletObj.address}</td>
-                    <td class="p-2.5 text-red-600 break-all">${walletObj.privateKey}</td>
-                    <td class="p-2.5 text-blue-800 break-all">${walletObj.mnemonic}</td>
-                `;
-                tableBody.appendChild(tr);
+                if (current < total) {
+                    setTimeout(processChunk, 0);
+                } else {
+                    genBtn.disabled = false;
+                    genBtn.classList.remove('opacity-50');
+                }
             }
 
-            document.getElementById('outputContainer').classList.remove('hidden');
+            processChunk();
         }
 
         function exportCSV() {
-            if (generatedWallets.length === 0) return;
+            if (generatedWallets.length === 0) return alert("暂无生成的钱包数据！");
             let csvContent = "data:text/csv;charset=utf-8,ID,Address,PrivateKey,Mnemonic\n";
             generatedWallets.forEach(w => {
                 csvContent += `${w.id},${w.address},${w.privateKey},"${w.mnemonic}"\n`;
@@ -168,7 +198,7 @@
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `wallets_batch_${Date.now()}.csv`);
+            link.setAttribute("download", `batch_wallets_${generatedWallets.length}_${Date.now()}.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
