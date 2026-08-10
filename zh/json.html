@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON 格式化与校验 - 极速在线工具箱</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-lg font-bold">极速在线工具箱</a>
+            <div class="flex items-center space-x-3">
+                <nav class="text-xs sm:text-sm space-x-2 hidden sm:block">
+                    <a href="json.html" class="font-bold underline">JSON</a>
+                    <a href="base64.html" class="hover:underline">Base64</a>
+                    <a href="qrcode.html" class="hover:underline">二维码</a>
+                </nav>
+                <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400 focus:outline-none">
+                    <option value="/json.html">🌐 English</option>
+                    <option value="/zh/json.html" selected>中文 (Chinese)</option>
+                    <option value="/ja/json.html">日本語 (Japanese)</option>
+                </select>
+            </div>
+        </div>
+    </header>
+    <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full space-y-4">
+        <section class="bg-white p-6 rounded-xl shadow-sm border space-y-4">
+            <h1 class="text-xl font-bold border-b pb-2">JSON 格式化与校验工具</h1>
+            <textarea id="jsonInput" class="w-full h-48 p-3 border rounded-lg font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="请在此粘贴需要校验的原始 JSON 字符串..."></textarea>
+            <div class="flex gap-3">
+                <button onclick="formatJSON()" class="bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-700">格式化 / 美化</button>
+                <button onclick="minifyJSON()" class="bg-gray-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-gray-700">压缩单行</button>
+            </div>
+            <p id="msg" class="text-xs font-semibold hidden"></p>
+            <textarea id="jsonOutput" readonly class="w-full h-48 p-3 border rounded-lg font-mono text-sm bg-gray-50" placeholder="转换结果将在此显示..."></textarea>
+        </section>
+    </main>
+    <script>
+        function formatJSON() {
+            const msg = document.getElementById('msg');
+            try {
+                const parsed = JSON.parse(document.getElementById('jsonInput').value);
+                document.getElementById('jsonOutput').value = JSON.stringify(parsed, null, 4);
+                msg.className = "text-xs font-semibold text-green-600";
+                msg.innerText = "✓ JSON 格式无误！";
+            } catch (e) {
+                msg.className = "text-xs font-semibold text-red-600";
+                msg.innerText = "✕ JSON 语法错误：" + e.message;
+            }
+            msg.classList.remove('hidden');
+        }
+        function minifyJSON() {
+            const msg = document.getElementById('msg');
+            try {
+                const parsed = JSON.parse(document.getElementById('jsonInput').value);
+                document.getElementById('jsonOutput').value = JSON.stringify(parsed);
+                msg.className = "text-xs font-semibold text-green-600";
+                msg.innerText = "✓ 压缩成功！";
+            } catch (e) {
+                msg.className = "text-xs font-semibold text-red-600";
+                msg.innerText = "✕ JSON 语法错误：" + e.message;
+            }
+            msg.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
