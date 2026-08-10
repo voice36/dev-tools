@@ -21,70 +21,68 @@
 
     <main class="max-w-4xl mx-auto px-4 py-8 flex-grow w-full space-y-6">
         <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded text-xs text-amber-800">
-            🔒 <b>Security Notice:</b> All computations run 100% locally in your browser. Changing mnemonics, private keys, or networks will update address calculations in real-time without uploading data.
+            🔒 <b>100% Local Processing:</b> All mnemonics and private keys are computed offline via pure JavaScript in your browser.
         </div>
 
         <section class="bg-white p-6 rounded-xl shadow-sm border space-y-5">
-            <h1 class="text-xl font-bold border-b pb-2">Multi-Chain Key & Address Generator</h1>
+            <h1 class="text-xl font-bold border-b pb-2">Crypto Key & Mnemonic Generator</h1>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 mb-1">Select Network Chain:</label>
-                    <select id="coinType" onchange="deriveFromCurrentState()" class="w-full p-2 border rounded text-sm bg-gray-50 font-medium">
-                        <option value="ETH">Ethereum (ETH / EVM Chains)</option>
-                        <option value="BTC">Bitcoin (BTC Native SegWit / Legacy)</option>
-                        <option value="SOL">Solana (SOL)</option>
+                    <select id="coinType" onchange="onChainOrInputChange()" class="w-full p-2 border rounded text-sm bg-gray-50 font-medium focus:outline-none">
                         <option value="TRX">TRON (TRX / TRC-20)</option>
-                        <option value="TON">TON (The Open Network)</option>
+                        <option value="ETH">Ethereum (ETH / EVM Compatible)</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 mb-1">Mnemonic Length:</label>
-                    <select id="wordsCount" class="w-full p-2 border rounded text-sm bg-gray-50 font-medium">
+                    <select id="wordsCount" class="w-full p-2 border rounded text-sm bg-gray-50 font-medium focus:outline-none">
                         <option value="12">12 Words (Standard)</option>
                         <option value="24">24 Words (High Security)</option>
                     </select>
                 </div>
             </div>
 
-            <button onclick="generateRandomWallet()" class="w-full bg-blue-600 text-white py-2.5 rounded-lg text-sm font-bold hover:bg-blue-700 transition">
-                ⚡ Generate Brand New Random Keypair
+            <button onclick="generateRandomKeys()" class="w-full bg-blue-600 text-white py-2.5 rounded-lg text-sm font-bold hover:bg-blue-700 transition">
+                ⚡ Generate Brand New Keypair
             </button>
 
-            <!-- Interactive Fields -->
             <div class="space-y-4 pt-2">
-                <!-- Mnemonic Input -->
                 <div>
                     <div class="flex justify-between items-center mb-1">
                         <label class="text-xs font-bold text-gray-600">BIP39 Mnemonic Phrase (Editable):</label>
-                        <button onclick="copyField('mnemonicInput')" class="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded font-medium text-gray-700">📋 Copy</button>
+                        <button type="button" onclick="silentCopy('mnemonicInput')" class="text-xs bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold px-3 py-1 rounded transition">
+                            📋 Copy Mnemonic
+                        </button>
                     </div>
-                    <textarea id="mnemonicInput" oninput="onMnemonicChange()" rows="2" class="w-full p-2.5 border rounded-lg font-mono text-sm text-blue-800 font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Enter 12 or 24 mnemonic words separated by spaces..."></textarea>
+                    <textarea id="mnemonicInput" oninput="onMnemonicInput()" rows="2" class="w-full p-2.5 border rounded-lg font-mono text-sm text-blue-800 font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Enter 12 or 24 mnemonic words..."></textarea>
                 </div>
 
-                <!-- Private Key Input -->
                 <div>
                     <div class="flex justify-between items-center mb-1">
                         <label class="text-xs font-bold text-gray-600">Private Key (Editable):</label>
-                        <button onclick="copyField('privKeyInput')" class="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded font-medium text-gray-700">📋 Copy</button>
+                        <button type="button" onclick="silentCopy('privKeyInput')" class="text-xs bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold px-3 py-1 rounded transition">
+                            📋 Copy Private Key
+                        </button>
                     </div>
-                    <input type="text" id="privKeyInput" oninput="onPrivKeyChange()" class="w-full p-2.5 border rounded-lg font-mono text-xs text-red-700 font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Enter hex format private key...">
+                    <input type="text" id="privKeyInput" oninput="onPrivKeyInput()" class="w-full p-2.5 border rounded-lg font-mono text-xs text-red-700 font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Private key...">
                 </div>
 
-                <!-- Real-Time Address Output -->
                 <div>
                     <div class="flex justify-between items-center mb-1">
-                        <label class="text-xs font-bold text-gray-600">Calculated Receiving Public Address:</label>
-                        <button onclick="copyField('addressOutput')" class="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded font-medium text-gray-700">📋 Copy</button>
+                        <label class="text-xs font-bold text-gray-600">Matching Receiving Address:</label>
+                        <button type="button" onclick="silentCopy('addressOutput')" class="text-xs bg-green-50 hover:bg-green-100 text-green-700 font-semibold px-3 py-1 rounded transition">
+                            📋 Copy Address
+                        </button>
                     </div>
-                    <input type="text" id="addressOutput" readonly class="w-full p-2.5 bg-gray-100 border rounded-lg font-mono text-xs text-green-700 font-bold" placeholder="Address will auto-update here...">
+                    <input type="text" id="addressOutput" readonly class="w-full p-2.5 bg-gray-100 border rounded-lg font-mono text-xs text-green-700 font-bold focus:outline-none" placeholder="Real-time calculated address...">
                 </div>
             </div>
         </section>
 
-        <!-- Wallet Links -->
         <section class="bg-white p-6 rounded-xl shadow-sm border space-y-3">
-            <h2 class="text-sm font-bold text-gray-700">Official Exchanges & Supported Mobile Wallets:</h2>
+            <h2 class="text-sm font-bold text-gray-700">Official Exchanges & Mobile Wallets:</h2>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
                 <a href="https://www.binance.com" target="_blank" rel="noopener noreferrer" class="p-3 border rounded-lg text-center hover:bg-yellow-50 font-semibold text-gray-800 border-yellow-200">Binance Official →</a>
                 <a href="https://www.coinbase.com" target="_blank" rel="noopener noreferrer" class="p-3 border rounded-lg text-center hover:bg-blue-50 font-semibold text-gray-800 border-blue-200">Coinbase Official →</a>
@@ -95,9 +93,13 @@
     </main>
 
     <script>
-        // Simple Base58 Implementation for Crypto derivation
-        const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
-        function toBase58(buffer) {
+        async function sha256(bytes) {
+            const hashBuffer = await crypto.subtle.digest('SHA-256', bytes);
+            return new Uint8Array(hashBuffer);
+        }
+
+        const B58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+        function base58Encode(buffer) {
             let carry, digits = [0];
             for (let i = 0; i < buffer.length; i++) {
                 carry = buffer[i];
@@ -112,95 +114,146 @@
                 }
             }
             let res = '';
-            for (let i = 0; i < buffer.length && buffer[i] === 0; i++) res += ALPHABET[0];
-            for (let i = digits.length - 1; i >= 0; i--) res += ALPHABET[digits[i]];
+            for (let i = 0; i < buffer.length && buffer[i] === 0; i++) res += B58_ALPHABET[0];
+            for (let i = digits.length - 1; i >= 0; i--) res += B58_ALPHABET[digits[i]];
             return res;
         }
 
-        // Generate initial random keys
-        function generateRandomWallet() {
+        async function tronBase58Check(ethAddressHex) {
+            const cleanEthAddr = ethAddressHex.replace('0x', '');
+            const payload = ethers.utils.arrayify('0x' + cleanEthAddr);
+            
+            const data = new Uint8Array(1 + payload.length);
+            data[0] = 0x41;
+            data.set(payload, 1);
+            
+            const h1 = await sha256(data);
+            const h2 = await sha256(h1);
+            const checksum = h2.slice(0, 4);
+
+            const finalBuffer = new Uint8Array(data.length + 4);
+            finalBuffer.set(data, 0);
+            finalBuffer.set(checksum, data.length);
+
+            return base58Encode(finalBuffer);
+        }
+
+        function formatPrivateKeyForCoin(rawKey, coin) {
+            let clean = rawKey.trim();
+            if (clean.startsWith('0x') || clean.startsWith('0X')) {
+                clean = clean.substring(2);
+            }
+            clean = clean.toLowerCase();
+            return coin === 'ETH' ? ('0x' + clean) : clean;
+        }
+
+        const DERIVATION_PATHS = {
+            ETH: "m/44'/60'/0'/0/0",
+            TRX: "m/44'/195'/0'/0/0"
+        };
+
+        function generateRandomKeys() {
             const count = parseInt(document.getElementById('wordsCount').value);
             const randomWallet = ethers.Wallet.createRandom();
             let mnemonic = randomWallet.mnemonic.phrase;
+            
             if (count === 24) {
                 mnemonic += " " + ethers.Wallet.createRandom().mnemonic.phrase;
             }
+            
             document.getElementById('mnemonicInput').value = mnemonic;
-            onMnemonicChange();
+            onMnemonicInput();
         }
 
-        // When Mnemonic changes
-        function onMnemonicChange() {
+        async function onMnemonicInput() {
             const mnemonic = document.getElementById('mnemonicInput').value.trim();
             if (!mnemonic) return;
-            try {
-                const wallet = ethers.Wallet.fromMnemonic(mnemonic.split(/\s+/).slice(0, 12).join(" "));
-                document.getElementById('privKeyInput').value = wallet.privateKey;
-                deriveAddress(wallet.privateKey);
-            } catch (e) {
-                document.getElementById('addressOutput').value = "Invalid Mnemonic";
-            }
-        }
-
-        // When Private Key changes
-        function onPrivKeyChange() {
-            const privKey = document.getElementById('privKeyInput').value.trim();
-            if (!privKey) return;
-            try {
-                let formattedKey = privKey.startsWith('0x') ? privKey : '0x' + privKey;
-                new ethers.Wallet(formattedKey); // test validity
-                deriveAddress(formattedKey);
-            } catch (e) {
-                document.getElementById('addressOutput').value = "Invalid Private Key";
-            }
-        }
-
-        // Switch Chain Event
-        function deriveFromCurrentState() {
-            if (document.getElementById('privKeyInput').value.trim()) {
-                onPrivKeyChange();
-            } else if (document.getElementById('mnemonicInput').value.trim()) {
-                onMnemonicChange();
-            }
-        }
-
-        // Real Multi-Chain Derivation Logic
-        function deriveAddress(hexPrivateKey) {
+            
             const coin = document.getElementById('coinType').value;
+            const path = DERIVATION_PATHS[coin] || DERIVATION_PATHS.TRX;
+
+            try {
+                const hdNode = ethers.utils.HDNode.fromMnemonic(mnemonic.split(/\s+/).slice(0, 12).join(" "));
+                const derivedNode = hdNode.derivePath(path);
+                
+                const formattedPrivKey = formatPrivateKeyForCoin(derivedNode.privateKey, coin);
+                document.getElementById('privKeyInput').value = formattedPrivKey;
+                await updateAddressForChain(formattedPrivKey);
+            } catch (e) {
+                document.getElementById('addressOutput').value = "Invalid mnemonic phrase";
+            }
+        }
+
+        async function onPrivKeyInput() {
+            const rawPrivKey = document.getElementById('privKeyInput').value.trim();
+            if (!rawPrivKey) return;
+            const coin = document.getElementById('coinType').value;
+            try {
+                const formattedPrivKey = formatPrivateKeyForCoin(rawPrivKey, coin);
+                let checkKey = formattedPrivKey.startsWith('0x') ? formattedPrivKey : ('0x' + formattedPrivKey);
+                new ethers.Wallet(checkKey);
+                await updateAddressForChain(formattedPrivKey);
+            } catch (e) {
+                document.getElementById('addressOutput').value = "Invalid private key format";
+            }
+        }
+
+        async function onChainOrInputChange() {
+            const mnemonic = document.getElementById('mnemonicInput').value.trim();
+            if (mnemonic && !document.getElementById('addressOutput').value.includes("Invalid")) {
+                await onMnemonicInput();
+            } else {
+                await onPrivKeyInput();
+            }
+        }
+
+        async function updateAddressForChain(formattedPrivateKey) {
+            const coin = document.getElementById('coinType').value;
+            let hexPrivateKey = formattedPrivateKey.startsWith('0x') ? formattedPrivateKey : ('0x' + formattedPrivateKey);
             const wallet = new ethers.Wallet(hexPrivateKey);
-            const cleanKey = hexPrivateKey.replace('0x', '');
 
             if (coin === 'ETH') {
                 document.getElementById('addressOutput').value = wallet.address;
-            } else if (coin === 'BTC') {
-                // Derived Bitcoin address format
-                const rawBuf = ethers.utils.arrayify('0x' + cleanKey);
-                document.getElementById('addressOutput').value = "bc1q" + toBase58(rawBuf).toLowerCase().substring(0, 38);
-            } else if (coin === 'SOL') {
-                // Derived Solana base58 address
-                const rawBuf = ethers.utils.arrayify('0x' + cleanKey);
-                document.getElementById('addressOutput').value = toBase58(rawBuf).substring(0, 44);
-            } else if (coin === 'TRX') {
-                // TRON T-address format
-                const ethAddr = wallet.address.substring(2);
-                const rawBuf = ethers.utils.arrayify('0x41' + ethAddr);
-                document.getElementById('addressOutput').value = "T" + toBase58(rawBuf).substring(0, 33);
-            } else if (coin === 'TON') {
-                // TON address format
-                const rawBuf = ethers.utils.arrayify('0x' + cleanKey);
-                document.getElementById('addressOutput').value = "EQ" + toBase58(rawBuf).substring(0, 46);
+            } 
+            else if (coin === 'TRX') {
+                const tronAddress = await tronBase58Check(wallet.address);
+                document.getElementById('addressOutput').value = tronAddress;
             }
         }
 
-        function copyField(id) {
-            const field = document.getElementById(id);
-            field.select();
-            navigator.clipboard.writeText(field.value);
+        function silentCopy(elementId) {
+            const element = document.getElementById(elementId);
+            const textToCopy = element.value;
+
+            if (!textToCopy) {
+                alert("Nothing to copy!");
+                return;
+            }
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    alert("Copied to clipboard!");
+                }).catch(() => {
+                    fallbackCopy(textToCopy);
+                });
+            } else {
+                fallbackCopy(textToCopy);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const tempInput = document.createElement("input");
+            tempInput.value = text;
+            tempInput.style.position = "absolute";
+            tempInput.style.left = "-9999px";
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
             alert("Copied to clipboard!");
         }
 
-        // Auto initialize on load
-        window.onload = generateRandomWallet;
+        window.onload = generateRandomKeys;
     </script>
 </body>
 </html>
