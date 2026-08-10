@@ -1,19 +1,26 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>隐私政策 - 极速在线工具箱</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - DevTools Express</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 text-gray-800 p-8">
-    <div class="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow space-y-4">
-        <h1 class="text-2xl font-bold border-b pb-2">隐私政策 (Privacy Policy)</h1>
-        <p class="text-sm text-gray-600 leading-relaxed">
-            本站点极度重视用户的隐私权。我们在本网站上提供的所有计算工具（包含 JSON 格式化、密码生成、二维码及哈希计算等）均在本地浏览器中运行，我们不会保存或传输任何用户输入的文本。
-            <br><br>
-            本站点可能会嵌入来自第三方广告合作方（例如 Google AdSense）的广告展示。这些服务提供者可能会利用 Cookie 来优化广告体验。
-        </p>
-        <p><a href="index.html" class="text-blue-600 font-bold underline">← 返回首页</a></p>
-    </div>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-lg font-bold">DevTools Express</a>
+            <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400">
+                <option value="/privacy.html" selected>🌐 English</option>
+                <option value="/zh/privacy.html">中文 (Chinese)</option>
+                <option value="/ja/privacy.html">日本語 (Japanese)</option>
+            </select>
+        </div>
+    </header>
+    <main class="max-w-3xl mx-auto px-4 py-10 flex-grow w-full space-y-4 text-sm text-gray-600">
+        <h1 class="text-2xl font-bold text-gray-900 border-b pb-2">Privacy Policy</h1>
+        <p>Your privacy is important to us. DevTools Express operates entirely client-side. We do not store, collect, or transmit any user-entered text, data, or files on our servers.</p>
+        <p>Third-party vendors, including Google, use cookies to serve ads based on a user's prior visits to your website or other websites.</p>
+    </main>
 </body>
 </html>
