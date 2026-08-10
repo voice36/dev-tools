@@ -1,65 +1,32 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>哈希计算 & URL 编码解码器 - 极速在线工具箱</title>
+    <title>URL Encode/Decode & Hash Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 </head>
 <body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
     <header class="bg-blue-600 text-white shadow-md">
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="index.html" class="text-lg font-bold">极速在线工具箱</a>
-            <div class="text-xs sm:text-sm space-x-2 overflow-x-auto">
-                <a href="json.html" class="hover:underline">JSON</a>
-                <a href="base64.html" class="hover:underline">Base64</a>
-                <a href="timestamp.html" class="hover:underline">时间戳</a>
-                <a href="text.html" class="hover:underline">文本处理</a>
-                <a href="password.html" class="hover:underline">密码生成</a>
-                <a href="qrcode.html" class="hover:underline">二维码</a>
-                <a href="hash-url.html" class="font-bold underline">哈希/URL</a>
-            </div>
+            <a href="index.html" class="text-lg font-bold">DevTools Express</a>
+            <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400">
+                <option value="/hash-url.html" selected>🌐 English</option>
+                <option value="/zh/hash-url.html">中文 (Chinese)</option>
+                <option value="/ja/hash-url.html">日本語 (Japanese)</option>
+            </select>
         </div>
     </header>
-
-    <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full space-y-6">
-        <section class="bg-white p-6 rounded-xl shadow-sm space-y-4">
-            <h1 class="text-2xl font-bold text-gray-800">哈希/散列值计算 (MD5 & SHA256)</h1>
-            <input type="text" id="hashInput" oninput="calcHash()" class="w-full p-3 border rounded-lg text-sm" placeholder="在此输入任意文本，即时计算哈希...">
-            <div class="space-y-2 text-sm font-mono">
-                <p class="p-2 bg-gray-50 border rounded">MD5: <strong id="md5Res" class="text-blue-600">--</strong></p>
-                <p class="p-2 bg-gray-50 border rounded">SHA256: <strong id="sha256Res" class="text-blue-600 break-all">--</strong></p>
-            </div>
-        </section>
-
-        <section class="bg-white p-6 rounded-xl shadow-sm space-y-4">
-            <h1 class="text-2xl font-bold text-gray-800">URL 网址参数转义 (Encode / Decode)</h1>
-            <textarea id="urlInput" class="w-full h-32 p-3 border rounded-lg text-sm font-mono" placeholder="输入含中文或特殊符号的 URL 链接..."></textarea>
+    <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full space-y-4">
+        <section class="bg-white p-6 rounded-xl shadow-sm border space-y-4">
+            <h1 class="text-xl font-bold border-b pb-2">URL Encoder/Decoder</h1>
+            <textarea id="urlTxt" class="w-full h-24 p-3 border rounded text-sm font-mono" placeholder="Enter text or URL..."></textarea>
             <div class="flex gap-2">
-                <button onclick="encodeURL()" class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700">URL 编码</button>
-                <button onclick="decodeURL()" class="bg-indigo-600 text-white px-4 py-2 rounded text-sm hover:bg-indigo-700">URL 解码</button>
+                <button onclick="document.getElementById('urlRes').value = encodeURIComponent(document.getElementById('urlTxt').value)" class="bg-blue-600 text-white px-4 py-1.5 rounded text-sm">Encode URL</button>
+                <button onclick="document.getElementById('urlRes').value = decodeURIComponent(document.getElementById('urlTxt').value)" class="bg-green-600 text-white px-4 py-1.5 rounded text-sm">Decode URL</button>
             </div>
+            <textarea id="urlRes" readonly class="w-full h-24 p-3 border rounded text-sm font-mono bg-gray-50"></textarea>
         </section>
     </main>
-
-    <footer class="bg-white border-t py-4 text-center text-xs text-gray-500">
-        <a href="privacy.html" class="hover:underline">隐私政策</a> | <a href="about.html" class="hover:underline">关于本站</a>
-    </footer>
-
-    <script>
-        function calcHash() {
-            const val = document.getElementById('hashInput').value;
-            if(!val) {
-                document.getElementById('md5Res').innerText = "--";
-                document.getElementById('sha256Res').innerText = "--";
-                return;
-            }
-            document.getElementById('md5Res').innerText = CryptoJS.MD5(val).toString();
-            document.getElementById('sha256Res').innerText = CryptoJS.SHA256(val).toString();
-        }
-        function encodeURL() { const el=document.getElementById('urlInput'); el.value = encodeURIComponent(el.value); }
-        function decodeURL() { const el=document.getElementById('urlInput'); try{ el.value = decodeURIComponent(el.value); }catch(e){} }
-    </script>
 </body>
 </html>
