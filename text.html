@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文本字数统计与清洗去重器 - 极速在线工具箱</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-lg font-bold">极速在线工具箱</a>
+            <div class="text-xs sm:text-sm space-x-2 overflow-x-auto">
+                <a href="json.html" class="hover:underline">JSON</a>
+                <a href="base64.html" class="hover:underline">Base64</a>
+                <a href="timestamp.html" class="hover:underline">时间戳</a>
+                <a href="text.html" class="font-bold underline">文本处理</a>
+                <a href="password.html" class="hover:underline">密码生成</a>
+                <a href="qrcode.html" class="hover:underline">二维码</a>
+                <a href="hash-url.html" class="hover:underline">哈希/URL</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full space-y-6">
+        <section class="bg-white p-6 rounded-xl shadow-sm space-y-4">
+            <h1 class="text-2xl font-bold text-gray-800">文本统计、格式化与行去重</h1>
+            <textarea id="txtInput" oninput="updateStats()" class="w-full h-56 p-3 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="粘贴需要统计与清洗的文本..."></textarea>
+            <div class="flex flex-wrap gap-2">
+                <button onclick="toUpper()" class="bg-blue-600 text-white px-3 py-1.5 rounded text-sm hover:bg-blue-700">转大写</button>
+                <button onclick="toLower()" class="bg-blue-600 text-white px-3 py-1.5 rounded text-sm hover:bg-blue-700">转小写</button>
+                <button onclick="removeDup()" class="bg-green-600 text-white px-3 py-1.5 rounded text-sm hover:bg-green-700">去除重复行</button>
+                <button onclick="removeBlank()" class="bg-green-600 text-white px-3 py-1.5 rounded text-sm hover:bg-green-700">去除空行</button>
+            </div>
+            <div class="flex gap-6 text-sm text-gray-600 border-t pt-3">
+                <span>总字数：<strong id="charCount" class="text-blue-600">0</strong></span>
+                <span>行数：<strong id="lineCount" class="text-blue-600">0</strong></span>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white border-t py-4 text-center text-xs text-gray-500">
+        <a href="privacy.html" class="hover:underline">隐私政策</a> | <a href="about.html" class="hover:underline">关于本站</a>
+    </footer>
+
+    <script>
+        function updateStats() {
+            const v = document.getElementById('txtInput').value;
+            document.getElementById('charCount').innerText = v.length;
+            document.getElementById('lineCount').innerText = v ? v.split('\n').length : 0;
+        }
+        function toUpper() { const el=document.getElementById('txtInput'); el.value=el.value.toUpperCase(); updateStats(); }
+        function toLower() { const el=document.getElementById('txtInput'); el.value=el.value.toLowerCase(); updateStats(); }
+        function removeDup() { const el=document.getElementById('txtInput'); el.value=[...new Set(el.value.split('\n'))].join('\n'); updateStats(); }
+        function removeBlank() { const el=document.getElementById('txtInput'); el.value=el.value.split('\n').filter(l=>l.trim()!=='').join('\n'); updateStats(); }
+    </script>
+</body>
+</html>
