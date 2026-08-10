@@ -34,7 +34,12 @@
             <div class="flex items-center space-x-3">
                 <nav class="text-xs sm:text-sm space-x-2 overflow-x-auto hidden sm:block">
                     <a href="json.html" class="hover:underline">JSON</a>
+                    <a href="base64.html" class="hover:underline">Base64</a>
+                    <a href="timestamp.html" class="hover:underline">Timestamp</a>
+                    <a href="text.html" class="hover:underline">Text</a>
+                    <a href="password.html" class="hover:underline">Password</a>
                     <a href="qrcode.html" class="hover:underline">QR Code</a>
+                    <a href="hash-url.html" class="hover:underline">URL/Hash</a>
                 </nav>
                 
                 <!-- Language Selector -->
@@ -53,20 +58,44 @@
             <p class="text-gray-600 text-sm">100% Client-side processing. Your data is safe and never leaves your browser.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <a href="json.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500">
+        <!-- 7 Main Tool Entrance Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <a href="json.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
                 <h2 class="text-lg font-bold text-blue-600 mb-1">JSON Formatter & Validator →</h2>
                 <p class="text-gray-500 text-xs">Beautify, compress, and check JSON string formatting instantly.</p>
             </a>
-            <a href="qrcode.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500">
-                <h2 class="text-lg font-bold text-blue-600 mb-1">QR Code Generator & Decoder →</h2>
-                <p class="text-gray-500 text-xs">Create QR codes online and parse QR code images to extract text/URLs.</p>
+            <a href="base64.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <h2 class="text-lg font-bold text-blue-600 mb-1">Base64 Encode & Decode →</h2>
+                <p class="text-gray-500 text-xs">Encode and decode UTF-8 strings to Base64 effortlessly.</p>
+            </a>
+            <a href="timestamp.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <h2 class="text-lg font-bold text-blue-600 mb-1">Unix Timestamp Converter →</h2>
+                <p class="text-gray-500 text-xs">Convert 10-digit and 13-digit timestamps to human-readable date and time.</p>
+            </a>
+            <a href="text.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <h2 class="text-lg font-bold text-blue-600 mb-1">Text Counter & Deduplicator →</h2>
+                <p class="text-gray-500 text-xs">Count words, lines, and characters, or remove duplicate lines in seconds.</p>
+            </a>
+            <a href="password.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <h2 class="text-lg font-bold text-blue-600 mb-1">Random Password Generator →</h2>
+                <p class="text-gray-500 text-xs">Generate strong, customizable passwords for secure account protection.</p>
+            </a>
+            <a href="qrcode.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <h2 class="text-lg font-bold text-blue-600 mb-1">QR Code Generator & Parser →</h2>
+                <p class="text-gray-500 text-xs">Create QR codes online and decode text/URLs from uploaded QR code images.</p>
+            </a>
+            <a href="hash-url.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <h2 class="text-lg font-bold text-blue-600 mb-1">URL Encoder / Decoder →</h2>
+                <p class="text-gray-500 text-xs">Encode strings for URL compatibility and decode URI parameters.</p>
             </a>
         </div>
     </main>
 
-    <footer class="bg-white border-t py-4 text-center text-xs text-gray-500">
-        <p>© 2026 DevTools Express. All rights reserved.</p>
+    <footer class="bg-white border-t py-4 text-center text-xs text-gray-500 space-x-3">
+        <a href="about.html" class="hover:underline">About Us</a>
+        <span>|</span>
+        <a href="privacy.html" class="hover:underline">Privacy Policy</a>
+        <p class="mt-1">© 2026 DevTools Express. All rights reserved.</p>
     </footer>
 </body>
 </html>
