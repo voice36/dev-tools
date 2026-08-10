@@ -19,34 +19,73 @@
             </select>
         </div>
     </header>
+
     <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full space-y-8">
+        <!-- 1. QRコード作成 -->
         <section class="bg-white p-6 rounded-xl shadow-sm border space-y-4">
             <h1 class="text-xl font-bold border-b pb-2">1. QRコード作成</h1>
             <input type="text" id="qrText" class="w-full p-2.5 border rounded text-sm" placeholder="URLまたはテキストを入力...">
-            <button onclick="makeQR()" class="bg-blue-600 text-white px-5 py-2 rounded text-sm">作成</button>
+            <button onclick="makeQR()" class="bg-blue-600 text-white px-5 py-2 rounded text-sm hover:bg-blue-700">QRコードを作成</button>
             <div id="qrcode" class="flex justify-center p-4 bg-gray-50 border rounded min-h-[160px] items-center"></div>
         </section>
+
+        <!-- 2. QRコード画像読み取り -->
         <section class="bg-white p-6 rounded-xl shadow-sm border space-y-4">
             <h2 class="text-xl font-bold border-b pb-2">2. QRコード画像読み取り</h2>
             <input type="file" accept="image/*" onchange="decodeQR(event)" class="block text-sm text-gray-500">
-            <p id="qrResult" class="text-sm font-mono text-blue-700 font-bold break-all"></p>
+            
+            <!-- 結果表示エリア -->
+            <div id="resultContainer" class="hidden p-4 bg-gray-50 border rounded-lg space-y-3">
+                <p class="text-xs font-semibold text-gray-500">読み取り結果：</p>
+                <p id="qrResultText" class="text-sm font-mono text-gray-800 break-all"></p>
+                <div id="actionBtnArea"></div>
+            </div>
         </section>
     </main>
+
     <div id="reader" class="hidden"></div>
+
     <script>
         function makeQR() {
             const txt = document.getElementById('qrText').value;
-            if(!txt) return alert("テキストを入力してください！");
+            if(!txt) return alert("テキストまたはURLを入力してください！");
             document.getElementById('qrcode').innerHTML = "";
             new QRCode(document.getElementById("qrcode"), { text: txt, width: 160, height: 160 });
         }
+
         function decodeQR(e) {
             const file = e.target.files[0];
             if (!file) return;
+
             const html5QrCode = new Html5Qrcode("reader");
             html5QrCode.scanFile(file, true)
-                .then(msg => { document.getElementById('qrResult').innerText = "読み取り結果: " + msg; })
-                .catch(err => { alert("QRコードの読み取りに失敗しました。"); });
+                .then(msg => {
+                    const resultContainer = document.getElementById('resultContainer');
+                    const qrResultText = document.getElementById('qrResultText');
+                    const actionBtnArea = document.getElementById('actionBtnArea');
+
+                    resultContainer.classList.remove('hidden');
+                    qrResultText.innerText = msg;
+
+                    if (msg.startsWith('http://') || msg.startsWith('https://')) {
+                        actionBtnArea.innerHTML = `
+                            <a href="${msg}" target="_blank" rel="noopener noreferrer" 
+                               class="inline-block bg-green-600 text-white text-xs px-4 py-2 rounded font-medium hover:bg-green-700 transition">
+                               🔗 リンクを開く →
+                            </a>
+                        `;
+                    } else {
+                        actionBtnArea.innerHTML = `
+                            <button onclick="navigator.clipboard.writeText('${msg}'); alert('クリップボードにコピーしました！');" 
+                                    class="bg-gray-600 text-white text-xs px-4 py-2 rounded font-medium hover:bg-gray-700 transition">
+                                📋 テキストをコピー
+                            </button>
+                        `;
+                    }
+                })
+                .catch(err => {
+                    alert("QRコードの読み取りに失敗しました。鮮明な画像をアップロードしてください。");
+                });
         }
     </script>
 </body>
