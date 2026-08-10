@@ -19,34 +19,77 @@
             </select>
         </div>
     </header>
+
     <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full space-y-8">
+        <!-- 1. 生成二维码 -->
         <section class="bg-white p-6 rounded-xl shadow-sm border space-y-4">
             <h1 class="text-xl font-bold border-b pb-2">1. 在线生成二维码</h1>
             <input type="text" id="qrText" class="w-full p-2.5 border rounded text-sm" placeholder="输入网址或文本...">
-            <button onclick="makeQR()" class="bg-blue-600 text-white px-5 py-2 rounded text-sm">生成二维码</button>
+            <button onclick="makeQR()" class="bg-blue-600 text-white px-5 py-2 rounded text-sm hover:bg-blue-700">生成二维码</button>
             <div id="qrcode" class="flex justify-center p-4 bg-gray-50 border rounded min-h-[160px] items-center"></div>
         </section>
+
+        <!-- 2. 解析二维码（带直接打开按钮） -->
         <section class="bg-white p-6 rounded-xl shadow-sm border space-y-4">
             <h2 class="text-xl font-bold border-b pb-2">2. 上传二维码图片识别内容</h2>
             <input type="file" accept="image/*" onchange="decodeQR(event)" class="block text-sm text-gray-500">
-            <p id="qrResult" class="text-sm font-mono text-blue-700 font-bold break-all"></p>
+            
+            <!-- 识别结果展示区域 -->
+            <div id="resultContainer" class="hidden p-4 bg-gray-50 border rounded-lg space-y-3">
+                <p class="text-xs font-semibold text-gray-500">解析结果：</p>
+                <p id="qrResultText" class="text-sm font-mono text-gray-800 break-all"></p>
+                <div id="actionBtnArea"></div>
+            </div>
         </section>
     </main>
+
     <div id="reader" class="hidden"></div>
+
     <script>
+        // 生成二维码
         function makeQR() {
             const txt = document.getElementById('qrText').value;
             if(!txt) return alert("请先输入内容！");
             document.getElementById('qrcode').innerHTML = "";
             new QRCode(document.getElementById("qrcode"), { text: txt, width: 160, height: 160 });
         }
+
+        // 解析二维码并生成直接打开按钮
         function decodeQR(e) {
             const file = e.target.files[0];
             if (!file) return;
+
             const html5QrCode = new Html5Qrcode("reader");
             html5QrCode.scanFile(file, true)
-                .then(msg => { document.getElementById('qrResult').innerText = "解析结果: " + msg; })
-                .catch(err => { alert("二维码识别失败！"); });
+                .then(msg => {
+                    const resultContainer = document.getElementById('resultContainer');
+                    const qrResultText = document.getElementById('qrResultText');
+                    const actionBtnArea = document.getElementById('actionBtnArea');
+
+                    resultContainer.classList.remove('hidden');
+                    qrResultText.innerText = msg;
+
+                    // 判断解析出的文本是否以 http:// 或 https:// 开头
+                    if (msg.startsWith('http://') || msg.startsWith('https://')) {
+                        actionBtnArea.innerHTML = `
+                            <a href="${msg}" target="_blank" rel="noopener noreferrer" 
+                               class="inline-block bg-green-600 text-white text-xs px-4 py-2 rounded font-medium hover:bg-green-700 transition">
+                               🔗 直接打开链接 →
+                            </a>
+                        `;
+                    } else {
+                        // 如果不是网址，提供一键复制按钮
+                        actionBtnArea.innerHTML = `
+                            <button onclick="navigator.clipboard.writeText('${msg}'); alert('已复制到剪贴板！');" 
+                                    class="bg-gray-600 text-white text-xs px-4 py-2 rounded font-medium hover:bg-gray-700 transition">
+                                📋 复制文本
+                            </button>
+                        `;
+                    }
+                })
+                .catch(err => {
+                    alert("二维码识别失败，请确保上传了清晰的二维码图片！");
+                });
         }
     </script>
 </body>
