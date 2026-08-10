@@ -1,15 +1,25 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>关于本站 - 极速在线工具箱</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - DevTools Express</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 text-gray-800 p-8">
-    <div class="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow space-y-4">
-        <h1 class="text-2xl font-bold border-b pb-2">关于本站</h1>
-        <p class="text-sm text-gray-600 leading-relaxed">极速在线工具箱是一个免费、轻量且注重隐私安全的开发者与日常办公小工具集合。本站所有工具均采用纯前端技术驱动，任何运算都在您的浏览器内部完成，数据绝不经过第三方服务器。</p>
-        <p><a href="index.html" class="text-blue-600 font-bold underline">← 返回首页</a></p>
-    </div>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-lg font-bold">DevTools Express</a>
+            <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400">
+                <option value="/about.html" selected>🌐 English</option>
+                <option value="/zh/about.html">中文 (Chinese)</option>
+                <option value="/ja/about.html">日本語 (Japanese)</option>
+            </select>
+        </div>
+    </header>
+    <main class="max-w-3xl mx-auto px-4 py-10 flex-grow w-full space-y-4">
+        <h1 class="text-2xl font-bold border-b pb-2">About DevTools Express</h1>
+        <p class="text-sm text-gray-600 leading-relaxed">DevTools Express provides fast, lightweight, and secure web utilities for developers, office workers, and students worldwide. All conversions and calculations are processed 100% locally on your browser.</p>
+    </main>
 </body>
 </html>
