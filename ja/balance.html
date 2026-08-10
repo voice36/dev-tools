@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>暗号資産 残高一括照会 - DevTools Express</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-lg font-bold">DevTools Express</a>
+            <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400">
+                <option value="/balance.html">🌐 English</option>
+                <option value="/zh/balance.html">中文 (Chinese)</option>
+                <option value="/ja/balance.html" selected>日本語 (Japanese)</option>
+            </select>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full space-y-6">
+        <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded text-xs text-amber-800">
+            🔍 <b>概要：</b> TRON (TRX/USDT) および ETH (ETH/USDT) アドレスの残高をリアルタイムで一括照会できます。
+        </div>
+
+        <section class="bg-white p-6 rounded-xl shadow-sm border space-y-5">
+            <h1 class="text-xl font-bold border-b pb-2">TRON & ETH アドレス残高一括照会</h1>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">ネットワークの選択：</label>
+                    <select id="coinType" class="w-full p-2.5 border rounded text-sm bg-gray-50 font-medium focus:outline-none">
+                        <option value="TRX">TRON (TRX / TRC-20 USDT)</option>
+                        <option value="ETH">イーサリアム (ETH / ERC-20 USDT)</option>
+                    </select>
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">アドレス貼り付け (1行に1つのアドレス):</label>
+                    <textarea id="addressInput" rows="3" class="w-full p-2.5 border rounded-lg font-mono text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="TRONアドレス:&#10;T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb&#10;ETHアドレス:&#10;0xd8da6bf26964af9d7eed9e03e53415d37aa96045"></textarea>
+                </div>
+            </div>
+
+            <button id="checkBtn" onclick="startCheckBalance()" class="w-full bg-blue-600 text-white py-2.5 rounded-lg text-sm font-bold hover:bg-blue-700 transition">
+                🚀 残高照会を開始
+            </button>
+
+            <div id="outputContainer" class="hidden space-y-3 pt-2">
+                <div class="flex justify-between items-center">
+                    <span id="progressStatus" class="text-xs font-bold text-gray-600">照会中...</span>
+                    <button onclick="exportCSV()" class="bg-green-600 text-white text-xs px-3 py-1.5 rounded font-bold hover:bg-green-700">
+                        📥 CSVエクスポート
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto border rounded-lg max-h-[500px]">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead class="sticky top-0 bg-gray-100 border-b font-bold text-gray-700">
+                            <tr>
+                                <th class="p-2.5 w-12">#</th>
+                                <th class="p-2.5">アドレス</th>
+                                <th class="p-2.5">ネイティブ通貨残高</th>
+                                <th class="p-2.5">USDT 残高</th>
+                                <th class="p-2.5">ステータス</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTableBody" class="font-mono divide-y"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white border-t py-4 text-center text-xs text-gray-500 space-y-2">
+        <div class="space-x-3">
+            <a href="about.html" class="hover:underline">当サイトについて</a>
+            <span>|</span>
+            <a href="privacy.html" class="hover:underline">プライバシーポリシー</a>
+            <span>|</span>
+            <a href="mailto:your-email@example.com" class="hover:underline font-semibold text-blue-600">お問い合わせ: your-email@example.com</a>
+        </div>
+        <p>© 2026 DevTools Express</p>
+    </footer>
+
+    <script>
+        let checkResults = [];
+        const ETH_RPC = "https://rpc.ankr.com/eth";
+        const ETH_USDT_CONTRACT = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
+
+        async function startCheckBalance() {
+            const coin = document.getElementById('coinType').value;
+            const rawText = document.getElementById('addressInput').value.trim();
+            if (!rawText) return alert("アドレスを入力してください！");
+
+            const addresses = rawText.split('\n').map(a => a.trim()).filter(a => a.length > 10);
+            if (addresses.length === 0) return alert("有効なアドレスが見つかりません！");
+
+            const checkBtn = document.getElementById('checkBtn');
+            const statusText = document.getElementById('progressStatus');
+            const tableBody = document.getElementById('resultTableBody');
+
+            checkBtn.disabled = true;
+            checkBtn.classList.add('opacity-50');
+            tableBody.innerHTML = '';
+            checkResults = [];
+            document.getElementById('outputContainer').classList.remove('hidden');
+
+            const provider = coin === 'ETH' ? new ethers.providers.JsonRpcProvider(ETH_RPC) : null;
+            const usdtAbi = ["function balanceOf(address owner) view returns (uint256)"];
+
+            for (let i = 0; i < addresses.length; i++) {
+                const addr = addresses[i];
+                statusText.innerText = `照会中 (${i + 1}/${addresses.length}): ${addr.substring(0, 8)}...`;
+                
+                let nativeBal = "0";
+                let usdtBal = "0";
+                let status = "成功";
+
+                try {
+                    if (coin === 'TRX') {
+                        const res = await fetch(`https://api.trongrid.io/v1/accounts/${addr}`);
+                        const data = await res.json();
+                        if (data.data && data.data.length > 0) {
+                            const acc = data.data[0];
+                            nativeBal = ((acc.balance || 0) / 1000000).toFixed(4);
+                            
+                            if (acc.trc20) {
+                                for (let t of acc.trc20) {
+                                    if (t['TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t']) {
+                                        usdtBal = (parseInt(t['TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t']) / 1000000).toFixed(2);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        const ethWei = await provider.getBalance(addr);
+                        nativeBal = parseFloat(ethers.utils.formatEther(ethWei)).toFixed(4);
+
+                        const usdtContract = new ethers.Contract(ETH_USDT_CONTRACT, usdtAbi, provider);
+                        const usdtRaw = await usdtContract.balanceOf(addr);
+                        usdtBal = (parseFloat(usdtRaw.toString()) / 1000000).toFixed(2);
+                    }
+                } catch (e) {
+                    status = "失敗";
+                }
+
+                const resObj = {
+                    id: i + 1,
+                    address: addr,
+                    nativeBalance: nativeBal + (coin === 'TRX' ? ' TRX' : ' ETH'),
+                    usdtBalance: usdtBal + ' USDT',
+                    status: status
+                };
+                checkResults.push(resObj);
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-gray-50";
+                tr.innerHTML = `
+                    <td class="p-2.5 text-gray-500 font-sans">${resObj.id}</td>
+                    <td class="p-2.5 text-blue-700 font-bold break-all">${resObj.address}</td>
+                    <td class="p-2.5 font-bold ${parseFloat(nativeBal) > 0 ? 'text-green-600' : 'text-gray-500'}">${resObj.nativeBalance}</td>
+                    <td class="p-2.5 font-bold ${parseFloat(usdtBal) > 0 ? 'text-green-600' : 'text-gray-500'}">${resObj.usdtBalance}</td>
+                    <td class="p-2.5 ${status === '成功' ? 'text-gray-500' : 'text-red-500'}">${resObj.status}</td>
+                `;
+                tableBody.appendChild(tr);
+            }
+
+            statusText.innerText = `完了！ ${addresses.length} 件のアドレスを照会しました。`;
+            checkBtn.disabled = false;
+            checkBtn.classList.remove('opacity-50');
+        }
+
+        function exportCSV() {
+            if (checkResults.length === 0) return alert("エクスポートするデータがありません！");
+            let csvContent = "data:text/csv;charset=utf-8,ID,Address,NativeBalance,USDTBalance,Status\n";
+            checkResults.forEach(r => {
+                csvContent += `${r.id},${r.address},${r.nativeBalance},${r.usdtBalance},${r.status}\n`;
+            });
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `balance_check_${Date.now()}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
