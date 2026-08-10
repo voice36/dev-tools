@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base64 编码解码工具 - 极速在线工具箱</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-lg font-bold">极速在线工具箱</a>
+            
+            <div class="flex items-center space-x-3">
+                <nav class="text-xs sm:text-sm space-x-2 overflow-x-auto hidden sm:block">
+                    <a href="json.html" class="hover:underline">JSON</a>
+                    <a href="base64.html" class="font-bold underline">Base64</a>
+                    <a href="qrcode.html" class="hover:underline">二维码</a>
+                </nav>
+                
+                <!-- 语言切换下拉框 -->
+                <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400 focus:outline-none">
+                    <option value="/base64.html">🌐 English</option>
+                    <option value="/zh/base64.html" selected>中文 (Chinese)</option>
+                    <option value="/ja/base64.html">日本語 (Japanese)</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full space-y-6">
+        <section class="bg-white p-6 rounded-xl shadow-sm border space-y-4">
+            <h1 class="text-xl font-bold border-b pb-2">Base64 编码与解码转换器</h1>
+            <textarea id="inputText" class="w-full h-32 p-3 border rounded-lg text-sm font-mono focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="请在此粘贴需要转换的文本或 Base64 编码..."></textarea>
+            
+            <div class="flex gap-3">
+                <button onclick="encodeBase64()" class="bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-700">Base64 编码</button>
+                <button onclick="decodeBase64()" class="bg-green-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-green-700">Base64 解码</button>
+            </div>
+
+            <div class="space-y-2">
+                <label class="block text-xs font-semibold text-gray-500">转换结果：</label>
+                <textarea id="outputText" readonly class="w-full h-32 p-3 border rounded-lg text-sm font-mono bg-gray-50" placeholder="结果将在此显示..."></textarea>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white border-t py-4 text-center text-xs text-gray-500">
+        <p>© 2026 极速在线工具箱</p>
+    </footer>
+
+    <script>
+        function encodeBase64() {
+            const input = document.getElementById('inputText').value;
+            try {
+                document.getElementById('outputText').value = btoa(unescape(encodeURIComponent(input)));
+            } catch (e) {
+                alert('编码失败！');
+            }
+        }
+        function decodeBase64() {
+            const input = document.getElementById('inputText').value;
+            try {
+                document.getElementById('outputText').value = decodeURIComponent(escape(atob(input)));
+            } catch (e) {
+                alert('无效的 Base64 字符串！');
+            }
+        }
+    </script>
+</body>
+</html>
