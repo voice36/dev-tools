@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cron 表达式生成与生成器 - 极速在线工具箱</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-lg font-bold">极速在线工具箱</a>
+            <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400">
+                <option value="/cron.html">🌐 English</option>
+                <option value="/zh/cron.html" selected>中文 (Chinese)</option>
+                <option value="/ja/cron.html">日本語 (Japanese)</option>
+            </select>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-8 flex-grow w-full space-y-6">
+        <section class="bg-white p-6 rounded-xl shadow-sm border space-y-5">
+            <h1 class="text-xl font-bold border-b pb-2">Cron 定时任务表达式生成与快捷参考</h1>
+            
+            <div>
+                <label class="block text-xs font-bold text-gray-600 mb-1">输入 5 位 Cron 表达式 (分 时 日 月 周)：</label>
+                <input type="text" id="cronInput" value="*/15 * * * *" oninput="parseCron()" class="w-full p-2.5 border rounded-lg font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            </div>
+
+            <div id="cronResult" class="p-4 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-900 font-medium">
+                ⏱️ 解释说明：每 15 分钟执行一次
+            </div>
+
+            <h2 class="text-sm font-bold border-t pt-4">常用 Cron 模板速查：</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs font-mono">
+                <button onclick="setCron('0 * * * *')" class="p-2.5 border rounded text-left hover:bg-gray-50">每小时整点执行: <code>0 * * * *</code></button>
+                <button onclick="setCron('0 0 * * *')" class="p-2.5 border rounded text-left hover:bg-gray-50">每天 0:00 执行: <code>0 0 * * *</code></button>
+                <button onclick="setCron('0 9 * * 1')" class="p-2.5 border rounded text-left hover:bg-gray-50">每周一 9:00 执行: <code>0 9 * * 1</code></button>
+                <button onclick="setCron('0 0 1 * *')" class="p-2.5 border rounded text-left hover:bg-gray-50">每月1号 0:00 执行: <code>0 0 1 * *</code></button>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function setCron(val) {
+            document.getElementById('cronInput').value = val;
+            parseCron();
+        }
+        function parseCron() {
+            const val = document.getElementById('cronInput').value.trim();
+            const res = document.getElementById('cronResult');
+            if(val === '*/15 * * * *') res.innerText = "⏱️ 解释说明：每 15 分钟执行一次";
+            else if(val === '0 * * * *') res.innerText = "⏱️ 解释说明：每小时的第 0 分钟执行一次";
+            else if(val === '0 0 * * *') res.innerText = "⏱️ 解释说明：每天的 00:00 准时执行";
+            else if(val === '0 9 * * 1') res.innerText = "⏱️ 解释说明：每周一的 09:00 准时执行";
+            else if(val === '0 0 1 * *') res.innerText = "⏱️ 解释说明：每月 1 号的 00:00 准时执行";
+            else res.innerText = "⏱️ 自定义 Cron 语法规则标准格式：[分] [时] [日] [月] [周]";
+        }
+    </script>
+</body>
+</html>
