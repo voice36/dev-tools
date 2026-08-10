@@ -10,11 +10,8 @@
     <url><loc>https://tools.haha6.top/qrcode.html</loc><priority>0.8</priority></url>
     <url><loc>https://tools.haha6.top/hash-url.html</loc><priority>0.8</priority></url>
     <url><loc>https://tools.haha6.top/crypto-gen.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/unit-eth.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/jwt.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/cron.html</loc><priority>0.8</priority></url>
+    <url><loc>https://tools.haha6.top/batch-wallet.html</loc><priority>0.8</priority></url>
     <url><loc>https://tools.haha6.top/regex.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/markdown.html</loc><priority>0.8</priority></url>
     <url><loc>https://tools.haha6.top/img-base64.html</loc><priority>0.8</priority></url>
     <url><loc>https://tools.haha6.top/about.html</loc><priority>0.5</priority></url>
     <url><loc>https://tools.haha6.top/privacy.html</loc><priority>0.5</priority></url>
@@ -29,11 +26,8 @@
     <url><loc>https://tools.haha6.top/zh/qrcode.html</loc><priority>0.8</priority></url>
     <url><loc>https://tools.haha6.top/zh/hash-url.html</loc><priority>0.8</priority></url>
     <url><loc>https://tools.haha6.top/zh/crypto-gen.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/zh/unit-eth.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/zh/jwt.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/zh/cron.html</loc><priority>0.8</priority></url>
+    <url><loc>https://tools.haha6.top/zh/batch-wallet.html</loc><priority>0.8</priority></url>
     <url><loc>https://tools.haha6.top/zh/regex.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/zh/markdown.html</loc><priority>0.8</priority></url>
     <url><loc>https://tools.haha6.top/zh/img-base64.html</loc><priority>0.8</priority></url>
     <url><loc>https://tools.haha6.top/zh/about.html</loc><priority>0.5</priority></url>
     <url><loc>https://tools.haha6.top/zh/privacy.html</loc><priority>0.5</priority></url>
@@ -48,11 +42,8 @@
     <url><loc>https://tools.haha6.top/ja/qrcode.html</loc><priority>0.8</priority></url>
     <url><loc>https://tools.haha6.top/ja/hash-url.html</loc><priority>0.8</priority></url>
     <url><loc>https://tools.haha6.top/ja/crypto-gen.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/ja/unit-eth.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/ja/jwt.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/ja/cron.html</loc><priority>0.8</priority></url>
+    <url><loc>https://tools.haha6.top/ja/batch-wallet.html</loc><priority>0.8</priority></url>
     <url><loc>https://tools.haha6.top/ja/regex.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/ja/markdown.html</loc><priority>0.8</priority></url>
     <url><loc>https://tools.haha6.top/ja/img-base64.html</loc><priority>0.8</priority></url>
     <url><loc>https://tools.haha6.top/ja/about.html</loc><priority>0.5</priority></url>
     <url><loc>https://tools.haha6.top/ja/privacy.html</loc><priority>0.5</priority></url>
