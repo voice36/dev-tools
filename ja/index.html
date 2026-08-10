@@ -12,17 +12,6 @@
             <a href="index.html" class="text-lg font-bold">DevTools Express</a>
             
             <div class="flex items-center space-x-3">
-                <nav class="text-xs sm:text-sm space-x-2 overflow-x-auto hidden md:block">
-                    <a href="json.html" class="hover:underline">JSON</a>
-                    <a href="base64.html" class="hover:underline">Base64</a>
-                    <a href="timestamp.html" class="hover:underline">タイムスタンプ</a>
-                    <a href="text.html" class="hover:underline">テキスト</a>
-                    <a href="password.html" class="hover:underline">パスワード</a>
-                    <a href="qrcode.html" class="hover:underline">QRコード</a>
-                    <a href="hash-url.html" class="hover:underline">URLエンコード</a>
-                    <a href="crypto-gen.html" class="hover:underline text-yellow-300 font-bold">暗号鍵</a>
-                </nav>
-                
                 <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400 focus:outline-none">
                     <option value="/index.html">🌐 English</option>
                     <option value="/zh/index.html">中文 (Chinese)</option>
@@ -32,46 +21,81 @@
         </div>
     </header>
 
-    <main class="max-w-5xl mx-auto px-4 py-10 flex-grow w-full space-y-8">
-        <div class="text-center space-y-3">
-            <h1 class="text-3xl font-extrabold text-gray-900">オンラインWeb便利ツール箱</h1>
-            <p class="text-gray-600 text-sm">100% ブラウザ内で処理。データが外部サーバーに送信されることはありません。</p>
+    <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full space-y-8">
+        <div class="text-center space-y-2">
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900">オンラインWeb便利ツール箱</h1>
+            <p class="text-gray-600 text-xs sm:text-sm">100% ブラウザ内で処理。データが外部送信されることはありません。</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <a href="json.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-1">JSON 成形 & 構文チェック →</h2>
-                <p class="text-gray-500 text-xs">JSONの整形、1行圧縮、エラー検出を即座に行います。</p>
-            </a>
-            <a href="base64.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-1">Base64 エンコード/デコード →</h2>
-                <p class="text-gray-500 text-xs">テキストとBase64形式の相互変換ツール。</p>
-            </a>
-            <a href="timestamp.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-1">Unix タイムスタンプ変換 →</h2>
-                <p class="text-gray-500 text-xs">10桁・13桁のタイムスタンプと日時を相互変換。</p>
-            </a>
-            <a href="text.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-1">テキストカウント & 重複削除 →</h2>
-                <p class="text-gray-500 text-xs">文字数や行数のカウント、重複行の削除が一瞬で完了。</p>
-            </a>
-            <a href="password.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-1">ランダムパスワード生成 →</h2>
-                <p class="text-gray-500 text-xs">安全で強力なパスワードを自動生成します。</p>
-            </a>
-            <a href="qrcode.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-1">QRコード作成 & 画像解析 →</h2>
-                <p class="text-gray-500 text-xs">QRコードのオンライン作成と画像の解析読み取り。</p>
-            </a>
-            <a href="hash-url.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-1">URL エンコード / デコード →</h2>
-                <p class="text-gray-500 text-xs">文字列のURLエンコードおよびデコードツール。</p>
-            </a>
-            <a href="crypto-gen.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border border-amber-300 hover:border-amber-500 block bg-gradient-to-br from-amber-50 to-white">
-                <h2 class="text-lg font-bold text-amber-700 mb-1">暗号資産 秘密鍵 & シードフレーズ生成 →</h2>
-                <p class="text-gray-500 text-xs">ETH/TRXの秘密鍵と12/24フレーズをローカルオフライン生成。</p>
-            </a>
-        </div>
+        <!-- Section 1: Web3 & 暗号資産 -->
+        <section class="space-y-3">
+            <div class="flex items-center space-x-2 border-b pb-2">
+                <span class="text-lg">🪙</span>
+                <h2 class="text-base font-bold text-gray-800">Web3 & 暗号資産ツール</h2>
+            </div>
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                <a href="crypto-gen.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border border-amber-200 hover:border-amber-500 block bg-gradient-to-br from-amber-50/50 to-white">
+                    <h3 class="text-sm sm:text-base font-bold text-amber-700 mb-1">秘密鍵 & フレーズ生成器 →</h3>
+                    <p class="text-gray-500 text-xs hidden sm:block">ETH/TRXの秘密鍵と12/24フレーズをオフライン生成。</p>
+                </a>
+                <a href="batch-wallet.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border border-amber-200 hover:border-amber-500 block bg-gradient-to-br from-amber-50/50 to-white">
+                    <h3 class="text-sm sm:text-base font-bold text-amber-700 mb-1">一括ウォレット生成器 →</h3>
+                    <p class="text-gray-500 text-xs hidden sm:block">最大10,000個のウォレットを一括オフライン生成（CSV出力対応）。</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Section 2: 開発者 & 運用ツール -->
+        <section class="space-y-3">
+            <div class="flex items-center space-x-2 border-b pb-2">
+                <span class="text-lg">💻</span>
+                <h2 class="text-base font-bold text-gray-800">開発者 & 運用ツール</h2>
+            </div>
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                <a href="json.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">JSON 成形 & 構文チェック →</h3>
+                    <p class="text-gray-500 text-xs hidden sm:block">JSONの整形、1行圧縮、エラー検出。</p>
+                </a>
+                <a href="base64.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">Base64 エンコード/デコード →</h3>
+                    <p class="text-gray-500 text-xs hidden sm:block">テキストとBase64形式の相互変換。</p>
+                </a>
+                <a href="hash-url.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">URL エンコード / デコード →</h3>
+                    <p class="text-gray-500 text-xs hidden sm:block">特殊文字の標準エスケープおよびデコード。</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Section 3: テキスト & 効率化ツール -->
+        <section class="space-y-3">
+            <div class="flex items-center space-x-2 border-b pb-2">
+                <span class="text-lg">🛠️</span>
+                <h2 class="text-base font-bold text-gray-800">テキスト & 効率化ツール</h2>
+            </div>
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                <a href="timestamp.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">Unix タイムスタンプ変換 →</h3>
+                    <p class="text-gray-500 text-xs hidden sm:block">10桁・13桁のタイムスタンプと日時を相互変換。</p>
+                </a>
+                <a href="text.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">テキストカウント & 重複削除 →</h3>
+                    <p class="text-gray-500 text-xs hidden sm:block">文字数や行数のカウント、重複行の削除。</p>
+                </a>
+                <a href="password.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">ランダムパスワード生成器 →</h3>
+                    <p class="text-gray-500 text-xs hidden sm:block">安全で強力なパスワードを自動生成。</p>
+                </a>
+                <a href="qrcode.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">QRコード作成 & 画像解析 →</h3>
+                    <p class="text-gray-500 text-xs hidden sm:block">QRコードの作成と画像からの解析読み取り。</p>
+                </a>
+                <a href="img-base64.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">画像 Base64 変換 →</h3>
+                    <p class="text-gray-500 text-xs hidden sm:block">画像を Base64 Data URL 形式に即座に変換。</p>
+                </a>
+            </div>
+        </section>
     </main>
 
     <footer class="bg-white border-t py-4 text-center text-xs text-gray-500 space-y-2">
@@ -80,7 +104,7 @@
             <span>|</span>
             <a href="privacy.html" class="hover:underline">プライバシーポリシー</a>
             <span>|</span>
-            <a href="mailto:voice366@hotmail.com" class="hover:underline font-semibold text-blue-600">お問い合わせ: voice366@hotmail.com</a>
+            <a href="mailto:your-email@example.com" class="hover:underline font-semibold text-blue-600">お問い合わせ: your-email@example.com</a>
         </div>
         <p>© 2026 DevTools Express</p>
     </footer>
