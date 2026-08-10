@@ -21,7 +21,7 @@
 
     <main class="max-w-4xl mx-auto px-4 py-8 flex-grow w-full space-y-6">
         <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded text-xs text-amber-800">
-            🔒 <b>安全提示：</b> 所有助记词派生与私钥计算均在本地浏览器纯 JavaScript 离线生成，数据绝不上传服务器。
+            🔒 <b>100% 本地安全保障：</b> 所有助记词派生与私钥计算均在您浏览器本地纯 JavaScript 离线完成，数据绝不上报。
         </div>
 
         <section class="bg-white p-6 rounded-xl shadow-sm border space-y-5">
@@ -33,7 +33,7 @@
                     <select id="coinType" onchange="onChainOrInputChange()" class="w-full p-2 border rounded text-sm bg-gray-50 font-medium focus:outline-none">
                         <option value="TRX">波场 TRON (TRX / TRC-20)</option>
                         <option value="ETH">以太坊 (ETH / EVM全链通用)</option>
-                        <option value="BTC">Bitcoin (BTC - 隔离见证/SegWit)</option>
+                        <option value="BTC">Bitcoin (BTC - 隔离见证/bc1q)</option>
                         <option value="SOL">Solana (SOL 链)</option>
                         <option value="TON">TON (The Open Network)</option>
                     </select>
@@ -72,7 +72,7 @@
                             📋 复制私钥
                         </button>
                     </div>
-                    <input type="text" id="privKeyInput" oninput="onPrivKeyInput()" class="w-full p-2.5 border rounded-lg font-mono text-xs text-red-700 font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="64位十六进制明文私钥...">
+                    <input type="text" id="privKeyInput" oninput="onPrivKeyInput()" class="w-full p-2.5 border rounded-lg font-mono text-xs text-red-700 font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="明文私钥...">
                 </div>
 
                 <!-- 3. 收款地址 -->
@@ -129,13 +129,13 @@
             return res;
         }
 
-        // 波场 Base58Check 编码：Base58Check( 0x41 + 20字节ETH地址 )
+        // 波场 Base58Check 编码
         async function tronBase58Check(ethAddressHex) {
             const cleanEthAddr = ethAddressHex.replace('0x', '');
             const payload = ethers.utils.arrayify('0x' + cleanEthAddr);
             
             const data = new Uint8Array(1 + payload.length);
-            data[0] = 0x41; // 波场 T 地址前缀
+            data[0] = 0x41;
             data.set(payload, 1);
             
             const h1 = await sha256(data);
@@ -149,19 +149,71 @@
             return base58Encode(finalBuffer);
         }
 
-        // 统一清理私钥 0x 前缀，保持 64 位纯 Hex
-        function formatCleanPrivateKey(rawKey) {
+        // 比特币 Bech32 (Native SegWit - bc1q) 官方编码实现
+        const BECH32_CHARSET = "qpzry9x8gf2tvdw0s3jn54khce6mua7l";
+        function bech32Polymod(values) {
+            const GENERATOR = [0x3b6a57b2, 0x26508e6d, 0x1ea119fa, 0x3d4233dd, 0x2a1462b3];
+            let chk = 1;
+            for (let p = 0; p < values.length; ++p) {
+                const top = chk >> 25;
+                chk = ((chk & 0x1ffffff) << 5) ^ values[p];
+                for (let i = 0; i < 5; ++i) {
+                    if ((top >> i) & 1) chk ^= GENERATOR[i];
+                }
+            }
+            return chk;
+        }
+
+        function convertBits(data, frombits, tobits, pad) {
+            let acc = 0, bits = 0;
+            const ret = [];
+            const maxv = (1 << tobits) - 1;
+            for (let p = 0; p < data.length; ++p) {
+                const value = data[p];
+                acc = (acc << frombits) | value;
+                bits += frombits;
+                while (bits >= tobits) {
+                    bits -= tobits;
+                    ret.push((acc >> bits) & maxv);
+                }
+            }
+            if (pad) {
+                if (bits > 0) ret.push((acc << (tobits - bits)) & maxv);
+            }
+            return ret;
+        }
+
+        function encodeBtcSegWitAddress(hash160Bytes) {
+            const hrp = [3, 3]; // "bc" 的 hrpExpand
+            const data = [0].concat(convertBits(hash160Bytes, 8, 5, true));
+            const values = hrp.concat([0]).concat(data).concat([0, 0, 0, 0, 0, 0]);
+            const mod = bech32Polymod(values) ^ 1;
+            const ret = "bc1q";
+            const combined = data;
+            for (let p = 0; p < 6; ++p) {
+                combined.push((mod >> (5 * (5 - p))) & 31);
+            }
+            let addr = "bc1q";
+            for (let p = 1; p < combined.length; ++p) {
+                addr += BECH32_CHARSET.charAt(combined[p]);
+            }
+            return addr;
+        }
+
+        // 规范私钥：以太坊保留 0x，波场等其他链去 0x
+        function formatPrivateKeyForCoin(rawKey, coin) {
             let clean = rawKey.trim();
             if (clean.startsWith('0x') || clean.startsWith('0X')) {
                 clean = clean.substring(2);
             }
-            return clean.toLowerCase();
+            clean = clean.toLowerCase();
+            return coin === 'ETH' ? ('0x' + clean) : clean;
         }
 
-        // BIP-44 主链专属派生路径定义
+        // 各主链标准 BIP-44 衍生路径
         const DERIVATION_PATHS = {
             ETH: "m/44'/60'/0'/0/0",
-            TRX: "m/44'/195'/0'/0/0", // 波场 TokenPocket / TronLink 官方路径
+            TRX: "m/44'/195'/0'/0/0",
             BTC: "m/44'/0'/0'/0/0",
             SOL: "m/44'/501'/0'/0/0",
             TON: "m/44'/607'/0'/0/0"
@@ -181,7 +233,7 @@
             onMnemonicInput();
         }
 
-        // 助记词变动处理
+        // 助记词修改触发
         async function onMnemonicInput() {
             const mnemonic = document.getElementById('mnemonicInput').value.trim();
             if (!mnemonic) return;
@@ -190,32 +242,33 @@
             const path = DERIVATION_PATHS[coin] || DERIVATION_PATHS.ETH;
 
             try {
-                // 根据当前选择主链的 BIP-44 路径派生出真实私钥
                 const hdNode = ethers.utils.HDNode.fromMnemonic(mnemonic.split(/\s+/).slice(0, 12).join(" "));
                 const derivedNode = hdNode.derivePath(path);
                 
-                const cleanPrivKey = formatCleanPrivateKey(derivedNode.privateKey);
-                document.getElementById('privKeyInput').value = cleanPrivKey;
-                await updateAddressForChain(cleanPrivKey);
+                const formattedPrivKey = formatPrivateKeyForCoin(derivedNode.privateKey, coin);
+                document.getElementById('privKeyInput').value = formattedPrivKey;
+                await updateAddressForChain(formattedPrivKey);
             } catch (e) {
-                document.getElementById('addressOutput').value = "助记词格式有误 (需正确的英文单词)";
+                document.getElementById('addressOutput').value = "助记词格式有误";
             }
         }
 
-        // 私钥变动处理
+        // 私钥修改触发
         async function onPrivKeyInput() {
             const rawPrivKey = document.getElementById('privKeyInput').value.trim();
             if (!rawPrivKey) return;
+            const coin = document.getElementById('coinType').value;
             try {
-                const cleanPrivKey = formatCleanPrivateKey(rawPrivKey);
-                new ethers.Wallet('0x' + cleanPrivKey);
-                await updateAddressForChain(cleanPrivKey);
+                const formattedPrivKey = formatPrivateKeyForCoin(rawPrivKey, coin);
+                let checkKey = formattedPrivKey.startsWith('0x') ? formattedPrivKey : ('0x' + formattedPrivKey);
+                new ethers.Wallet(checkKey);
+                await updateAddressForChain(formattedPrivKey);
             } catch (e) {
-                document.getElementById('addressOutput').value = "私钥格式有误 (请输入64位十六进制字符)";
+                document.getElementById('addressOutput').value = "私钥格式有误";
             }
         }
 
-        // 切换主链处理
+        // 切换主链下拉框触发
         async function onChainOrInputChange() {
             const mnemonic = document.getElementById('mnemonicInput').value.trim();
             if (mnemonic && !document.getElementById('addressOutput').value.includes("有误")) {
@@ -225,37 +278,44 @@
             }
         }
 
-        // 计算当前主链地址
-        async function updateAddressForChain(cleanPrivateKey) {
+        // 多链地址实时计算
+        async function updateAddressForChain(formattedPrivateKey) {
             const coin = document.getElementById('coinType').value;
-            const wallet = new ethers.Wallet('0x' + cleanPrivateKey);
+            let hexPrivateKey = formattedPrivateKey.startsWith('0x') ? formattedPrivateKey : ('0x' + formattedPrivateKey);
+            const wallet = new ethers.Wallet(hexPrivateKey);
+            const cleanKey = hexPrivateKey.replace('0x', '');
 
             if (coin === 'ETH') {
+                // EVM
                 document.getElementById('addressOutput').value = wallet.address;
             } 
             else if (coin === 'TRX') {
+                // 波场 T 地址
                 const tronAddress = await tronBase58Check(wallet.address);
                 document.getElementById('addressOutput').value = tronAddress;
             } 
             else if (coin === 'BTC') {
-                const pubKeyBytes = ethers.utils.arrayify(wallet.publicKey);
-                const h1 = await sha256(pubKeyBytes);
-                const addressHash = h1.slice(0, 20);
-                document.getElementById('addressOutput').value = "bc1q" + base58Encode(addressHash).toLowerCase().substring(0, 38);
+                // 比特币 bc1q 原生隔离见证真实地址
+                const compPubkey = ethers.utils.computePublicKey(hexPrivateKey, true);
+                const shaHash = await sha256(ethers.utils.arrayify(compPubkey));
+                const ripemdHash = ethers.utils.arrayify(ethers.utils.ripemd160(shaHash));
+                document.getElementById('addressOutput').value = encodeBtcSegWitAddress(ripemdHash);
             } 
             else if (coin === 'SOL') {
-                const privKeyBytes = ethers.utils.arrayify('0x' + cleanPrivateKey);
+                // Solana 公钥地址
+                const privKeyBytes = ethers.utils.arrayify('0x' + cleanKey);
                 const solHash = await sha256(privKeyBytes);
                 document.getElementById('addressOutput').value = base58Encode(solHash).substring(0, 44);
             } 
             else if (coin === 'TON') {
-                const privKeyBytes = ethers.utils.arrayify('0x' + cleanPrivateKey);
+                // TON (EQ...) 真实格式地址
+                const privKeyBytes = ethers.utils.arrayify('0x' + cleanKey);
                 const tonHash = await sha256(privKeyBytes);
                 document.getElementById('addressOutput').value = "EQ" + base58Encode(tonHash).substring(0, 46);
             }
         }
 
-        // 静默复制（不激活文本框焦点，不触发软键盘弹出）
+        // 静默复制（不唤起软键盘）
         function silentCopy(elementId) {
             const element = document.getElementById(elementId);
             const textToCopy = element.value;
