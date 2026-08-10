@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高速オンラインWeb便利ツール箱 - 無料で安全なツール</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-lg font-bold">DevTools Express</a>
+            
+            <div class="flex items-center space-x-3">
+                <nav class="text-xs sm:text-sm space-x-2 overflow-x-auto hidden sm:block">
+                    <a href="json.html" class="hover:underline">JSON</a>
+                    <a href="qrcode.html" class="hover:underline">QRコード</a>
+                </nav>
+                
+                <!-- 言語選択 -->
+                <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400 focus:outline-none">
+                    <option value="/index.html">🌐 English</option>
+                    <option value="/zh/index.html">中文 (Chinese)</option>
+                    <option value="/ja/index.html" selected>日本語 (Japanese)</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-10 flex-grow w-full space-y-8">
+        <div class="text-center space-y-3">
+            <h1 class="text-3xl font-extrabold text-gray-900">オンラインWeb便利ツール</h1>
+            <p class="text-gray-600 text-sm">100% ブラウザ内で処理。データが外部サーバーに送信されることはありません。</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <a href="json.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500">
+                <h2 class="text-lg font-bold text-blue-600 mb-1">JSON 成形 & 構文チェック →</h2>
+                <p class="text-gray-500 text-xs">JSONの整形、1行圧縮、エラー検出を即座に行います。</p>
+            </a>
+            <a href="qrcode.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500">
+                <h2 class="text-lg font-bold text-blue-600 mb-1">QRコード作成 & 画像読み取り →</h2>
+                <p class="text-gray-500 text-xs">QRコードのオンライン作成と、画像のアップロード解析に対応。</p>
+            </a>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t py-4 text-center text-xs text-gray-500">
+        <p>© 2026 DevTools Express</p>
+    </footer>
+</body>
+</html>
