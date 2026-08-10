@@ -3,31 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSON 在线格式化与校验工具 - 实用工具箱</title>
+    <title>JSON 在线格式化与美化校验器 - 极速在线工具箱</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
-    <nav class="bg-white shadow-sm border-b">
-        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
-            <span class="font-bold text-xl text-blue-600">实用在线工具箱</span>
-            <div class="space-x-4 text-sm">
-                <a href="index.html" class="text-gray-600 hover:text-blue-600">文本处理</a>
-                <a href="json.html" class="text-blue-600 font-medium">JSON格式化</a>
-                <a href="about.html" class="text-gray-600 hover:text-blue-600">关于我们</a>
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-lg font-bold">极速在线工具箱</a>
+            <div class="text-xs sm:text-sm space-x-2 overflow-x-auto">
+                <a href="json.html" class="font-bold underline">JSON</a>
+                <a href="base64.html" class="hover:underline">Base64</a>
+                <a href="timestamp.html" class="hover:underline">时间戳</a>
+                <a href="text.html" class="hover:underline">文本处理</a>
+                <a href="password.html" class="hover:underline">密码生成</a>
+                <a href="qrcode.html" class="hover:underline">二维码</a>
+                <a href="hash-url.html" class="hover:underline">哈希/URL</a>
             </div>
         </div>
-    </nav>
+    </header>
 
-    <main class="max-w-4xl mx-auto px-4 py-8 flex-grow">
-        <h1 class="text-2xl font-bold mb-4 text-center">JSON 在线格式化与美化工具</h1>
-        <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-            <textarea id="jsonInput" class="w-full h-48 p-3 border rounded-lg font-mono text-sm mb-4" placeholder="请在此输入简陋或压缩的 JSON 字符串..."></textarea>
-            <div class="space-x-2 mb-2">
-                <button onclick="formatJSON()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm">美化/格式化</button>
-                <button onclick="compressJSON()" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 text-sm">压缩单行</button>
+    <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full space-y-6">
+        <section class="bg-white p-6 rounded-xl shadow-sm space-y-4">
+            <h1 class="text-2xl font-bold text-gray-800">JSON 在线格式化与语法校验器</h1>
+            <textarea id="jsonInput" class="w-full h-64 p-3 border rounded-lg font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="请在此粘贴 JSON 文本..."></textarea>
+            <div class="flex flex-wrap gap-2">
+                <button onclick="formatJSON()" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 font-medium">格式化 / 美化</button>
+                <button onclick="compressJSON()" class="bg-gray-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-700 font-medium">压缩单行</button>
+                <button onclick="copyText()" class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700 font-medium">复制结果</button>
             </div>
-            <p id="msg" class="text-sm font-bold mt-2"></p>
-        </div>
+            <p id="msg" class="text-sm font-semibold"></p>
+        </section>
+
+        <article class="bg-white p-6 rounded-xl shadow-sm text-gray-600 leading-relaxed space-y-3">
+            <h2 class="text-lg font-bold text-gray-800">关于 JSON 格式化工具</h2>
+            <p class="text-sm">本工具帮助开发者快速解析、排版压缩后的 JSON 字符串，并自动检测格式语法错误。全部运算在本地浏览器执行，保障数据安全。</p>
+        </article>
     </main>
 
     <footer class="bg-white border-t py-4 text-center text-xs text-gray-500">
@@ -36,22 +46,23 @@
 
     <script>
         function formatJSON() {
+            const input = document.getElementById('jsonInput');
             const msg = document.getElementById('msg');
             try {
-                const obj = JSON.parse(document.getElementById('jsonInput').value);
-                document.getElementById('jsonInput').value = JSON.stringify(obj, null, 4);
-                msg.className = "text-green-600";
-                msg.innerText = "✓ JSON 格式语法正确并已完成美化！";
-            } catch (e) {
-                msg.className = "text-red-600";
-                msg.innerText = "✕ JSON 语法错误：" + e.message;
+                input.value = JSON.stringify(JSON.parse(input.value), null, 4);
+                msg.className = "text-green-600 font-semibold"; msg.innerText = "✓ 语法正确，排版美化完成！";
+            } catch(e) {
+                msg.className = "text-red-600 font-semibold"; msg.innerText = "✕ 语法错误: " + e.message;
             }
         }
         function compressJSON() {
-            try {
-                const obj = JSON.parse(document.getElementById('jsonInput').value);
-                document.getElementById('jsonInput').value = JSON.stringify(obj);
-            } catch (e) {}
+            const input = document.getElementById('jsonInput');
+            try { input.value = JSON.stringify(JSON.parse(input.value)); } catch(e){}
+        }
+        function copyText() {
+            const el = document.getElementById('jsonInput');
+            el.select(); navigator.clipboard.writeText(el.value);
+            alert("已复制到剪贴板！");
         }
     </script>
 </body>
