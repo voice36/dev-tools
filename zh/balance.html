@@ -181,8 +181,7 @@
                 `;
                 tableBody.appendChild(tr);
 
-                // 带 API Key 查询速度极快，保持 200ms 间隔即可
-                await sleep(200);
+                await sleep(100);
             }
 
             statusText.innerText = `全部查询完成！共 ${addresses.length} 个地址。`;
