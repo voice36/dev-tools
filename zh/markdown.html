@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown 实时预览器 - 极速在线工具箱</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-lg font-bold">极速在线工具箱</a>
+            <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400">
+                <option value="/markdown.html">🌐 English</option>
+                <option value="/zh/markdown.html" selected>中文 (Chinese)</option>
+                <option value="/ja/markdown.html">日本語 (Japanese)</option>
+            </select>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full space-y-4">
+        <h1 class="text-xl font-bold border-b pb-2">Markdown 在线编写与实时渲染预览</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-xs font-bold text-gray-600 mb-1">Markdown 源码输入：</label>
+                <textarea id="mdInput" oninput="renderMD()" rows="16" class="w-full p-3 border rounded-lg font-mono text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none"># Hello Markdown
+- 列表项 1
+- 列表项 2
+
+**粗体文本** 与 [链接](https://tools.haha6.top)
+</textarea>
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-600 mb-1">实时 HTML 渲染效果：</label>
+                <div id="mdOutput" class="p-4 bg-white border rounded-lg min-h-[340px] prose text-sm"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function renderMD() {
+            const md = document.getElementById('mdInput').value;
+            document.getElementById('mdOutput').innerHTML = marked.parse(md);
+        }
+        window.onload = renderMD;
+    </script>
+</body>
+</html>
