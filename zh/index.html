@@ -14,7 +14,12 @@
             <div class="flex items-center space-x-3">
                 <nav class="text-xs sm:text-sm space-x-2 overflow-x-auto hidden sm:block">
                     <a href="json.html" class="hover:underline">JSON</a>
+                    <a href="base64.html" class="hover:underline">Base64</a>
+                    <a href="timestamp.html" class="hover:underline">时间戳</a>
+                    <a href="text.html" class="hover:underline">文本处理</a>
+                    <a href="password.html" class="hover:underline">密码生成</a>
                     <a href="qrcode.html" class="hover:underline">二维码</a>
+                    <a href="hash-url.html" class="hover:underline">URL编码</a>
                 </nav>
                 
                 <!-- 语言切换下拉框 -->
@@ -33,20 +38,44 @@
             <p class="text-gray-600 text-sm">100% 本地浏览器运行，数据绝不上传服务器，保证隐私安全。</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <a href="json.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500">
+        <!-- 7 个工具入口卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <a href="json.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
                 <h2 class="text-lg font-bold text-blue-600 mb-1">JSON 格式化与校验 →</h2>
                 <p class="text-gray-500 text-xs">美化、单行压缩以及在线语法错误排查工具。</p>
             </a>
-            <a href="qrcode.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500">
-                <h2 class="text-lg font-bold text-blue-600 mb-1">二维码生成与识别解析器 →</h2>
-                <p class="text-gray-500 text-xs">在线生成二维码，支持上传本地二维码图片解析提取文本或网址。</p>
+            <a href="base64.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <h2 class="text-lg font-bold text-blue-600 mb-1">Base64 编码解码 →</h2>
+                <p class="text-gray-500 text-xs">快速进行文本与 Base64 编码的双向在线转换。</p>
+            </a>
+            <a href="timestamp.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <h2 class="text-lg font-bold text-blue-600 mb-1">Unix 时间戳转换 →</h2>
+                <p class="text-gray-500 text-xs">支持 10 位与 13 位时间戳与标准北京时间的互转。</p>
+            </a>
+            <a href="text.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <h2 class="text-lg font-bold text-blue-600 mb-1">文本统计与去重 →</h2>
+                <p class="text-gray-500 text-xs">字数与行数实时统计，支持一键文本按行去重。</p>
+            </a>
+            <a href="password.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <h2 class="text-lg font-bold text-blue-600 mb-1">高强度随机密码生成 →</h2>
+                <p class="text-gray-500 text-xs">自定义长度，快速生成随机高安全度字符串密码。</p>
+            </a>
+            <a href="qrcode.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <h2 class="text-lg font-bold text-blue-600 mb-1">二维码生成与解析 →</h2>
+                <p class="text-gray-500 text-xs">生成二维码，且支持上传本地图片解析二维码内容。</p>
+            </a>
+            <a href="hash-url.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <h2 class="text-lg font-bold text-blue-600 mb-1">URL 编码与解码 →</h2>
+                <p class="text-gray-500 text-xs">快速转义特殊字符，提供标准 URL Encode 与 Decode。</p>
             </a>
         </div>
     </main>
 
-    <footer class="bg-white border-t py-4 text-center text-xs text-gray-500">
-        <p>© 2026 极速在线工具箱 保留所有权利。</p>
+    <footer class="bg-white border-t py-4 text-center text-xs text-gray-500 space-x-3">
+        <a href="about.html" class="hover:underline">关于本站</a>
+        <span>|</span>
+        <a href="privacy.html" class="hover:underline">隐私政策</a>
+        <p class="mt-1">© 2026 极速在线工具箱 保留所有权利。</p>
     </footer>
 </body>
 </html>
