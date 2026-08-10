@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>加密货币助记词与私钥生成器 - 极速在线工具箱</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 引入 Ethers.js 核心算法库 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
 </head>
 <body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
@@ -21,13 +20,12 @@
     </header>
 
     <main class="max-w-4xl mx-auto px-4 py-8 flex-grow w-full space-y-6">
-        <!-- 安全提示框 -->
         <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded text-xs text-amber-800">
-            🔒 <b>100% 本地算法保障：</b> 所有私钥（64位无 0x 前缀，完美适配 TP / imToken / TronLink）与地址均在本地浏览器纯 JS 离线生成。复制时不唤起输入法。
+            🔒 <b>安全提示：</b> 所有助记词派生与私钥计算均在本地浏览器纯 JavaScript 离线生成，数据绝不上传服务器。
         </div>
 
         <section class="bg-white p-6 rounded-xl shadow-sm border space-y-5">
-            <h1 class="text-xl font-bold border-b pb-2">多链加密货币私钥与助记词精准生成器</h1>
+            <h1 class="text-xl font-bold border-b pb-2">加密货币私钥与助记词生成器</h1>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -58,7 +56,7 @@
                 <!-- 1. 助记词 -->
                 <div>
                     <div class="flex justify-between items-center mb-1">
-                        <label class="text-xs font-bold text-gray-600">BIP39 钱包助记词 (可手动修改)：</label>
+                        <label class="text-xs font-bold text-gray-600">BIP39 钱包助记词 (可自主修改)：</label>
                         <button type="button" onclick="silentCopy('mnemonicInput')" class="text-xs bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold px-3 py-1 rounded transition">
                             📋 复制助记词
                         </button>
@@ -69,7 +67,7 @@
                 <!-- 2. 私钥 -->
                 <div>
                     <div class="flex justify-between items-center mb-1">
-                        <label class="text-xs font-bold text-gray-600">当前链明文私钥 Private Key (64位无0x，可手动修改)：</label>
+                        <label class="text-xs font-bold text-gray-600">当前链明文私钥 Private Key (可自主修改)：</label>
                         <button type="button" onclick="silentCopy('privKeyInput')" class="text-xs bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold px-3 py-1 rounded transition">
                             📋 复制私钥
                         </button>
@@ -80,12 +78,12 @@
                 <!-- 3. 收款地址 -->
                 <div>
                     <div class="flex justify-between items-center mb-1">
-                        <label class="text-xs font-bold text-gray-600">当前主链精准匹配的收款地址：</label>
+                        <label class="text-xs font-bold text-gray-600">当前主链匹配的收款地址：</label>
                         <button type="button" onclick="silentCopy('addressOutput')" class="text-xs bg-green-50 hover:bg-green-100 text-green-700 font-semibold px-3 py-1 rounded transition">
                             📋 复制收款地址
                         </button>
                     </div>
-                    <input type="text" id="addressOutput" readonly class="w-full p-2.5 bg-gray-100 border rounded-lg font-mono text-xs text-green-700 font-bold focus:outline-none" placeholder="根据助记词/私钥实时推导地址...">
+                    <input type="text" id="addressOutput" readonly class="w-full p-2.5 bg-gray-100 border rounded-lg font-mono text-xs text-green-700 font-bold focus:outline-none" placeholder="根据助记词/私钥实时计算地址...">
                 </div>
             </div>
         </section>
@@ -103,7 +101,7 @@
     </main>
 
     <script>
-        // SHA-256 哈希计算
+        // SHA-256 计算
         async function sha256(bytes) {
             const hashBuffer = await crypto.subtle.digest('SHA-256', bytes);
             return new Uint8Array(hashBuffer);
@@ -131,13 +129,13 @@
             return res;
         }
 
-        // 波场 TRON 专属 Base58Check 编码：Base58Check( 0x41 + 20字节ETH地址 )
+        // 波场 Base58Check 编码：Base58Check( 0x41 + 20字节ETH地址 )
         async function tronBase58Check(ethAddressHex) {
             const cleanEthAddr = ethAddressHex.replace('0x', '');
             const payload = ethers.utils.arrayify('0x' + cleanEthAddr);
             
             const data = new Uint8Array(1 + payload.length);
-            data[0] = 0x41; // 波场前缀 0x41 (字母 T)
+            data[0] = 0x41; // 波场 T 地址前缀
             data.set(payload, 1);
             
             const h1 = await sha256(data);
@@ -151,7 +149,7 @@
             return base58Encode(finalBuffer);
         }
 
-        // 格式化私钥：确保去掉了 0x，输出标准的 64 位纯 Hex 字符串
+        // 统一清理私钥 0x 前缀，保持 64 位纯 Hex
         function formatCleanPrivateKey(rawKey) {
             let clean = rawKey.trim();
             if (clean.startsWith('0x') || clean.startsWith('0X')) {
@@ -160,7 +158,16 @@
             return clean.toLowerCase();
         }
 
-        // 生成全新的随机密钥对
+        // BIP-44 主链专属派生路径定义
+        const DERIVATION_PATHS = {
+            ETH: "m/44'/60'/0'/0/0",
+            TRX: "m/44'/195'/0'/0/0", // 波场 TokenPocket / TronLink 官方路径
+            BTC: "m/44'/0'/0'/0/0",
+            SOL: "m/44'/501'/0'/0/0",
+            TON: "m/44'/607'/0'/0/0"
+        };
+
+        // 随机生成全新密钥对
         function generateRandomKeys() {
             const count = parseInt(document.getElementById('wordsCount').value);
             const randomWallet = ethers.Wallet.createRandom();
@@ -174,81 +181,81 @@
             onMnemonicInput();
         }
 
-        // 修改助记词触发
+        // 助记词变动处理
         async function onMnemonicInput() {
             const mnemonic = document.getElementById('mnemonicInput').value.trim();
             if (!mnemonic) return;
+            
+            const coin = document.getElementById('coinType').value;
+            const path = DERIVATION_PATHS[coin] || DERIVATION_PATHS.ETH;
+
             try {
-                const wallet = ethers.Wallet.fromMnemonic(mnemonic.split(/\s+/).slice(0, 12).join(" "));
-                // 去掉 0x，保留标准 64 位私钥
-                const cleanPrivKey = formatCleanPrivateKey(wallet.privateKey);
+                // 根据当前选择主链的 BIP-44 路径派生出真实私钥
+                const hdNode = ethers.utils.HDNode.fromMnemonic(mnemonic.split(/\s+/).slice(0, 12).join(" "));
+                const derivedNode = hdNode.derivePath(path);
+                
+                const cleanPrivKey = formatCleanPrivateKey(derivedNode.privateKey);
                 document.getElementById('privKeyInput').value = cleanPrivKey;
                 await updateAddressForChain(cleanPrivKey);
             } catch (e) {
-                document.getElementById('addressOutput').value = "助记词格式有误 (需格式正确的英文单词)";
+                document.getElementById('addressOutput').value = "助记词格式有误 (需正确的英文单词)";
             }
         }
 
-        // 修改私钥触发
+        // 私钥变动处理
         async function onPrivKeyInput() {
             const rawPrivKey = document.getElementById('privKeyInput').value.trim();
             if (!rawPrivKey) return;
             try {
                 const cleanPrivKey = formatCleanPrivateKey(rawPrivKey);
-                new ethers.Wallet('0x' + cleanPrivKey); // 校验私钥合法性
+                new ethers.Wallet('0x' + cleanPrivKey);
                 await updateAddressForChain(cleanPrivKey);
             } catch (e) {
                 document.getElementById('addressOutput').value = "私钥格式有误 (请输入64位十六进制字符)";
             }
         }
 
-        // 切换主链下拉框触发
+        // 切换主链处理
         async function onChainOrInputChange() {
-            const rawPrivKey = document.getElementById('privKeyInput').value.trim();
-            if (rawPrivKey && !rawPrivKey.includes("有误")) {
-                const cleanPrivKey = formatCleanPrivateKey(rawPrivKey);
-                await updateAddressForChain(cleanPrivKey);
-            } else {
+            const mnemonic = document.getElementById('mnemonicInput').value.trim();
+            if (mnemonic && !document.getElementById('addressOutput').value.includes("有误")) {
                 await onMnemonicInput();
+            } else {
+                await onPrivKeyInput();
             }
         }
 
-        // 真实多链地址推导逻辑
+        // 计算当前主链地址
         async function updateAddressForChain(cleanPrivateKey) {
             const coin = document.getElementById('coinType').value;
             const wallet = new ethers.Wallet('0x' + cleanPrivateKey);
 
             if (coin === 'ETH') {
-                // EVM (以太坊 / BSC / Polygon 全链通用)
                 document.getElementById('addressOutput').value = wallet.address;
             } 
             else if (coin === 'TRX') {
-                // 波场 TRON (精确算法：从当前私钥推导出来的 T 开头真实地址)
                 const tronAddress = await tronBase58Check(wallet.address);
                 document.getElementById('addressOutput').value = tronAddress;
             } 
             else if (coin === 'BTC') {
-                // 比特币原生 SegWit (bc1q...) 真实地址
                 const pubKeyBytes = ethers.utils.arrayify(wallet.publicKey);
                 const h1 = await sha256(pubKeyBytes);
                 const addressHash = h1.slice(0, 20);
                 document.getElementById('addressOutput').value = "bc1q" + base58Encode(addressHash).toLowerCase().substring(0, 38);
             } 
             else if (coin === 'SOL') {
-                // Solana 真实公钥地址
                 const privKeyBytes = ethers.utils.arrayify('0x' + cleanPrivateKey);
                 const solHash = await sha256(privKeyBytes);
                 document.getElementById('addressOutput').value = base58Encode(solHash).substring(0, 44);
             } 
             else if (coin === 'TON') {
-                // TON (The Open Network) 真实地址 (EQ...)
                 const privKeyBytes = ethers.utils.arrayify('0x' + cleanPrivateKey);
                 const tonHash = await sha256(privKeyBytes);
                 document.getElementById('addressOutput').value = "EQ" + base58Encode(tonHash).substring(0, 46);
             }
         }
 
-        // 静默复制函数 (不会激活元素焦点，彻底规避软键盘唤起)
+        // 静默复制（不激活文本框焦点，不触发软键盘弹出）
         function silentCopy(elementId) {
             const element = document.getElementById(elementId);
             const textToCopy = element.value;
@@ -281,7 +288,6 @@
             alert("已成功复制到剪贴板！");
         }
 
-        // 页面加载完成后自动随机生成一组
         window.onload = generateRandomKeys;
     </script>
 </body>
