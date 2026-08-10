@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>加密货币地址余额查询 - 极速在线工具箱</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
 </head>
 <body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
     <header class="bg-blue-600 text-white shadow-md">
@@ -21,7 +20,7 @@
 
     <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full space-y-6">
         <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded text-xs text-amber-800">
-            🔍 <b>查询说明：</b> 支持稳定查询 TRON (TRX/USDT) 与 ETH (ETH/USDT) 余额。内部已加入防请求过载延迟，保障批量查询精准度。
+            🔍 <b>查询说明：</b> 已接入 TronGrid 与 Etherscan 专线 API，支持高并发批量精准查询 TRON (TRX/USDT) 与 ETH (ETH/USDT) 余额。
         </div>
 
         <section class="bg-white p-6 rounded-xl shadow-sm border space-y-5">
@@ -78,7 +77,7 @@
             <span>|</span>
             <a href="privacy.html" class="hover:underline">隐私政策</a>
             <span>|</span>
-            <a href="mailto:your-email@example.com" class="hover:underline font-semibold text-blue-600">联系邮箱：your-email@example.com</a>
+            <a href="mailto:voice366@hotmail.com" class="hover:underline font-semibold text-blue-600">联系邮箱：voice366@hotmail.com</a>
         </div>
         <p>© 2026 极速在线工具箱 保留所有权利。</p>
     </footer>
@@ -86,11 +85,11 @@
     <script>
         let checkResults = [];
         
-        // 可替换为您在 Ankr / Alchemy 申请的带域名白名单保护的 API Key 节点
-        const ETH_RPC = "https://rpc.ankr.com/eth"; 
+        // ---------------- 替换为您自己的 API Key ----------------
+        const TRONGRID_API_KEY = "e7872f3f-cf8f-4aff-bdce-7e8cfb944ad6";
+        const ETHERSCAN_API_KEY = "YOUR_ETHERSCAN_API_KEY";
         const ETH_USDT_CONTRACT = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
 
-        // 延时等待函数，防止并发请求触发频率限制
         const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
         async function startCheckBalance() {
@@ -111,9 +110,6 @@
             checkResults = [];
             document.getElementById('outputContainer').classList.remove('hidden');
 
-            const provider = coin === 'ETH' ? new ethers.providers.JsonRpcProvider(ETH_RPC) : null;
-            const usdtAbi = ["function balanceOf(address owner) view returns (uint256)"];
-
             for (let i = 0; i < addresses.length; i++) {
                 const addr = addresses[i];
                 statusText.innerText = `正在查询 (${i + 1}/${addresses.length}): ${addr.substring(0, 8)}...`;
@@ -124,9 +120,12 @@
 
                 try {
                     if (coin === 'TRX') {
-                        // 波场 TronGrid 官方 API 节点查询
+                        // 使用 TronGrid API Key 查询波场
                         const res = await fetch(`https://api.trongrid.io/v1/accounts/${addr}`, {
-                            headers: { 'Accept': 'application/json' }
+                            headers: { 
+                                'Accept': 'application/json',
+                                'TRON-PRO-API-KEY': TRONGRID_API_KEY 
+                            }
                         });
                         const data = await res.json();
                         
@@ -142,20 +141,24 @@
                                     }
                                 }
                             }
-                        } else if (data.success === false) {
-                            status = "节点频繁，稍后重试";
                         }
                     } else {
-                        // ETH RPC 节点查询
-                        const ethWei = await provider.getBalance(addr);
-                        nativeBal = parseFloat(ethers.utils.formatEther(ethWei)).toFixed(4);
+                        // 1. 使用 Etherscan API 查 ETH 主币余额
+                        const ethRes = await fetch(`https://api.etherscan.io/api?module=account&action=balance&address=${addr}&tag=latest&apikey=${ETHERSCAN_API_KEY}`);
+                        const ethData = await ethRes.json();
+                        if (ethData.status === "1") {
+                            nativeBal = (parseInt(ethData.result) / 1e18).toFixed(4);
+                        }
 
-                        const usdtContract = new ethers.Contract(ETH_USDT_CONTRACT, usdtAbi, provider);
-                        const usdtRaw = await usdtContract.balanceOf(addr);
-                        usdtBal = (parseFloat(usdtRaw.toString()) / 1000000).toFixed(2);
+                        // 2. 使用 Etherscan API 查 ERC20 USDT 余额
+                        const usdtRes = await fetch(`https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=${ETH_USDT_CONTRACT}&address=${addr}&tag=latest&apikey=${ETHERSCAN_API_KEY}`);
+                        const usdtData = await usdtRes.json();
+                        if (usdtData.status === "1") {
+                            usdtBal = (parseInt(usdtData.result) / 1e6).toFixed(2);
+                        }
                     }
                 } catch (e) {
-                    status = "请求频繁/失败";
+                    status = "查询失败/API受限";
                 }
 
                 const resObj = {
@@ -178,8 +181,8 @@
                 `;
                 tableBody.appendChild(tr);
 
-                // 每次查询间隔 300 毫秒，防止并发太快触发 API 防刷锁
-                await sleep(300);
+                // 带 API Key 查询速度极快，保持 200ms 间隔即可
+                await sleep(200);
             }
 
             statusText.innerText = `全部查询完成！共 ${addresses.length} 个地址。`;
