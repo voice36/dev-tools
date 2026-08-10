@@ -31,17 +31,6 @@
             <a href="index.html" class="text-lg font-bold">DevTools Express</a>
             
             <div class="flex items-center space-x-3">
-                <nav class="text-xs sm:text-sm space-x-2 overflow-x-auto hidden md:block">
-                    <a href="json.html" class="hover:underline">JSON</a>
-                    <a href="base64.html" class="hover:underline">Base64</a>
-                    <a href="timestamp.html" class="hover:underline">Timestamp</a>
-                    <a href="text.html" class="hover:underline">Text</a>
-                    <a href="password.html" class="hover:underline">Password</a>
-                    <a href="qrcode.html" class="hover:underline">QR Code</a>
-                    <a href="hash-url.html" class="hover:underline">URL/Hash</a>
-                    <a href="crypto-gen.html" class="hover:underline text-yellow-300 font-bold">Crypto Key</a>
-                </nav>
-                
                 <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400 focus:outline-none">
                     <option value="/index.html" selected>🌐 English</option>
                     <option value="/zh/index.html">中文 (Chinese)</option>
@@ -51,46 +40,81 @@
         </div>
     </header>
 
-    <main class="max-w-5xl mx-auto px-4 py-10 flex-grow w-full space-y-8">
-        <div class="text-center space-y-3">
-            <h1 class="text-3xl font-extrabold text-gray-900">Online Web Utility Toolbox</h1>
-            <p class="text-gray-600 text-sm">100% Client-side processing. Your data is safe and never leaves your browser.</p>
+    <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full space-y-8">
+        <div class="text-center space-y-2">
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900">Online Web Utility Toolbox</h1>
+            <p class="text-gray-600 text-xs sm:text-sm">100% Client-side processing. Your data never leaves your browser.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <a href="json.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-1">JSON Formatter & Validator →</h2>
-                <p class="text-gray-500 text-xs">Beautify, compress, and check JSON string formatting instantly.</p>
-            </a>
-            <a href="base64.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-1">Base64 Encode & Decode →</h2>
-                <p class="text-gray-500 text-xs">Encode and decode UTF-8 strings to Base64 effortlessly.</p>
-            </a>
-            <a href="timestamp.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-1">Unix Timestamp Converter →</h2>
-                <p class="text-gray-500 text-xs">Convert 10-digit and 13-digit timestamps to human-readable date and time.</p>
-            </a>
-            <a href="text.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-1">Text Counter & Deduplicator →</h2>
-                <p class="text-gray-500 text-xs">Count words, lines, and characters, or remove duplicate lines in seconds.</p>
-            </a>
-            <a href="password.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-1">Random Password Generator →</h2>
-                <p class="text-gray-500 text-xs">Generate strong, customizable passwords for secure account protection.</p>
-            </a>
-            <a href="qrcode.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-1">QR Code Generator & Parser →</h2>
-                <p class="text-gray-500 text-xs">Create QR codes online and decode text/URLs from uploaded QR code images.</p>
-            </a>
-            <a href="hash-url.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
-                <h2 class="text-lg font-bold text-blue-600 mb-1">URL Encoder / Decoder →</h2>
-                <p class="text-gray-500 text-xs">Encode strings for URL compatibility and decode URI parameters.</p>
-            </a>
-            <a href="crypto-gen.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border border-amber-300 hover:border-amber-500 block bg-gradient-to-br from-amber-50 to-white">
-                <h2 class="text-lg font-bold text-amber-700 mb-1">Crypto Key & Mnemonic Generator →</h2>
-                <p class="text-gray-500 text-xs">Offline local generation of ETH/TRX private keys and 12/24 mnemonics.</p>
-            </a>
-        </div>
+        <!-- Section 1: Web3 & Crypto Tools -->
+        <section class="space-y-3">
+            <div class="flex items-center space-x-2 border-b pb-2">
+                <span class="text-lg">🪙</span>
+                <h2 class="text-base font-bold text-gray-800">Web3 & Crypto Tools</h2>
+            </div>
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                <a href="crypto-gen.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border border-amber-200 hover:border-amber-500 block bg-gradient-to-br from-amber-50/50 to-white">
+                    <h3 class="text-sm sm:text-base font-bold text-amber-700 mb-1">Key & Mnemonic Generator →</h3>
+                    <p class="text-gray-500 text-xs hidden sm:block">Offline generation of ETH/TRX private keys and 12/24 mnemonics.</p>
+                </a>
+                <a href="batch-wallet.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border border-amber-200 hover:border-amber-500 block bg-gradient-to-br from-amber-50/50 to-white">
+                    <h3 class="text-sm sm:text-base font-bold text-amber-700 mb-1">Batch Wallet Generator →</h3>
+                    <p class="text-gray-500 text-xs hidden sm:block">Bulk generate up to 10,000 wallets offline and export to CSV.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Section 2: Developer & DevOps Tools -->
+        <section class="space-y-3">
+            <div class="flex items-center space-x-2 border-b pb-2">
+                <span class="text-lg">💻</span>
+                <h2 class="text-base font-bold text-gray-800">Developer & DevOps Tools</h2>
+            </div>
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                <a href="json.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">JSON Formatter & Validator →</h3>
+                    <p class="text-gray-500 text-xs hidden sm:block">Beautify, compress, and validate JSON syntax online.</p>
+                </a>
+                <a href="base64.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">Base64 Encoder & Decoder →</h3>
+                    <p class="text-gray-500 text-xs hidden sm:block">Encode and decode UTF-8 strings to Base64 easily.</p>
+                </a>
+                <a href="hash-url.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">URL Encoder & Decoder →</h3>
+                    <p class="text-gray-500 text-xs hidden sm:block">Escape characters with standard URL Encode/Decode.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Section 3: Text & Productivity Tools -->
+        <section class="space-y-3">
+            <div class="flex items-center space-x-2 border-b pb-2">
+                <span class="text-lg">🛠️</span>
+                <h2 class="text-base font-bold text-gray-800">Text & Productivity Tools</h2>
+            </div>
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                <a href="timestamp.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">Unix Timestamp Converter →</h3>
+                    <p class="text-gray-500 text-xs hidden sm:block">Convert 10-digit/13-digit timestamps to readable date and time.</p>
+                </a>
+                <a href="text.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">Text Counter & Deduplicator →</h3>
+                    <p class="text-gray-500 text-xs hidden sm:block">Real-time word/line count and duplicate line removal.</p>
+                </a>
+                <a href="password.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">Random Password Generator →</h3>
+                    <p class="text-gray-500 text-xs hidden sm:block">Generate strong, customizable passwords instantly.</p>
+                </a>
+                <a href="qrcode.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">QR Code Generator & Parser →</h3>
+                    <p class="text-gray-500 text-xs hidden sm:block">Create QR codes and decode content from uploaded images.</p>
+                </a>
+                <a href="img-base64.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                    <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">Image to Base64 →</h3>
+                    <p class="text-gray-500 text-xs hidden sm:block">Convert uploaded or dragged images to Base64 Data URL.</p>
+                </a>
+            </div>
+        </section>
     </main>
 
     <footer class="bg-white border-t py-4 text-center text-xs text-gray-500 space-y-2">
@@ -99,7 +123,7 @@
             <span>|</span>
             <a href="privacy.html" class="hover:underline">Privacy Policy</a>
             <span>|</span>
-            <a href="mailto:voice366@hotmail.com" class="hover:underline font-semibold text-blue-600">Contact: voice366@hotmail.com</a>
+            <a href="mailto:your-email@example.com" class="hover:underline font-semibold text-blue-600">Contact: your-email@example.com</a>
         </div>
         <p>© 2026 DevTools Express. All rights reserved.</p>
     </footer>
