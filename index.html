@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线文本处理小工具 - 免费高效的文本编辑助手</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <span class="font-bold text-xl text-blue-600">实用在线工具箱</span>
+            <div class="space-x-4 text-sm">
+                <a href="index.html" class="text-blue-600 font-medium">文本处理</a>
+                <a href="json.html" class="text-gray-600 hover:text-blue-600">JSON格式化</a>
+                <a href="about.html" class="text-gray-600 hover:text-blue-600">关于我们</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主体内容 -->
+    <main class="max-w-4xl mx-auto px-4 py-8 flex-grow">
+        <h1 class="text-2xl font-bold mb-4 text-center">多功能在线文本处理工具</h1>
+        
+        <!-- 输入框与统计 -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <textarea id="inputText" class="w-full h-48 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4" placeholder="请在这里粘贴或输入你需要处理的文本..."></textarea>
+            
+            <div class="flex flex-wrap gap-2 mb-4">
+                <button onclick="toUpper()" class="bg-blue-600 text-white px-3 py-1.5 rounded hover:bg-blue-700 text-sm">转大写</button>
+                <button onclick="toLower()" class="bg-blue-600 text-white px-3 py-1.5 rounded hover:bg-blue-700 text-sm">转小写</button>
+                <button onclick="removeDuplicates()" class="bg-green-600 text-white px-3 py-1.5 rounded hover:bg-green-700 text-sm">去除重复行</button>
+                <button onclick="removeEmptyLines()" class="bg-green-600 text-white px-3 py-1.5 rounded hover:bg-green-700 text-sm">去除空行</button>
+                <button onclick="clearAll()" class="bg-red-500 text-white px-3 py-1.5 rounded hover:bg-red-600 text-sm">清空</button>
+            </div>
+
+            <div class="flex gap-4 text-sm text-gray-600 border-t pt-3">
+                <span>总字数：<strong id="charCount" class="text-blue-600">0</strong></span>
+                <span>总行数：<strong id="lineCount" class="text-blue-600">0</strong></span>
+            </div>
+        </div>
+
+        <!-- SEO/审核必须的长文字说明 -->
+        <article class="bg-white p-6 rounded-lg shadow-md text-gray-600 leading-relaxed space-y-4">
+            <h2 class="text-lg font-bold text-gray-800">关于本在线文本处理工具</h2>
+            <p>本工具专为办公人员、程序员及日常文档编辑者设计，旨在提供极其高效且完全免费的在线文本格式化与清理服务。无论您是在整理数据列表、去除格式杂质，还是计算文章字数，均可在此快速完成。</p>
+            
+            <h3 class="text-md font-bold text-gray-800">核心功能特点：</h3>
+            <ul class="list-disc pl-5 space-y-1">
+                <li><strong>字母大小写快速转换：</strong> 一键将所有英文字符转换为纯大写或纯小写。</li>
+                <li><strong>文本去重：</strong> 自动扫描并清除重复出现的文本行，非常适合清理提取的数据集。</li>
+                <li><strong>空行过滤：</strong> 自动清除文章或代码中的多余空白行，使文档排版更紧凑。</li>
+                <li><strong>100% 隐私安全保证：</strong> 本网站的所有计算和操作均通过您本地浏览器的 JavaScript 代码完成，<strong>任何数据都不会被上传至服务器</strong>，保障您的个人信息与数据安全。</li>
+            </ul>
+        </article>
+    </main>
+
+    <!-- 页脚法务链接（AdSense必备） -->
+    <footer class="bg-white border-t py-4 text-center text-xs text-gray-500">
+        <div class="space-x-3 mb-2">
+            <a href="about.html" class="hover:underline">关于本站</a>
+            <a href="privacy.html" class="hover:underline">隐私政策 (Privacy Policy)</a>
+        </div>
+        <p>© 2026 实用在线工具箱 - 免费高效的在线助手</p>
+    </footer>
+
+    <script>
+        const input = document.getElementById('inputText');
+        input.addEventListener('input', updateStats);
+
+        function updateStats() {
+            const text = input.value;
+            document.getElementById('charCount').innerText = text.length;
+            document.getElementById('lineCount').innerText = text ? text.split('\n').length : 0;
+        }
+        function toUpper() { input.value = input.value.toUpperCase(); updateStats(); }
+        function toLower() { input.value = input.value.toLowerCase(); updateStats(); }
+        function removeDuplicates() {
+            const lines = input.value.split('\n');
+            input.value = [...new Set(lines)].join('\n');
+            updateStats();
+        }
+        function removeEmptyLines() {
+            const lines = input.value.split('\n').filter(line => line.trim() !== '');
+            input.value = lines.join('\n');
+            updateStats();
+        }
+        function clearAll() { input.value = ''; updateStats(); }
+    </script>
+</body>
+</html>

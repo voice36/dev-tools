@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON 在线格式化与校验工具 - 实用工具箱</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+    <nav class="bg-white shadow-sm border-b">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <span class="font-bold text-xl text-blue-600">实用在线工具箱</span>
+            <div class="space-x-4 text-sm">
+                <a href="index.html" class="text-gray-600 hover:text-blue-600">文本处理</a>
+                <a href="json.html" class="text-blue-600 font-medium">JSON格式化</a>
+                <a href="about.html" class="text-gray-600 hover:text-blue-600">关于我们</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-4 py-8 flex-grow">
+        <h1 class="text-2xl font-bold mb-4 text-center">JSON 在线格式化与美化工具</h1>
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <textarea id="jsonInput" class="w-full h-48 p-3 border rounded-lg font-mono text-sm mb-4" placeholder="请在此输入简陋或压缩的 JSON 字符串..."></textarea>
+            <div class="space-x-2 mb-2">
+                <button onclick="formatJSON()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm">美化/格式化</button>
+                <button onclick="compressJSON()" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 text-sm">压缩单行</button>
+            </div>
+            <p id="msg" class="text-sm font-bold mt-2"></p>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t py-4 text-center text-xs text-gray-500">
+        <a href="privacy.html" class="hover:underline">隐私政策</a> | <a href="about.html" class="hover:underline">关于本站</a>
+    </footer>
+
+    <script>
+        function formatJSON() {
+            const msg = document.getElementById('msg');
+            try {
+                const obj = JSON.parse(document.getElementById('jsonInput').value);
+                document.getElementById('jsonInput').value = JSON.stringify(obj, null, 4);
+                msg.className = "text-green-600";
+                msg.innerText = "✓ JSON 格式语法正确并已完成美化！";
+            } catch (e) {
+                msg.className = "text-red-600";
+                msg.innerText = "✕ JSON 语法错误：" + e.message;
+            }
+        }
+        function compressJSON() {
+            try {
+                const obj = JSON.parse(document.getElementById('jsonInput').value);
+                document.getElementById('jsonInput').value = JSON.stringify(obj);
+            } catch (e) {}
+        }
+    </script>
+</body>
+</html>
