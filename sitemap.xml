@@ -15,6 +15,8 @@
     <url><loc>https://tools.haha6.top/about.html</loc><priority>0.5</priority></url>
     <url><loc>https://tools.haha6.top/privacy.html</loc><priority>0.5</priority></url>
 
+<url><loc>https://tools.haha6.top/balance.html</loc><priority>0.8</priority></url>
+
     <!-- Chinese -->
     <url><loc>https://tools.haha6.top/zh/index.html</loc><priority>0.9</priority></url>
     <url><loc>https://tools.haha6.top/zh/json.html</loc><priority>0.8</priority></url>
@@ -46,4 +48,6 @@
     <url><loc>https://tools.haha6.top/ja/img-base64.html</loc><priority>0.8</priority></url>
     <url><loc>https://tools.haha6.top/ja/about.html</loc><priority>0.5</priority></url>
     <url><loc>https://tools.haha6.top/ja/privacy.html</loc><priority>0.5</priority></url>
+
+<url><loc>https://tools.haha6.top/ja/balance.html</loc><priority>0.8</priority></url>
 </urlset>
