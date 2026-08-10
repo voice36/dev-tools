@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QRコード作成 & 読み取り - 無料Webツール</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-lg font-bold">DevTools Express</a>
+            <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400">
+                <option value="/qrcode.html">🌐 English</option>
+                <option value="/zh/qrcode.html">中文 (Chinese)</option>
+                <option value="/ja/qrcode.html" selected>日本語 (Japanese)</option>
+            </select>
+        </div>
+    </header>
+    <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full space-y-8">
+        <section class="bg-white p-6 rounded-xl shadow-sm border space-y-4">
+            <h1 class="text-xl font-bold border-b pb-2">1. QRコード作成</h1>
+            <input type="text" id="qrText" class="w-full p-2.5 border rounded text-sm" placeholder="URLまたはテキストを入力...">
+            <button onclick="makeQR()" class="bg-blue-600 text-white px-5 py-2 rounded text-sm">作成</button>
+            <div id="qrcode" class="flex justify-center p-4 bg-gray-50 border rounded min-h-[160px] items-center"></div>
+        </section>
+        <section class="bg-white p-6 rounded-xl shadow-sm border space-y-4">
+            <h2 class="text-xl font-bold border-b pb-2">2. QRコード画像読み取り</h2>
+            <input type="file" accept="image/*" onchange="decodeQR(event)" class="block text-sm text-gray-500">
+            <p id="qrResult" class="text-sm font-mono text-blue-700 font-bold break-all"></p>
+        </section>
+    </main>
+    <div id="reader" class="hidden"></div>
+    <script>
+        function makeQR() {
+            const txt = document.getElementById('qrText').value;
+            if(!txt) return alert("テキストを入力してください！");
+            document.getElementById('qrcode').innerHTML = "";
+            new QRCode(document.getElementById("qrcode"), { text: txt, width: 160, height: 160 });
+        }
+        function decodeQR(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const html5QrCode = new Html5Qrcode("reader");
+            html5QrCode.scanFile(file, true)
+                .then(msg => { document.getElementById('qrResult').innerText = "読み取り結果: " + msg; })
+                .catch(err => { alert("QRコードの読み取りに失敗しました。"); });
+        }
+    </script>
+</body>
+</html>
