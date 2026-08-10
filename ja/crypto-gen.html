@@ -81,7 +81,7 @@
     <script>
         function generateCrypto() {
             const coin = document.getElementById('coinType').value;
-const count = parseInt(document.getElementById('wordsCount').value);
+            const count = parseInt(document.getElementById('wordsCount').value);
             
             const wallet = ethers.Wallet.createRandom();
             let mnemonic = wallet.mnemonic.phrase;
