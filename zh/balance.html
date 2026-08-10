@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>加密货币地址余额查询 - 极速在线工具箱</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-lg font-bold">极速在线工具箱</a>
+            <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400">
+                <option value="/balance.html">🌐 English</option>
+                <option value="/zh/balance.html" selected>中文 (Chinese)</option>
+                <option value="/ja/balance.html">日本語 (Japanese)</option>
+            </select>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full space-y-6">
+        <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded text-xs text-amber-800">
+            🔍 <b>查询说明：</b> 支持查询 TRON (TRX/USDT) 与 ETH (ETH/USDT) 地址余额。粘贴地址后即可自动通过区块链公共 RPC 查询，支持多地址批量查询。
+        </div>
+
+        <section class="bg-white p-6 rounded-xl shadow-sm border space-y-5">
+            <h1 class="text-xl font-bold border-b pb-2">波场 (TRON) & 以太坊 (ETH) 余额查询</h1>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">选择主链网络：</label>
+                    <select id="coinType" class="w-full p-2.5 border rounded text-sm bg-gray-50 font-medium focus:outline-none">
+                        <option value="TRX">波场 TRON (TRX / TRC-20 USDT)</option>
+                        <option value="ETH">以太坊 ETH (ETH / ERC-20 USDT)</option>
+                    </select>
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">粘贴待查询地址 (每行一个，支持批量)：</label>
+                    <textarea id="addressInput" rows="3" class="w-full p-2.5 border rounded-lg font-mono text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="例如波场地址：&#10;T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb&#10;以太坊地址：&#10;0xd8da6bf26964af9d7eed9e03e53415d37aa96045"></textarea>
+                </div>
+            </div>
+
+            <button id="checkBtn" onclick="startCheckBalance()" class="w-full bg-blue-600 text-white py-2.5 rounded-lg text-sm font-bold hover:bg-blue-700 transition">
+                🚀 开始查询余额
+            </button>
+
+            <!-- 查询结果输出 -->
+            <div id="outputContainer" class="hidden space-y-3 pt-2">
+                <div class="flex justify-between items-center">
+                    <span id="progressStatus" class="text-xs font-bold text-gray-600">正在查询中...</span>
+                    <button onclick="exportCSV()" class="bg-green-600 text-white text-xs px-3 py-1.5 rounded font-bold hover:bg-green-700">
+                        📥 导出 CSV 结果表
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto border rounded-lg max-h-[500px]">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead class="sticky top-0 bg-gray-100 border-b font-bold text-gray-700">
+                            <tr>
+                                <th class="p-2.5 w-12">#</th>
+                                <th class="p-2.5">钱包地址</th>
+                                <th class="p-2.5">主币余额 (TRX/ETH)</th>
+                                <th class="p-2.5">USDT 余额</th>
+                                <th class="p-2.5">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTableBody" class="font-mono divide-y"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white border-t py-4 text-center text-xs text-gray-500 space-y-2">
+        <div class="space-x-3">
+            <a href="about.html" class="hover:underline">关于本站</a>
+            <span>|</span>
+            <a href="privacy.html" class="hover:underline">隐私政策</a>
+            <span>|</span>
+            <a href="mailto:your-email@example.com" class="hover:underline font-semibold text-blue-600">联系邮箱：your-email@example.com</a>
+        </div>
+        <p>© 2026 极速在线工具箱 保留所有权利。</p>
+    </footer>
+
+    <script>
+        let checkResults = [];
+        const ETH_RPC = "https://rpc.ankr.com/eth"; // 公共 ETH RPC 节点
+        const ETH_USDT_CONTRACT = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
+
+        async function startCheckBalance() {
+            const coin = document.getElementById('coinType').value;
+            const rawText = document.getElementById('addressInput').value.trim();
+            if (!rawText) return alert("请先粘贴要查询的钱包地址！");
+
+            const addresses = rawText.split('\n').map(a => a.trim()).filter(a => a.length > 10);
+            if (addresses.length === 0) return alert("未检测到有效格式的地址！");
+
+            const checkBtn = document.getElementById('checkBtn');
+            const statusText = document.getElementById('progressStatus');
+            const tableBody = document.getElementById('resultTableBody');
+
+            checkBtn.disabled = true;
+            checkBtn.classList.add('opacity-50');
+            tableBody.innerHTML = '';
+            checkResults = [];
+            document.getElementById('outputContainer').classList.remove('hidden');
+
+            const provider = coin === 'ETH' ? new ethers.providers.JsonRpcProvider(ETH_RPC) : null;
+            const usdtAbi = ["function balanceOf(address owner) view returns (uint256)"];
+
+            for (let i = 0; i < addresses.length; i++) {
+                const addr = addresses[i];
+                statusText.innerText = `正在查询 (${i + 1}/${addresses.length}): ${addr.substring(0, 8)}...`;
+                
+                let nativeBal = "0";
+                let usdtBal = "0";
+                let status = "成功";
+
+                try {
+                    if (coin === 'TRX') {
+                        // 波场 TronGrid 公共 API 查询
+                        const res = await fetch(`https://api.trongrid.io/v1/accounts/${addr}`);
+                        const data = await res.json();
+                        if (data.data && data.data.length > 0) {
+                            const acc = data.data[0];
+                            nativeBal = ((acc.balance || 0) / 1000000).toFixed(4); // TRX (6位小数)
+                            
+                            // 查询 TRC20 USDT 余额
+                            if (acc.trc20) {
+                                for (let t of acc.trc20) {
+                                    if (t['TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t']) { // TRC20 USDT 合约
+                                        usdtBal = (parseInt(t['TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t']) / 1000000).toFixed(2);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        // ETH 链 RPC 查询
+                        const ethWei = await provider.getBalance(addr);
+                        nativeBal = parseFloat(ethers.utils.formatEther(ethWei)).toFixed(4);
+
+                        // 查询 ERC20 USDT 余额
+                        const usdtContract = new ethers.Contract(ETH_USDT_CONTRACT, usdtAbi, provider);
+                        const usdtRaw = await usdtContract.balanceOf(addr);
+                        usdtBal = (parseFloat(usdtRaw.toString()) / 1000000).toFixed(2); // USDT (6位小数)
+                    }
+                } catch (e) {
+                    status = "失败/格式不正确";
+                }
+
+                const resObj = {
+                    id: i + 1,
+                    address: addr,
+                    nativeBalance: nativeBal + (coin === 'TRX' ? ' TRX' : ' ETH'),
+                    usdtBalance: usdtBal + ' USDT',
+                    status: status
+                };
+                checkResults.push(resObj);
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-gray-50";
+                tr.innerHTML = `
+                    <td class="p-2.5 text-gray-500 font-sans">${resObj.id}</td>
+                    <td class="p-2.5 text-blue-700 font-bold break-all">${resObj.address}</td>
+                    <td class="p-2.5 font-bold ${parseFloat(nativeBal) > 0 ? 'text-green-600' : 'text-gray-500'}">${resObj.nativeBalance}</td>
+                    <td class="p-2.5 font-bold ${parseFloat(usdtBal) > 0 ? 'text-green-600' : 'text-gray-500'}">${resObj.usdtBalance}</td>
+                    <td class="p-2.5 ${status === '成功' ? 'text-gray-500' : 'text-red-500'}">${resObj.status}</td>
+                `;
+                tableBody.appendChild(tr);
+            }
+
+            statusText.innerText = `全部查询完成！共 ${addresses.length} 个地址。`;
+            checkBtn.disabled = false;
+            checkBtn.classList.remove('opacity-50');
+        }
+
+        function exportCSV() {
+            if (checkResults.length === 0) return alert("暂无可导出的数据！");
+            let csvContent = "data:text/csv;charset=utf-8,ID,Address,NativeBalance,USDTBalance,Status\n";
+            checkResults.forEach(r => {
+                csvContent += `${r.id},${r.address},${r.nativeBalance},${r.usdtBalance},${r.status}\n`;
+            });
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `balance_check_${Date.now()}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
