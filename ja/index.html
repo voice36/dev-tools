@@ -12,7 +12,7 @@
             <a href="index.html" class="text-lg font-bold">DevTools Express</a>
             
             <div class="flex items-center space-x-3">
-                <nav class="text-xs sm:text-sm space-x-2 overflow-x-auto hidden sm:block">
+                <nav class="text-xs sm:text-sm space-x-2 overflow-x-auto hidden md:block">
                     <a href="json.html" class="hover:underline">JSON</a>
                     <a href="base64.html" class="hover:underline">Base64</a>
                     <a href="timestamp.html" class="hover:underline">タイムスタンプ</a>
@@ -20,9 +20,9 @@
                     <a href="password.html" class="hover:underline">パスワード</a>
                     <a href="qrcode.html" class="hover:underline">QRコード</a>
                     <a href="hash-url.html" class="hover:underline">URLエンコード</a>
+                    <a href="crypto-gen.html" class="hover:underline text-yellow-300 font-bold">暗号鍵</a>
                 </nav>
                 
-                <!-- 言語選択 -->
                 <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400 focus:outline-none">
                     <option value="/index.html">🌐 English</option>
                     <option value="/zh/index.html">中文 (Chinese)</option>
@@ -38,7 +38,6 @@
             <p class="text-gray-600 text-sm">100% ブラウザ内で処理。データが外部サーバーに送信されることはありません。</p>
         </div>
 
-        <!-- 7つのツールカード -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <a href="json.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
                 <h2 class="text-lg font-bold text-blue-600 mb-1">JSON 成形 & 構文チェック →</h2>
@@ -67,6 +66,10 @@
             <a href="hash-url.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
                 <h2 class="text-lg font-bold text-blue-600 mb-1">URL エンコード / デコード →</h2>
                 <p class="text-gray-500 text-xs">文字列のURLエンコードおよびデコードツール。</p>
+            </a>
+            <a href="crypto-gen.html" class="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition border border-amber-300 hover:border-amber-500 block bg-gradient-to-br from-amber-50 to-white">
+                <h2 class="text-lg font-bold text-amber-700 mb-1">暗号資産 秘密鍵 & シードフレーズ生成 →</h2>
+                <p class="text-gray-500 text-xs">BTC/ETH/SOLの秘密鍵と12/24フレーズをローカルオフライン生成。</p>
             </a>
         </div>
     </main>
