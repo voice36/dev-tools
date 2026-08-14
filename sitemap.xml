@@ -1,53 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <!-- English (Default) -->
-    <url><loc>https://tools.haha6.top/</loc><priority>1.0</priority></url>
-    <url><loc>https://tools.haha6.top/json.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/base64.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/timestamp.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/text.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/password.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/qrcode.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/hash-url.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/crypto-gen.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/batch-wallet.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/img-base64.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/about.html</loc><priority>0.5</priority></url>
-    <url><loc>https://tools.haha6.top/privacy.html</loc><priority>0.5</priority></url>
+    <url><loc>https://haha6.top/</loc><priority>1.0</priority></url>
+    <url><loc>https://haha6.top/json.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/base64.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/timestamp.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/text.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/password.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/qrcode.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/hash-url.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/crypto-gen.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/batch-wallet.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/img-base64.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/about.html</loc><priority>0.5</priority></url>
+    <url><loc>https://haha6.top/privacy.html</loc><priority>0.5</priority></url>
 
-<url><loc>https://tools.haha6.top/balance.html</loc><priority>0.8</priority></url>
+<url><loc>https://haha6.top/balance.html</loc><priority>0.8</priority></url>
 
     <!-- Chinese -->
-    <url><loc>https://tools.haha6.top/zh/index.html</loc><priority>0.9</priority></url>
-    <url><loc>https://tools.haha6.top/zh/json.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/zh/base64.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/zh/timestamp.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/zh/text.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/zh/password.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/zh/qrcode.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/zh/hash-url.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/zh/crypto-gen.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/zh/batch-wallet.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/zh/img-base64.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/zh/about.html</loc><priority>0.5</priority></url>
-    <url><loc>https://tools.haha6.top/zh/privacy.html</loc><priority>0.5</priority></url>
+    <url><loc>https://haha6.top/zh/index.html</loc><priority>0.9</priority></url>
+    <url><loc>https://haha6.top/zh/json.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/zh/base64.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/zh/timestamp.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/zh/text.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/zh/password.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/zh/qrcode.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/zh/hash-url.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/zh/crypto-gen.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/zh/batch-wallet.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/zh/img-base64.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/zh/about.html</loc><priority>0.5</priority></url>
+    <url><loc>https://haha6.top/zh/privacy.html</loc><priority>0.5</priority></url>
 
-<url><loc>https://tools.haha6.top/zh/balance.html</loc><priority>0.8</priority></url>
+<url><loc>https://haha6.top/zh/balance.html</loc><priority>0.8</priority></url>
 
     <!-- Japanese -->
-    <url><loc>https://tools.haha6.top/ja/index.html</loc><priority>0.9</priority></url>
-    <url><loc>https://tools.haha6.top/ja/json.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/ja/base64.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/ja/timestamp.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/ja/text.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/ja/password.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/ja/qrcode.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/ja/hash-url.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/ja/crypto-gen.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/ja/batch-wallet.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/ja/img-base64.html</loc><priority>0.8</priority></url>
-    <url><loc>https://tools.haha6.top/ja/about.html</loc><priority>0.5</priority></url>
-    <url><loc>https://tools.haha6.top/ja/privacy.html</loc><priority>0.5</priority></url>
+    <url><loc>https://haha6.top/ja/index.html</loc><priority>0.9</priority></url>
+    <url><loc>https://haha6.top/ja/json.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/ja/base64.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/ja/timestamp.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/ja/text.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/ja/password.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/ja/qrcode.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/ja/hash-url.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/ja/crypto-gen.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/ja/batch-wallet.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/ja/img-base64.html</loc><priority>0.8</priority></url>
+    <url><loc>https://haha6.top/ja/about.html</loc><priority>0.5</priority></url>
+    <url><loc>https://haha6.top/ja/privacy.html</loc><priority>0.5</priority></url>
 
-<url><loc>https://tools.haha6.top/ja/balance.html</loc><priority>0.8</priority></url>
+<url><loc>https://haha6.top/ja/balance.html</loc><priority>0.8</priority></url>
 </urlset>
