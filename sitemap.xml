@@ -193,6 +193,30 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://tools.vexum.top/hash-url.html"/>
   </url>
   <url>
+    <loc>https://tools.vexum.top/img-base64.html</loc>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tools.vexum.top/img-base64.html"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://tools.vexum.top/zh/img-base64.html"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://tools.vexum.top/ja/img-base64.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tools.vexum.top/img-base64.html"/>
+  </url>
+  <url>
+    <loc>https://tools.vexum.top/zh/img-base64.html</loc>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tools.vexum.top/img-base64.html"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://tools.vexum.top/zh/img-base64.html"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://tools.vexum.top/ja/img-base64.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tools.vexum.top/img-base64.html"/>
+  </url>
+  <url>
+    <loc>https://tools.vexum.top/ja/img-base64.html</loc>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tools.vexum.top/img-base64.html"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://tools.vexum.top/zh/img-base64.html"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://tools.vexum.top/ja/img-base64.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tools.vexum.top/img-base64.html"/>
+  </url>
+  <url>
     <loc>https://tools.vexum.top/crypto-gen.html</loc>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://tools.vexum.top/crypto-gen.html"/>
@@ -311,10 +335,5 @@
     <xhtml:link rel="alternate" hreflang="zh" href="https://tools.vexum.top/zh/privacy.html"/>
     <xhtml:link rel="alternate" hreflang="ja" href="https://tools.vexum.top/ja/privacy.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://tools.vexum.top/privacy.html"/>
-  </url>
-  <url>
-    <loc>https://tools.vexum.top/zh/img-base64.html</loc>
-    <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://tools.vexum.top/zh/img-base64.html"/>
   </url>
 </urlset>

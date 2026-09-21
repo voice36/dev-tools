@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>图片转 Base64 编码 - 极速在线工具箱</title>
+    <title>画像 Base64 変換 - 無料Webツール</title>
+    <meta name="description" content="画像ファイルを Base64 Data URL にブラウザ上で変換。100% クライアントサイド処理で、画像はアップロードされません。">
     <link rel="stylesheet" href="/assets/tailwind.css">
-    <link rel="canonical" href="https://tools.vexum.top/zh/img-base64.html">
+    <link rel="canonical" href="https://tools.vexum.top/ja/img-base64.html">
     <link rel="alternate" hreflang="en" href="https://tools.vexum.top/img-base64.html">
     <link rel="alternate" hreflang="zh" href="https://tools.vexum.top/zh/img-base64.html">
     <link rel="alternate" hreflang="ja" href="https://tools.vexum.top/ja/img-base64.html">
@@ -14,25 +15,25 @@
 <body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
     <header class="bg-blue-600 text-white shadow-md">
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="index.html" class="text-lg font-bold">极速在线工具箱</a>
+            <a href="index.html" class="text-lg font-bold">DevTools Express</a>
             <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400">
                 <option value="/img-base64.html">🌐 English</option>
-                <option value="/zh/img-base64.html" selected>中文 (Chinese)</option>
-                <option value="/ja/img-base64.html">日本語 (Japanese)</option>
+                <option value="/zh/img-base64.html">中文 (Chinese)</option>
+                <option value="/ja/img-base64.html" selected>日本語 (Japanese)</option>
             </select>
         </div>
     </header>
 
     <main class="max-w-4xl mx-auto px-4 py-8 flex-grow w-full space-y-6">
         <section class="bg-white p-6 rounded-xl shadow-sm border space-y-4">
-            <h1 class="text-xl font-bold border-b pb-2">图片文件转 Base64 Data URL 在线转换</h1>
-            
+            <h1 class="text-xl font-bold border-b pb-2">画像ファイルを Base64 Data URL に変換</h1>
+
             <input type="file" id="imgFile" accept="image/*" onchange="convertImg()" class="block w-full text-sm text-gray-500">
 
             <div id="resultBox" class="hidden space-y-3 pt-2">
-                <label class="block text-xs font-bold text-gray-600">Base64 字符串结果：</label>
+                <label class="block text-xs font-bold text-gray-600">Base64 文字列：</label>
                 <textarea id="base64Res" rows="6" readonly class="w-full p-2.5 bg-gray-100 border rounded-lg font-mono text-xs break-all focus:outline-none"></textarea>
-                <button onclick="navigator.clipboard.writeText(document.getElementById('base64Res').value); alert('已复制！');" class="bg-blue-600 text-white text-xs px-4 py-2 rounded font-medium hover:bg-blue-700">📋 复制 Base64</button>
+                <button onclick="navigator.clipboard.writeText(document.getElementById('base64Res').value); alert('コピーしました！');" class="bg-blue-600 text-white text-xs px-4 py-2 rounded font-medium hover:bg-blue-700">📋 Base64 をコピー</button>
             </div>
         </section>
     </main>
