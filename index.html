@@ -9,16 +9,16 @@
     
     <script>
         (function() {
-            if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+            if (window.location.pathname === '/' || window.location.pathname === '/') {
                 const lang = (navigator.language || navigator.userLanguage).toLowerCase();
                 const hasRedirected = sessionStorage.getItem('lang_redirected');
 
                 if (!hasRedirected) {
                     sessionStorage.setItem('lang_redirected', 'true');
                     if (lang.startsWith('zh')) {
-                        window.location.href = '/zh/index.html';
+                        window.location.href = '/zh/';
                     } else if (lang.startsWith('ja')) {
-                        window.location.href = '/ja/index.html';
+                        window.location.href = '/ja/';
                     }
                 }
             }
@@ -38,13 +38,13 @@
 
 
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="index.html" class="text-lg font-bold">DevTools Express</a>
+            <a href="./" class="text-lg font-bold">DevTools Express</a>
             
             <div class="flex items-center space-x-3">
                 <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400 focus:outline-none">
-                    <option value="/index.html" selected>🌐 English</option>
-                    <option value="/zh/index.html">中文 (Chinese)</option>
-                    <option value="/ja/index.html">日本語 (Japanese)</option>
+                    <option value="/" selected>🌐 English</option>
+                    <option value="/zh/">中文 (Chinese)</option>
+                    <option value="/ja/">日本語 (Japanese)</option>
                 </select>
             </div>
         </div>
@@ -63,15 +63,15 @@
                 <h2 class="text-base font-bold text-gray-800">Web3 & Crypto Tools</h2>
             </div>
             <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                <a href="crypto-gen.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border border-amber-200 hover:border-amber-500 block bg-gradient-to-br from-amber-50/50 to-white">
+                <a href="crypto-gen" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border border-amber-200 hover:border-amber-500 block bg-gradient-to-br from-amber-50/50 to-white">
                     <h3 class="text-sm sm:text-base font-bold text-amber-700 mb-1">Key & Mnemonic Generator →</h3>
                     <p class="text-gray-500 text-xs hidden sm:block">Offline generation of ETH/TRX private keys and 12/24 mnemonics.</p>
                 </a>
-                <a href="batch-wallet.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border border-amber-200 hover:border-amber-500 block bg-gradient-to-br from-amber-50/50 to-white">
+                <a href="batch-wallet" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border border-amber-200 hover:border-amber-500 block bg-gradient-to-br from-amber-50/50 to-white">
                     <h3 class="text-sm sm:text-base font-bold text-amber-700 mb-1">Batch Wallet Generator →</h3>
                     <p class="text-gray-500 text-xs hidden sm:block">Bulk generate up to 10,000 wallets offline and export to CSV.</p>
                 </a>
-                <a href="balance.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border border-amber-200 hover:border-amber-500 block bg-gradient-to-br from-amber-50/50 to-white">
+                <a href="balance" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border border-amber-200 hover:border-amber-500 block bg-gradient-to-br from-amber-50/50 to-white">
                     <h3 class="text-sm sm:text-base font-bold text-amber-700 mb-1">Address Balance Checker →</h3>
                     <p class="text-gray-500 text-xs hidden sm:block">Bulk check TRX/ETH and USDT balances for TRON & ETH addresses.</p>
                 </a>
@@ -85,15 +85,15 @@
                 <h2 class="text-base font-bold text-gray-800">Developer & DevOps Tools</h2>
             </div>
             <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                <a href="json.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <a href="json" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
                     <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">JSON Formatter & Validator →</h3>
                     <p class="text-gray-500 text-xs hidden sm:block">Beautify, compress, and validate JSON syntax online.</p>
                 </a>
-                <a href="base64.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <a href="base64" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
                     <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">Base64 Encoder & Decoder →</h3>
                     <p class="text-gray-500 text-xs hidden sm:block">Encode and decode UTF-8 strings to Base64 easily.</p>
                 </a>
-                <a href="hash-url.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <a href="hash-url" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
                     <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">URL Encoder & Decoder →</h3>
                     <p class="text-gray-500 text-xs hidden sm:block">Escape characters with standard URL Encode/Decode.</p>
                 </a>
@@ -107,23 +107,23 @@
                 <h2 class="text-base font-bold text-gray-800">Text & Productivity Tools</h2>
             </div>
             <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                <a href="timestamp.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <a href="timestamp" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
                     <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">Unix Timestamp Converter →</h3>
                     <p class="text-gray-500 text-xs hidden sm:block">Convert 10-digit/13-digit timestamps to readable date and time.</p>
                 </a>
-                <a href="text.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <a href="text" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
                     <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">Text Counter & Deduplicator →</h3>
                     <p class="text-gray-500 text-xs hidden sm:block">Real-time word/line count and duplicate line removal.</p>
                 </a>
-                <a href="password.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <a href="password" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
                     <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">Random Password Generator →</h3>
                     <p class="text-gray-500 text-xs hidden sm:block">Generate strong, customizable passwords instantly.</p>
                 </a>
-                <a href="qrcode.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <a href="qrcode" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
                     <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">QR Code Generator & Parser →</h3>
                     <p class="text-gray-500 text-xs hidden sm:block">Create QR codes and decode content from uploaded images.</p>
                 </a>
-                <a href="img-base64.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <a href="img-base64" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
                     <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">Image to Base64 →</h3>
                     <p class="text-gray-500 text-xs hidden sm:block">Convert uploaded or dragged images to Base64 Data URL.</p>
                 </a>
@@ -134,9 +134,9 @@
 
     <footer class="bg-white border-t py-4 text-center text-xs text-gray-500 space-y-2">
         <div class="space-x-3">
-            <a href="about.html" class="hover:underline">About Us</a>
+            <a href="about" class="hover:underline">About Us</a>
             <span>|</span>
-            <a href="privacy.html" class="hover:underline">Privacy Policy</a>
+            <a href="privacy" class="hover:underline">Privacy Policy</a>
             <span>|</span>
             <a href="mailto:voice366@hotmail.com" class="hover:underline font-semibold text-blue-600">Contact: voice366@hotmail.com</a>
         </div>

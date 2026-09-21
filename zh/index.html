@@ -14,13 +14,13 @@
 <body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
     <header class="bg-blue-600 text-white shadow-md">
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="index.html" class="text-lg font-bold">极速在线工具箱</a>
+            <a href="./" class="text-lg font-bold">极速在线工具箱</a>
             
             <div class="flex items-center space-x-3">
                 <select onchange="location = this.value;" class="bg-blue-700 text-white text-xs py-1 px-2 rounded border border-blue-400 focus:outline-none">
-                    <option value="/index.html">🌐 English</option>
-                    <option value="/zh/index.html" selected>中文 (Chinese)</option>
-                    <option value="/ja/index.html">日本語 (Japanese)</option>
+                    <option value="/">🌐 English</option>
+                    <option value="/zh/" selected>中文 (Chinese)</option>
+                    <option value="/ja/">日本語 (Japanese)</option>
                 </select>
             </div>
         </div>
@@ -39,15 +39,15 @@
                 <h2 class="text-base font-bold text-gray-800">Web3 & 加密货币工具</h2>
             </div>
             <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                <a href="crypto-gen.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border border-amber-200 hover:border-amber-500 block bg-gradient-to-br from-amber-50/50 to-white">
+                <a href="crypto-gen" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border border-amber-200 hover:border-amber-500 block bg-gradient-to-br from-amber-50/50 to-white">
                     <h3 class="text-sm sm:text-base font-bold text-amber-700 mb-1">私钥与助记词生成 →</h3>
                     <p class="text-gray-500 text-xs hidden sm:block">离线生成 ETH/TRX 单个私钥与 12/24 助记词。</p>
                 </a>
-                <a href="batch-wallet.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border border-amber-200 hover:border-amber-500 block bg-gradient-to-br from-amber-50/50 to-white">
+                <a href="batch-wallet" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border border-amber-200 hover:border-amber-500 block bg-gradient-to-br from-amber-50/50 to-white">
                     <h3 class="text-sm sm:text-base font-bold text-amber-700 mb-1">批量钱包生成器 →</h3>
                     <p class="text-gray-500 text-xs hidden sm:block">离线批量生成最高 10,000 个钱包，支持导出 CSV。</p>
                 </a>
-                <a href="balance.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border border-amber-200 hover:border-amber-500 block bg-gradient-to-br from-amber-50/50 to-white">
+                <a href="balance" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border border-amber-200 hover:border-amber-500 block bg-gradient-to-br from-amber-50/50 to-white">
                     <h3 class="text-sm sm:text-base font-bold text-amber-700 mb-1">地址余额在线查询 →</h3>
                     <p class="text-gray-500 text-xs hidden sm:block">批量查询 TRON / ETH 地址的 TRX/ETH 及 USDT 余额。</p>
                 </a>
@@ -62,15 +62,15 @@
                 <h2 class="text-base font-bold text-gray-800">开发者 & 运维工具</h2>
             </div>
             <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                <a href="json.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <a href="json" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
                     <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">JSON 格式化校验 →</h3>
                     <p class="text-gray-500 text-xs hidden sm:block">美化、单行压缩以及在线语法排查。</p>
                 </a>
-                <a href="base64.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <a href="base64" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
                     <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">Base64 编码解码 →</h3>
                     <p class="text-gray-500 text-xs hidden sm:block">文本与 Base64 编码双向在线转换。</p>
                 </a>
-                <a href="hash-url.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <a href="hash-url" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
                     <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">URL 编码解码 →</h3>
                     <p class="text-gray-500 text-xs hidden sm:block">转义特殊字符，提供标准 URL Encode/Decode。</p>
                 </a>
@@ -84,23 +84,23 @@
                 <h2 class="text-base font-bold text-gray-800">文本 & 效率工具</h2>
             </div>
             <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                <a href="timestamp.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <a href="timestamp" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
                     <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">Unix 时间戳转换 →</h3>
                     <p class="text-gray-500 text-xs hidden sm:block">支持 10 位/13 位时间戳与北京时间互转。</p>
                 </a>
-                <a href="text.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <a href="text" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
                     <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">文本统计与去重 →</h3>
                     <p class="text-gray-500 text-xs hidden sm:block">字数行数实时统计，一键按行去重。</p>
                 </a>
-                <a href="password.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <a href="password" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
                     <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">随机密码生成器 →</h3>
                     <p class="text-gray-500 text-xs hidden sm:block">自定义长度快速生成高安全度密码。</p>
                 </a>
-                <a href="qrcode.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <a href="qrcode" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
                     <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">二维码生成解析 →</h3>
                     <p class="text-gray-500 text-xs hidden sm:block">生成二维码，支持解析图片二维码内容。</p>
                 </a>
-                <a href="img-base64.html" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
+                <a href="img-base64" class="p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border hover:border-blue-500 block">
                     <h3 class="text-sm sm:text-base font-bold text-blue-600 mb-1">图片转 Base64 →</h3>
                     <p class="text-gray-500 text-xs hidden sm:block">上传或拖拽图片转为 Base64 Data URL。</p>
                 </a>
@@ -110,9 +110,9 @@
 
     <footer class="bg-white border-t py-4 text-center text-xs text-gray-500 space-y-2">
         <div class="space-x-3">
-            <a href="about.html" class="hover:underline">关于本站</a>
+            <a href="about" class="hover:underline">关于本站</a>
             <span>|</span>
-            <a href="privacy.html" class="hover:underline">隐私政策</a>
+            <a href="privacy" class="hover:underline">隐私政策</a>
             <span>|</span>
             <a href="mailto:voice366@hotmail.com" class="hover:underline font-semibold text-blue-600">联系邮箱：voice366@hotmail.com</a>
         </div>
