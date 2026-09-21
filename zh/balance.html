@@ -91,8 +91,6 @@
         let checkResults = [];
         
         // ---------------- 替换为您自己的 API Key ----------------
-        const TRONGRID_API_KEY = "e7872f3f-cf8f-4aff-bdce-7e8cfb944ad6";
-        const ETHERSCAN_API_KEY = "YOUR_ETHERSCAN_API_KEY";
         const ETH_USDT_CONTRACT = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
 
         const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -124,44 +122,11 @@
                 let status = "成功";
 
                 try {
-                    if (coin === 'TRX') {
-                        // 使用 TronGrid API Key 查询波场
-                        const res = await fetch(`https://api.trongrid.io/v1/accounts/${addr}`, {
-                            headers: { 
-                                'Accept': 'application/json',
-                                'TRON-PRO-API-KEY': TRONGRID_API_KEY 
-                            }
-                        });
-                        const data = await res.json();
-                        
-                        if (data.data && data.data.length > 0) {
-                            const acc = data.data[0];
-                            nativeBal = ((acc.balance || 0) / 1000000).toFixed(4);
-                            
-                            if (acc.trc20) {
-                                for (let t of acc.trc20) {
-                                    if (t['TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t']) {
-                                        usdtBal = (parseInt(t['TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t']) / 1000000).toFixed(2);
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        // 1. 使用 Etherscan API 查 ETH 主币余额
-                        const ethRes = await fetch(`https://api.etherscan.io/api?module=account&action=balance&address=${addr}&tag=latest&apikey=${ETHERSCAN_API_KEY}`);
-                        const ethData = await ethRes.json();
-                        if (ethData.status === "1") {
-                            nativeBal = (parseInt(ethData.result) / 1e18).toFixed(4);
-                        }
-
-                        // 2. 使用 Etherscan API 查 ERC20 USDT 余额
-                        const usdtRes = await fetch(`https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=${ETH_USDT_CONTRACT}&address=${addr}&tag=latest&apikey=${ETHERSCAN_API_KEY}`);
-                        const usdtData = await usdtRes.json();
-                        if (usdtData.status === "1") {
-                            usdtBal = (parseInt(usdtData.result) / 1e6).toFixed(2);
-                        }
-                    }
+                    const apiRes = await fetch("/api/balance?chain=" + coin.toLowerCase() + "&address=" + encodeURIComponent(addr));
+                    const data = await apiRes.json();
+                    if (!apiRes.ok || data.error) throw new Error(data.error || ("HTTP " + apiRes.status));
+                    nativeBal = data.native;
+                    usdtBal = data.usdt;
                 } catch (e) {
                     status = "查询失败/API受限";
                 }
