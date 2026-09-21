@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Multilingual dev-tools site
+Sitemap: https://tools.vexum.top/sitemap.xml
