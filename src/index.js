@@ -1,6 +1,9 @@
-// Pages Function: GET /api/balance?chain=eth|trx&address=0x...|T...
-// Runs on Cloudflare's edge. The upstream API key lives in the Pages project
-// environment variable ETHERSCAN_API_KEY (never shipped to the browser).
+// Worker entry for the dev-tools site.
+// - /api/*        -> handled here (upstream API keys stay server-side)
+// - everything else -> served from static assets (binding: ASSETS)
+//
+// Required secret: ETHERSCAN_API_KEY   (free: https://etherscan.io/myapikey)
+// Optional secret: TRON_PRO_API_KEY    (TronGrid works without one)
 
 const ETH_USDT = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
 const TRX_USDT = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t";
@@ -18,14 +21,14 @@ const isEth = (a) => /^0x[a-fA-F0-9]{40}$/.test(a);
 const isTrx = (a) => /^T[1-9A-HJ-NP-Za-km-z]{33}$/.test(a);
 
 async function ethBalance(address, key) {
-  const u = `https://api.etherscan.io/v2/api?chainid=1&module=account&action=balance&address=${address}&tag=latest&apikey=***}`;
+  const u = `https://api.etherscan.io/v2/api?chainid=1&module=account&action=balance&address=${address}&tag=latest&apikey=${key}`;
   const d = await (await fetch(u)).json();
   if (d.status !== "1") throw new Error(d.result || "etherscan_error");
   return (Number(d.result) / 1e18).toFixed(4);
 }
 
 async function ethUsdtBalance(address, key) {
-  const u = `https://api.etherscan.io/v2/api?chainid=1&module=account&action=tokenbalance&contractaddress=${ETH_USDT}&address=${address}&tag=latest&apikey=***}`;
+  const u = `https://api.etherscan.io/v2/api?chainid=1&module=account&action=tokenbalance&contractaddress=${ETH_USDT}&address=${address}&tag=latest&apikey=${key}`;
   const d = await (await fetch(u)).json();
   if (d.status !== "1") throw new Error(d.result || "etherscan_error");
   return (Number(d.result) / 1e6).toFixed(2);
@@ -44,8 +47,7 @@ async function trxBalances(address, key) {
   return { native, usdt };
 }
 
-export async function onRequestGet({ request, env }) {
-  const url = new URL(request.url);
+async function handleBalance(url, env) {
   const chain = (url.searchParams.get("chain") || "").toLowerCase();
   const address = (url.searchParams.get("address") || "").trim();
 
@@ -75,3 +77,13 @@ export async function onRequestGet({ request, env }) {
 
   return json({ error: "bad_chain", allowed: ["eth", "trx"] }, 400);
 }
+
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    if (url.pathname === "/api/health") return json({ ok: true });
+    if (url.pathname === "/api/balance") return handleBalance(url, env);
+    if (url.pathname.startsWith("/api/")) return json({ error: "not_found" }, 404);
+    return env.ASSETS.fetch(request);
+  },
+};
