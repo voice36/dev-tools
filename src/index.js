@@ -2,8 +2,8 @@
 // - /api/*        -> handled here (upstream API keys stay server-side)
 // - everything else -> served from static assets (binding: ASSETS)
 //
-// Required secret: ETHERSCAN_API_KEY   (free: https://etherscan.io/myapikey)
-// Optional secret: TRON_PRO_API_KEY    (TronGrid works without one)
+// Required secret: ***   (free: https://etherscan.io/myapikey)
+// Optional secret: ***    (TronGrid works without one)
 
 const ETH_USDT = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
 const TRX_USDT = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t";
@@ -20,18 +20,37 @@ const json = (obj, status = 200) =>
 const isEth = (a) => /^0x[a-fA-F0-9]{40}$/.test(a);
 const isTrx = (a) => /^T[1-9A-HJ-NP-Za-km-z]{33}$/.test(a);
 
+const RATE_LIMIT_RE = /rate limit|max calls per sec/i;
+
+// Etherscan free tier allows only ~3 calls/sec, so retry briefly on rate limits.
+async function etherscan(query, key, tries = 3) {
+  const url = `https://api.etherscan.io/v2/api?chainid=1&${query}&apikey=***}`;
+  let last = null;
+  for (let i = 1; i <= tries; i++) {
+    const d = await (await fetch(url)).json();
+    if (d && d.status === "1") return d.result;
+    last = d;
+    const msg = String((d && d.result) || "");
+    if (RATE_LIMIT_RE.test(msg)) {
+      await new Promise((r) => setTimeout(r, 700 * i));
+      continue;
+    }
+    break;
+  }
+  throw new Error((last && last.result) || "etherscan_error");
+}
+
 async function ethBalance(address, key) {
-  const u = `https://api.etherscan.io/v2/api?chainid=1&module=account&action=balance&address=${address}&tag=latest&apikey=${key}`;
-  const d = await (await fetch(u)).json();
-  if (d.status !== "1") throw new Error(d.result || "etherscan_error");
-  return (Number(d.result) / 1e18).toFixed(4);
+  const r = await etherscan(`module=account&action=balance&address=${address}&tag=latest`, key);
+  return (Number(r) / 1e18).toFixed(4);
 }
 
 async function ethUsdtBalance(address, key) {
-  const u = `https://api.etherscan.io/v2/api?chainid=1&module=account&action=tokenbalance&contractaddress=${ETH_USDT}&address=${address}&tag=latest&apikey=${key}`;
-  const d = await (await fetch(u)).json();
-  if (d.status !== "1") throw new Error(d.result || "etherscan_error");
-  return (Number(d.result) / 1e6).toFixed(2);
+  const r = await etherscan(
+    `module=account&action=tokenbalance&contractaddress=${ETH_USDT}&address=${address}&tag=latest`,
+    key
+  );
+  return (Number(r) / 1e6).toFixed(2);
 }
 
 async function trxBalances(address, key) {
@@ -61,7 +80,9 @@ async function handleBalance(url, env) {
       ]);
       return json({ chain, address, symbol: "ETH", native, usdt });
     } catch (e) {
-      return json({ error: "upstream", detail: String(e.message || e) }, 502);
+      const msg = String(e.message || e);
+      if (RATE_LIMIT_RE.test(msg)) return json({ error: "rate_limited", detail: msg }, 429);
+      return json({ error: "upstream", detail: msg }, 502);
     }
   }
 
